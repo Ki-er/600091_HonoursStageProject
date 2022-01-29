@@ -1,9 +1,16 @@
-﻿<CascadingAuthenticationState>
+﻿@inject NavigationManager NavigationManager
+
+<CascadingAuthenticationState>
 <Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="routeData" DefaultLayout="@typeof(MainLayout)">
             <NotAuthorized>
-                <RedirectToLogin></RedirectToLogin>
+            @{
+                var returnUrl = 
+                NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+                <RedirectToLogin ReturnUrl="@returnUrl"/>
+  
+             }
             </NotAuthorized>
         </AuthorizeRouteView>
     </Found>
