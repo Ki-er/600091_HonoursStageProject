@@ -6,14 +6,19 @@
 <h3>Grading</h3>
 
 
+<InputFile OnChange="@LoadFiles" />
 
-<object data="" type="application/pdf" width="50%" height="50%">
-  <p>Alternative text - include a link <a href="myfile.pdf">to the PDF!</a></p>
-</object>
-
-
+  <label for="fname">Student Number:</label>
+  <input type="text" id="snumber" name="snumber"><br><br>
 
 
+
+@code {
+    private void LoadFiles(InputFileChangeEventArgs e)
+    {
+
+    }
+}
 
 
 
