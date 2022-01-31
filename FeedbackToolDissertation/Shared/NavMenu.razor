@@ -3,7 +3,7 @@
 @inject ModuleService ModuleService
 
 <div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">DbFeedback</a>
+    <a class="navbar-brand" href="">FeeDBack</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -16,8 +16,44 @@
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </li>
-       </ul>
 
+
+<AuthorizeView>
+<Authorized>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/Grading" Match="NavLinkMatch.All">
+                <span class="oi oi-pencil" aria-hidden="true"></span> Grading
+            </NavLink>
+        </li>
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Identity/Account/LogOut" Match="NavLinkMatch.All">
+                <span class="oi oi-account-logout" aria-hidden="true"></span> Log Out
+            </NavLink>
+        </li>
+</Authorized>
+<!-- Show this section if the user is not logged in -->
+<NotAuthorized>
+            <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Identity/Account/Login" Match="NavLinkMatch.All">
+                <span class="oi oi-account-login" aria-hidden="true"></span> Log In
+            </NavLink>
+        </li>
+                    <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Identity/Account/Register" Match="NavLinkMatch.All">
+                <span class="oi oi-account-login" aria-hidden="true"></span> Register
+            </NavLink>
+        </li>
+</NotAuthorized>
+</AuthorizeView>
+
+</ul>
+</div>
+
+}
+
+    
+@*
     @if (moduleList == null)
     {
         <p><em>Loading....</em></p>
@@ -36,7 +72,8 @@
             }
         </ul>
     }
-</div>
+*@
+
 
 	@code {
             private bool collapseNavMenu = true;
@@ -67,9 +104,6 @@
     var user = (await authenticationStateTask).User;
     moduleList = await ModuleService.GetModulesAsync(user.Identity.Name);
   }
-
-
-
 
 }
 

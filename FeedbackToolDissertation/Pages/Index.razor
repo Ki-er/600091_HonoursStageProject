@@ -1,7 +1,41 @@
 ﻿@page "/"
-@attribute [Authorize]
 
-<h1>Hello, world!</h1>
+<AuthorizeView>
+<Authorized>
+   <h2> Hello @context.User.Identity.Name! </h2>
 
-Welcome to your new app.
+   <h3>You can begin grading by pressing the "Grading" option on the sidebar!</h3>
+</Authorized>
+<!-- Show this section if the user is not logged in -->
+<NotAuthorized>
+<h1>Welcome to FeeDBack!</h1>
 
+<p> This is a grading tool where academics can store feedback to a database and reuse it when grading.</p>
+<br />
+<p> To get started, click the register button either on the side bar or at the top!</p>
+<p>Alternatively, you can <a href='/Identity/Account/Register'>Click here! </a></p>
+<br />
+<br />
+<p>If you already have an account, you can use the "Login" options or <a href='/Identity/Account/Login'>Click here! </a></p>
+</NotAuthorized>
+</AuthorizeView>
+
+
+	@code {
+
+  // AuthenticationState is available as a CascadingParameter
+  [CascadingParameter]
+
+   Task < AuthenticationState > authenticationStateTask {get; set; }
+
+
+  protected
+  override
+  async Task OnInitializedAsync()
+  {
+
+    // Get the current user
+    var user = (await authenticationStateTask).User;
+  }
+
+}
