@@ -26,6 +26,35 @@
             </NavLink>
         </li>
 
+         <li class="nav-item px-3">
+         <NavLink class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
+        <span class="oi oi-list-rich" aria-hidden="true"></span> Add and Delete
+        </NavLink>
+         </li>
+         @if (expandSubNav)
+    {
+        <NavLink class="expand-menu" href="">  
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Identity/Account/LogOut" Match="NavLinkMatch.All">
+                <span class="oi oi-plus" aria-hidden="true"></span> Add Feedback
+            </NavLink>
+        </li>        </NavLink>
+<li class="nav-item px-3">
+            <NavLink class="nav-link" href="Identity/Account/LogOut" Match="NavLinkMatch.All">
+                <span class="oi oi-plus" aria-hidden="true"></span> Add Modules
+            </NavLink>
+        </li>
+
+
+
+    
+
+    }
+
+
+
+
+
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="Identity/Account/LogOut" Match="NavLinkMatch.All">
                 <span class="oi oi-account-logout" aria-hidden="true"></span> Log Out
@@ -77,7 +106,9 @@
 
 
 	@code {
-            private bool collapseNavMenu = true;
+    private bool collapseNavMenu;
+    private bool expandSubNav;
+
 
   private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
