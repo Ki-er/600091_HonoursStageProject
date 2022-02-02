@@ -5,7 +5,7 @@
 
 <h3>Grading</h3>
 
-<div class="fileinsert"
+<div> class="fileinsert"
 <InputFile OnChange="@LoadFiles" />
 </div>
 <br />
@@ -90,17 +90,6 @@
 
 
 
-
-
-@code {
-    private void LoadFiles(InputFileChangeEventArgs e)
-    {
-
-    }
-}
-
-
-
 @code {
     // AuthenticationState is available as a CascadingParameter
     [CascadingParameter]
@@ -118,6 +107,13 @@
         var user = (await authenticationStateTask).User;
         moduleList = await ModuleService.GetModulesAsync(user.Identity.Name);
     }
+
+
+    private void LoadFiles(InputFileChangeEventArgs e)
+    {
+
+    }
+
 
 }
 

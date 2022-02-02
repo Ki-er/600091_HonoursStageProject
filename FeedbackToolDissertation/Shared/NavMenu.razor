@@ -26,32 +26,27 @@
             </NavLink>
         </li>
 
+
          <li class="nav-item px-3">
          <NavLink class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
         <span class="oi oi-list-rich" aria-hidden="true"></span> Add and Delete
         </NavLink>
-         </li>
-         @if (expandSubNav)
-    {
-        <NavLink class="expand-menu" href="">  
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Identity/Account/LogOut" Match="NavLinkMatch.All">
+        </li>
+        @if (expandSubNav)
+        {
+                    <NavLink class="expand-menu" href="">  
+                        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/AddFeedback" Match="NavLinkMatch.All">
                 <span class="oi oi-plus" aria-hidden="true"></span> Add Feedback
             </NavLink>
-        </li>        </NavLink>
-<li class="nav-item px-3">
-            <NavLink class="nav-link" href="Identity/Account/LogOut" Match="NavLinkMatch.All">
+        </li>        
+        </NavLink>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/AddModules" Match="NavLinkMatch.All">
                 <span class="oi oi-plus" aria-hidden="true"></span> Add Modules
             </NavLink>
         </li>
-
-
-
-    
-
-    }
-
-
+        }
 
 
 
@@ -61,7 +56,8 @@
             </NavLink>
         </li>
 </Authorized>
-<!-- Show this section if the user is not logged in -->
+
+
 <NotAuthorized>
             <li class="nav-item px-3">
             <NavLink class="nav-link" href="Identity/Account/Login" Match="NavLinkMatch.All">
@@ -75,8 +71,7 @@
         </li>
 </NotAuthorized>
 </AuthorizeView>
-
-</ul>
+</ul>    
 </div>
 
 }

@@ -18,18 +18,38 @@ namespace FeedbackToolDissertation.Data.FeedbackToolDissertation
         {
         }
 
+        public virtual DbSet<Feedback> Feedback { get; set; }
         public virtual DbSet<Modules> Modules { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Modules>(entity =>
+            modelBuilder.Entity<Feedback>(entity =>
             {
-                entity.Property(e => e.IconName)
+                entity.Property(e => e.Feedback1)
+                    .IsRequired()
+                    .HasMaxLength(250)
+                    .HasColumnName("Feedback")
+                    .IsFixedLength();
+
+                entity.Property(e => e.Module)
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsFixedLength();
 
-                entity.Property(e => e.PageName)
+                entity.Property(e => e.Section)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsFixedLength();
+
+                entity.Property(e => e.UserName)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsFixedLength();
+            });
+
+            modelBuilder.Entity<Modules>(entity =>
+            {
+                entity.Property(e => e.IconName)
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsFixedLength();
@@ -39,6 +59,10 @@ namespace FeedbackToolDissertation.Data.FeedbackToolDissertation
                     .HasMaxLength(50)
                     .IsFixedLength();
 
+                entity.Property(e => e.PageName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsFixedLength();
 
                 entity.Property(e => e.UserName)
                     .IsRequired()
