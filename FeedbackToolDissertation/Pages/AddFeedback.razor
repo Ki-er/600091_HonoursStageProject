@@ -1,6 +1,36 @@
-﻿@page "/AddFeedback"
+﻿@using FeedbackToolDissertation.Data
+@using FeedbackToolDissertation.Data.FeedbackToolDissertation
+@inject ModuleService ModuleService
+@inject FeedbackService FeedbackService
+
+
+@page "/AddFeedback"
 <h3>Add Feedback</h3>
 
-@code {
 
-}
+
+
+
+
+
+@code {
+    // AuthenticationState is available as a CascadingParameter
+    [CascadingParameter]
+
+    Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    List<Modules> moduleList;
+    List<Feedback> feedbackList;
+
+    protected
+    override
+    async Task OnInitializedAsync()
+    {
+
+        // Get the current user
+        var user = (await authenticationStateTask).User;
+        moduleList = await ModuleService.GetModulesAsync(user.Identity.Name);
+        feedbackList = await FeedbackService.GetFeedbacksAsync(user.Identity.Name);
+
+    }
+  }

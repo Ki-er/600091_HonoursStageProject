@@ -18,7 +18,6 @@ namespace FeedbackToolDissertation.Data
 
         public async Task<List<Modules>> GetModulesAsync(string strCurrentUser)
         {
-            // Get Weather Forecasts
             return
             await _context.Modules
             // Only get entries for the current logged in user

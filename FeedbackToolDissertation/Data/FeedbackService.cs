@@ -18,7 +18,6 @@ namespace FeedbackToolDissertation.Data
 
         public async Task<List<Feedback>> GetFeedbacksAsync(string strCurrentUser)
         {
-            // Get Weather Forecasts
             return
             await _context.Feedback
             // Only get entries for the current logged in user

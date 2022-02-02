@@ -34,6 +34,7 @@ namespace FeedbackToolDissertation
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddScoped<ModuleService>();
+            services.AddScoped<FeedbackService>();
 
             // Read the connection string from the appsettings.json file
             // Set the database connection for the EndtoEndContext

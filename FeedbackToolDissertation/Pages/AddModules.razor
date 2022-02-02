@@ -9,7 +9,7 @@
 
 
 @code {
-    @code {
+
     // AuthenticationState is available as a CascadingParameter
     [CascadingParameter]
 
@@ -26,6 +26,4 @@
         var user = (await authenticationStateTask).User;
         moduleList = await ModuleService.GetModulesAsync(user.Identity.Name);
     }
-
-}
 }
