@@ -35,6 +35,9 @@ namespace FeedbackToolDissertation
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddScoped<ModuleService>();
             services.AddScoped<FeedbackService>();
+            services.AddScoped<ACWService>();
+            services.AddScoped<SectionService>();
+            services.AddScoped<CriteriaService>();
 
             // Read the connection string from the appsettings.json file
             // Set the database connection for the EndtoEndContext
