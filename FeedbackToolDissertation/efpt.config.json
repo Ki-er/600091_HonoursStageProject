@@ -14,11 +14,23 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
+         "Name": "[dbo].[ACW]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Criteria]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Feedback]",
          "ObjectType": 0
       },
       {
          "Name": "[dbo].[Modules]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Sections]",
          "ObjectType": 0
       }
    ],

@@ -6,8 +6,21 @@
 
 @page "/AddFeedback"
 <h3>Add Feedback</h3>
+    <label> Module</label>
+    <select id="module" name="module">
+        @if (moduleList == null)
+        {
+            <p><em>Loading....</em></p>
+        }
+        else
+        {
+            @foreach (var module in moduleList)
+            {
+                <option value="@module.ModuleName">@module.ModuleName</option>
+            }
 
-
+        }
+    </select>
 
 
 

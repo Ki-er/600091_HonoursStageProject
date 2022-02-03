@@ -8,9 +8,7 @@ namespace FeedbackToolDissertation.Data.FeedbackToolDissertation
     public partial class Modules
     {
         public int Id { get; set; }
-        public string PageName { get; set; }
         public string ModuleName { get; set; }
-        public string IconName { get; set; }
         public string UserName { get; set; }
     }
 }

@@ -30,6 +30,21 @@
     </select>
 
     <br />
+        <label> ACW</label>
+    <select id="module" name="module">
+        @if (moduleList == null)
+        {
+            <p><em>Loading....</em></p>
+        }
+        else
+        {
+            @foreach (var module in moduleList)
+            {
+                <option value="@module.ModuleName">@module.ModuleName</option>
+            }
+
+        }
+    </select>
     <br />
     <br />
 
@@ -46,7 +61,6 @@
             
         }
     </select>
-    <button type="submit" class="btn btn-primary">Add Feedback</button>
     <br />
     <br />
 
@@ -61,7 +75,17 @@
         {
         }
     </select>
-    <button type="submit" class="btn btn-primary">Add Feedback</button>
+        <br />
+
+        <select id="feedback" name="feedback">
+        @if (moduleList == null)
+        {
+            <p><em>Loading....</em></p>
+        }
+        else
+        {
+        }
+    </select>
 
     <br />
     <br />
@@ -78,7 +102,6 @@
             
         }
     </select>
-    <button type="submit" class="btn btn-primary">Add Feedback</button>
 
 
     <br />

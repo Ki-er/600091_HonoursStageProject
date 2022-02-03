@@ -18,27 +18,93 @@ namespace FeedbackToolDissertation.Data.FeedbackToolDissertation
         {
         }
 
+        public virtual DbSet<Acw> Acw { get; set; }
+        public virtual DbSet<Criteria> Criteria { get; set; }
         public virtual DbSet<Feedback> Feedback { get; set; }
         public virtual DbSet<Modules> Modules { get; set; }
+        public virtual DbSet<Sections> Sections { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Acw>(entity =>
+            {
+                entity.ToTable("ACW");
+
+                entity.Property(e => e.AcwName)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsFixedLength();
+
+                entity.Property(e => e.Acwnumber).HasColumnName("ACWNumber");
+
+                entity.Property(e => e.ModuleName)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsFixedLength();
+
+                entity.Property(e => e.UserName)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsFixedLength();
+            });
+
+            modelBuilder.Entity<Criteria>(entity =>
+            {
+                entity.Property(e => e.Acwname)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnName("ACWName")
+                    .IsFixedLength();
+
+                entity.Property(e => e.Criteria1)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnName("Criteria")
+                    .IsFixedLength();
+
+                entity.Property(e => e.ModuleName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsFixedLength();
+
+                entity.Property(e => e.SectionName)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsFixedLength();
+
+                entity.Property(e => e.UserName)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsFixedLength();
+            });
+
             modelBuilder.Entity<Feedback>(entity =>
             {
+                entity.Property(e => e.Acwname)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnName("ACWName")
+                    .IsFixedLength();
+
+                entity.Property(e => e.Criteria)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsFixedLength();
+
                 entity.Property(e => e.Feedback1)
                     .IsRequired()
                     .HasMaxLength(250)
                     .HasColumnName("Feedback")
                     .IsFixedLength();
 
-                entity.Property(e => e.Module)
+                entity.Property(e => e.ModuleName)
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsFixedLength();
 
-                entity.Property(e => e.Section)
+                entity.Property(e => e.SectionName)
                     .IsRequired()
-                    .HasMaxLength(50)
+                    .HasMaxLength(100)
                     .IsFixedLength();
 
                 entity.Property(e => e.UserName)
@@ -49,9 +115,23 @@ namespace FeedbackToolDissertation.Data.FeedbackToolDissertation
 
             modelBuilder.Entity<Modules>(entity =>
             {
-                entity.Property(e => e.IconName)
+                entity.Property(e => e.ModuleName)
                     .IsRequired()
                     .HasMaxLength(50)
+                    .IsFixedLength();
+
+                entity.Property(e => e.UserName)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsFixedLength();
+            });
+
+            modelBuilder.Entity<Sections>(entity =>
+            {
+                entity.Property(e => e.Acwname)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnName("ACWName")
                     .IsFixedLength();
 
                 entity.Property(e => e.ModuleName)
@@ -59,7 +139,7 @@ namespace FeedbackToolDissertation.Data.FeedbackToolDissertation
                     .HasMaxLength(50)
                     .IsFixedLength();
 
-                entity.Property(e => e.PageName)
+                entity.Property(e => e.SectionName)
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsFixedLength();

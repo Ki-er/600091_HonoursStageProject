@@ -5,11 +5,9 @@ using System.Collections.Generic;
 
 namespace FeedbackToolDissertation.Data.FeedbackToolDissertation
 {
-    public partial class Feedback
+    public partial class Sections
     {
         public int Id { get; set; }
-        public string Feedback1 { get; set; }
-        public string Criteria { get; set; }
         public string SectionName { get; set; }
         public string Acwname { get; set; }
         public string ModuleName { get; set; }
