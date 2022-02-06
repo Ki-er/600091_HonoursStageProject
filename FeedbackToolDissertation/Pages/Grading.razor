@@ -30,7 +30,7 @@
         {
             @foreach (var module in moduleList)
             {
-                <option value="" disabled selected>Select your option</option>
+                <option value="" disabled selected>Select your Module</option>
                 <option value="@module.ModuleName">@module.ModuleName</option>
             }
 
@@ -39,13 +39,15 @@
 
     <br />
     <label> ACW</label>
-    <select id="ACW" name="ACW">
+    <select @onchange="@OnSelectACW">
         @if (acw == null)
         {
             <p><em>Loading....</em></p>
+             selectedACW = "zzz";
         }
         else
         {
+            <option value="" disabled selected>Select your ACW</option>
             @foreach (var acwrecord in acw)
             {
                 @if (acw.Any(o => o.ModuleName.Contains(selectedModule)))
@@ -61,9 +63,47 @@
 
     <h3> Feedback </h3>
     @*Section 1*@
-
-
     <br />
+
+    @*section*@
+    <h1>Section 1</h1>
+    <select id="section1" name="section1">
+        @if (criteria == null)
+        {
+            <p><em>Loading....</em></p>
+        }
+        else
+        {
+            <option value="" disabled selected>Select your Section</option>
+            @foreach (var sectionrecord in sections)
+            {
+                @if (sections.Any(o => o.Acwname.Contains(selectedACW)))
+                {
+                   <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
+
+                }
+            }
+        }
+    </select>
+    <br />
+    <br />
+
+    @*Criteria*@
+    <select id="criteria" name="criteria">
+        @if (criteria == null)
+        {
+            <p><em>Loading....</em></p>
+        }
+        else
+        {
+            <option value="" disabled selected>Select your Criteria</option>
+        }
+    </select>
+    <br />
+    <br />
+
+
+    @*Feedback*@
     <select id="feedback" name="feedback">
         @if (feedback == null)
         {
@@ -71,7 +111,7 @@
         }
         else
         {
-            
+            <option value="" disabled selected>Select your Feedback</option>
         }
     </select>
     <br />
@@ -98,6 +138,8 @@
     List<Acw> acw;
 
     string selectedModule;
+    string selectedACW;
+    string selectedSection1;
 
 
     protected
@@ -125,10 +167,21 @@
         selectedModule = e.Value.ToString();
     }
 
-        public void OnSelectACW(ChangeEventArgs e)
+    public void OnSelectACW(ChangeEventArgs e)
     {
         selectedACW = e.Value.ToString();
     }
+
+    public void OnSelectSection(ChangeEventArgs e)
+    {
+        if(selectedSection1 == "xxx")
+        {
+           selectedSection1 = e.Value.ToString();
+        }
+
+
+    }
+
 
 
 
