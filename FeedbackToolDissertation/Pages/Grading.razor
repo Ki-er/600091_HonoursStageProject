@@ -28,9 +28,9 @@
         }
         else
         {
+            <option value="" disabled selected>Select your Module</option>
             @foreach (var module in moduleList)
             {
-                <option value="" disabled selected>Select your Module</option>
                 <option value="@module.ModuleName">@module.ModuleName</option>
             }
 
@@ -43,20 +43,29 @@
         @if (acw == null)
         {
             <p><em>Loading....</em></p>
-             selectedACW = "zzz";
+            selectedACW = "zzz";
         }
         else
         {
             <option value="" disabled selected>Select your ACW</option>
             @foreach (var acwrecord in acw)
             {
-                @if (acw.Any(o => o.ModuleName.Contains(selectedModule)))
+                int numberoftimes = 0;
+                @if (sections.Any(o => o.ModuleName.Contains(selectedModule)))
                 {
-                   <option value="@acwrecord.AcwName">@acwrecord.AcwName</option>
+                    <option value="@acwrecord.AcwName">@acwrecord.AcwName</option>
+                }
+                else
+                {
+                    if(numberoftimes != 0)
+                    {
+                        <option value="" disabled selected>Select your ACW</option>
+                    }
 
                 }
             }
         }
+    }
     </select>
     <br />
     <br />
@@ -67,37 +76,51 @@
 
     @*section*@
     <h1>Section 1</h1>
-    <select id="section1" name="section1">
+    <select id="section1" name="section1" @onchange="@OnSelectSection">
         @if (criteria == null)
         {
             <p><em>Loading....</em></p>
+            selectedSection1 = "zzz";
+
         }
         else
         {
             <option value="" disabled selected>Select your Section</option>
             @foreach (var sectionrecord in sections)
-            {
+            {                     
+
                 @if (sections.Any(o => o.Acwname.Contains(selectedACW)))
                 {
                    <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
 
                 }
-            }
+
         }
+    }
     </select>
     <br />
     <br />
 
     @*Criteria*@
-    <select id="criteria" name="criteria">
+    <select id="criteria" name="criteria" @onchange = "@OnSelectCriteria">
         @if (criteria == null)
         {
             <p><em>Loading....</em></p>
+            selectedCriteria1 = "zzz";
         }
         else
         {
             <option value="" disabled selected>Select your Criteria</option>
+            @foreach (var criteriarecord in criteria)
+            {
+                @if (criteria.Any(o => o.SectionName.Contains(selectedSection1)))
+                {
+                   <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
+
+                }
+            }
         }
+    }
     </select>
     <br />
     <br />
@@ -112,6 +135,14 @@
         else
         {
             <option value="" disabled selected>Select your Feedback</option>
+            @foreach (var feedbackrecord in feedback)
+            {
+                @if (criteria.Any(o => o.Criteria1.Contains(selectedCriteria1)))
+                {
+                   <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1</option>
+
+                }
+            }
         }
     </select>
     <br />
@@ -140,6 +171,7 @@
     string selectedModule;
     string selectedACW;
     string selectedSection1;
+    string selectedCriteria1;
 
 
     protected
@@ -165,6 +197,7 @@
     public void OnSelectModule(ChangeEventArgs e)
     {
         selectedModule = e.Value.ToString();
+
     }
 
     public void OnSelectACW(ChangeEventArgs e)
@@ -174,12 +207,12 @@
 
     public void OnSelectSection(ChangeEventArgs e)
     {
-        if(selectedSection1 == "xxx")
-        {
-           selectedSection1 = e.Value.ToString();
-        }
+        selectedSection1 = e.Value.ToString();
+    }
 
-
+    public void OnSelectCriteria(ChangeEventArgs e)
+    {
+        selectedCriteria1 = e.Value.ToString();
     }
 
 
