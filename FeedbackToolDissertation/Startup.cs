@@ -1,4 +1,3 @@
-using Blazored.Modal;
 using FeedbackToolDissertation.Areas.Identity;
 using FeedbackToolDissertation.Data;
 using Microsoft.AspNetCore.Builder;
@@ -33,7 +32,6 @@ namespace FeedbackToolDissertation
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddBlazoredModal();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddScoped<ModuleService>();
