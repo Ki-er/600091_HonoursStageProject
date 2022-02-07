@@ -19,6 +19,7 @@
     <input type="text" id="snumber" placeholder="Student Number" name="snumber">
     <br />
     <label> Module</label>
+
     <select @onchange="@OnSelectModule">
         @if (moduleList == null)
         {
@@ -28,10 +29,10 @@
         }
         else
         {
-            <option value="" disabled selected>Select your Module</option>
+            <option value="" selected hidden>Select your Module</option>
             @foreach (var module in moduleList)
             {
-                <option value="@module.ModuleName">@module.ModuleName</option>
+                <option value = "@module.ModuleName">@module.ModuleName</option>
             }
 
         }
@@ -40,6 +41,7 @@
     <br />
     <label> ACW</label>
     <select @onchange="@OnSelectACW">
+         
         @if (acw == null)
         {
             <p><em>Loading....</em></p>
@@ -47,29 +49,19 @@
         }
         else
         {
-            <option value="" disabled selected>Select your ACW</option>
+            <option value="" selected hidden>Select your ACW</option>
             @foreach (var acwrecord in acw)
             {
-                int numberoftimes = 0;
-                @if (sections.Any(o => o.ModuleName.Contains(selectedModule)))
+                @if (acw.Any(o => o.ModuleName.Contains(selectedModule)))
                 {
                     <option value="@acwrecord.AcwName">@acwrecord.AcwName</option>
                 }
-                else
-                {
-                    if(numberoftimes != 0)
-                    {
-                        <option value="" disabled selected>Select your ACW</option>
-                    }
-
-                }
             }
-        }
     }
     </select>
     <br />
     <br />
-
+     
     <h3> Feedback </h3>
     @*Section 1*@
     <br />
@@ -77,7 +69,7 @@
     @*section*@
     <h1>Section 1</h1>
     <select id="section1" name="section1" @onchange="@OnSelectSection">
-        @if (criteria == null)
+        @if (sections == null)
         {
             <p><em>Loading....</em></p>
             selectedSection1 = "zzz";
@@ -85,16 +77,14 @@
         }
         else
         {
-            <option value="" disabled selected>Select your Section</option>
+            <option value="" selected hidden>Select your Sections</option>
             @foreach (var sectionrecord in sections)
-            {                     
-
-                @if (sections.Any(o => o.Acwname.Contains(selectedACW)))
+            {
+                @if (sections.Any(o => o.Acwname.Contains(selectedACW)) && sections.Any(o => o.ModuleName.Contains(selectedModule)))
                 {
-                   <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
-
+                    <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
                 }
-
+            }
         }
     }
     </select>
@@ -110,13 +100,12 @@
         }
         else
         {
-            <option value="" disabled selected>Select your Criteria</option>
+            <option value="" selected hidden>Select your Criteria</option>
             @foreach (var criteriarecord in criteria)
             {
-                @if (criteria.Any(o => o.SectionName.Contains(selectedSection1)))
+                @if (criteria.Any(o => o.Acwname.Contains(selectedACW)) && criteria.Any(o => o.ModuleName.Contains(selectedModule)))
                 {
                    <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
-
                 }
             }
         }
@@ -133,11 +122,11 @@
             <p><em>Loading....</em></p>
         }
         else
-        {
-            <option value="" disabled selected>Select your Feedback</option>
+        {            
+            <option value=""  selected hidden>Select your Feedback</option>
             @foreach (var feedbackrecord in feedback)
             {
-                @if (criteria.Any(o => o.Criteria1.Contains(selectedCriteria1)))
+                @if (feedback.Any(o => o.Acwname.Contains(selectedACW)) && feedback.Any(o => o.ModuleName.Contains(selectedModule)))
                 {
                    <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1</option>
 
@@ -172,7 +161,6 @@
     string selectedACW;
     string selectedSection1;
     string selectedCriteria1;
-
 
     protected
     override
@@ -219,4 +207,3 @@
 
 
 }
-
