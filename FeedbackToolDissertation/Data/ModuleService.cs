@@ -27,6 +27,20 @@ namespace FeedbackToolDissertation.Data
             .AsNoTracking().ToListAsync();
         }
 
+        public Task<Modules> CreateModulesAsync(Modules objModule)
+        {
+            _context.Modules.Add(objModule);
+            _context.SaveChanges();
+            return Task.FromResult(objModule);
+        }
+
+
+
+
+
+
+
+
 
 
 

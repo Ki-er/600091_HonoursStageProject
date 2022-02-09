@@ -1,3 +1,4 @@
+using Blazored.Modal;
 using FeedbackToolDissertation.Areas.Identity;
 using FeedbackToolDissertation.Data;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
 
 
 namespace FeedbackToolDissertation
@@ -39,6 +41,8 @@ namespace FeedbackToolDissertation
             services.AddScoped<ACWService>();
             services.AddScoped<SectionService>();
             services.AddScoped<CriteriaService>();
+            services.AddBlazoredModal();
+
 
             // Read the connection string from the appsettings.json file
             // Set the database connection for the EndtoEndContext

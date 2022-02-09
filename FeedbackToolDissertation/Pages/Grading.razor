@@ -1,5 +1,8 @@
-﻿@using FeedbackToolDissertation.Data
+﻿@using Blazored.Modal
+@using Blazored.Modal.Services
+@using FeedbackToolDissertation.Data
 @using FeedbackToolDissertation.Data.FeedbackToolDissertation
+
 @inject ModuleService ModuleService
 @inject ACWService ACWService
 @inject CriteriaService CriteriaService
@@ -10,7 +13,7 @@
 
 <h3>Grading</h3>
 
-<div> class="fileinsert"
+<div class="fileinsert"
 <InputFile OnChange="@LoadFiles" />
 </div>
 <br />
@@ -24,8 +27,7 @@
         @if (moduleList == null)
         {
             <p><em>Loading....</em></p>
-             selectedModule = "zzz";
-
+            selectedModule = "zzz";
         }
         else
         {
@@ -34,10 +36,40 @@
             {
                 <option value = "@module.ModuleName">@module.ModuleName</option>
             }
+  
 
         }
     </select>
+    <button type="button" class="btn btn-primary"@onclick="AddNewModule">+</button>
 
+     @if(ShowPopUpModule)
+    {
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Add new module</h3>
+                                <button type="button" class="close"
+                                @onclick="ClosePopup">
+                                    <span aria-hidden="true">X</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <input class="form-control" type="text"
+                                placeholder="Module Name"
+                               @bind="objModules.ModuleName" />
+                                <br />
+                                <button type="button" class="btn btn-success" @onclick="SaveModule"> Save </button>;
+                             </div>
+                        </div>
+                    </div>
+                </div> 
+}
+
+
+
+
+    @*ACW Dropdown Box*@
     <br />
     <label> ACW</label>
     <select @onchange="@OnSelectACW">
@@ -56,18 +88,22 @@
                 {
                     <option value="@acwrecord.AcwName">@acwrecord.AcwName</option>
                 }
+                else
+                {
+                    selectedModule = "zzz";
+                }
             }
     }
     </select>
+
     <br />
     <br />
      
-    <h3> Feedback </h3>
+    <h8> Feedback </h8>
     @*Section 1*@
     <br />
-
-    @*section*@
-    <h1>Section 1</h1>
+    Section 1
+    <br />
     <select id="section1" name="section1" @onchange="@OnSelectSection">
         @if (sections == null)
         {
@@ -80,9 +116,13 @@
             <option value="" selected hidden>Select your Sections</option>
             @foreach (var sectionrecord in sections)
             {
-                @if (sections.Any(o => o.Acwname.Contains(selectedACW)) && sections.Any(o => o.ModuleName.Contains(selectedModule)))
+                @if (sections.Any(o => o.Acwname.Contains(selectedACW)) && (sections.Any(o => o.ModuleName.Contains(selectedModule))))
                 {
                     <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
+                }
+                else
+                {
+                    selectedACW = "zzz";
                 }
             }
         }
@@ -103,9 +143,13 @@
             <option value="" selected hidden>Select your Criteria</option>
             @foreach (var criteriarecord in criteria)
             {
-                @if (criteria.Any(o => o.Acwname.Contains(selectedACW)) && criteria.Any(o => o.ModuleName.Contains(selectedModule)))
+                @if (criteria.Any(o => o.SectionName.Contains(selectedSection1)) && (criteria.Any(o => o.ModuleName.Contains(selectedModule))) && (criteria.Any(o => o.Acwname.Contains(selectedACW))))
                 {
                    <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
+                }
+                else
+                {
+                    selectedSection1 = "zzz";
                 }
             }
         }
@@ -113,7 +157,6 @@
     </select>
     <br />
     <br />
-
 
     @*Feedback*@
     <select id="feedback" name="feedback">
@@ -126,7 +169,84 @@
             <option value=""  selected hidden>Select your Feedback</option>
             @foreach (var feedbackrecord in feedback)
             {
-                @if (feedback.Any(o => o.Acwname.Contains(selectedACW)) && feedback.Any(o => o.ModuleName.Contains(selectedModule)))
+                @if (feedback.Any(o => o.Criteria.Contains(selectedCriteria1)) && (feedback.Any(o => o.ModuleName.Contains(selectedModule))) && (feedback.Any(o => o.Acwname.Contains(selectedACW))))
+                {
+                    <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1</option>
+
+                }
+            }
+        }
+    </select>
+
+    <br />
+    <br />
+    @*Section 1*@
+
+    @*section*@
+    Section 2
+    <br />
+    <select id="section1" name="section1" @onchange="@OnSelectSection">
+        @if (sections == null)
+        {
+            <p><em>Loading....</em></p>
+            selectedSection1 = "zzz";
+
+        }
+        else
+        {
+            <option value="" selected hidden>Select your Sections</option>
+            @foreach (var sectionrecord in sections)
+            {
+                @if (sections.Any(o => o.Acwname.Contains(selectedACW)) && sections.Any(o => o.ModuleName.Contains(selectedModule)))
+                {
+                    <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
+                }
+                else
+                {
+                    selectedCriteria1 = "zzz";
+                }
+            }
+        }
+    }
+    </select>
+    <br />
+    <br />
+
+    @*Criteria*@
+    <select id="criteria" name="criteria" @onchange = "@OnSelectCriteria">
+        @if (criteria == null)
+        {
+            <p><em>Loading....</em></p>
+            selectedCriteria1 = "zzz";
+        }
+        else
+        {
+            <option value="" selected hidden>Select your Criteria</option>
+            @foreach (var criteriarecord in criteria)
+            {
+                @if (criteria.Any(o => o.SectionName.Contains(selectedSection1)) && criteria.Any(o => o.ModuleName.Contains(selectedModule)))
+                {
+                    <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
+                }
+            }
+        }
+    }
+    </select>
+    <br />
+    <br />
+
+    @*Feedback*@
+    <select id="feedback" name="feedback">
+        @if (feedback == null)
+        {
+            <p><em>Loading....</em></p>
+        }
+        else
+        {            
+            <option value=""  selected hidden>Select your Feedback</option>
+            @foreach (var feedbackrecord in feedback)
+            {
+                @if (feedback.Any(o => o.Criteria.Contains(selectedCriteria1)) && feedback.Any(o => o.ModuleName.Contains(selectedModule)))
                 {
                    <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1</option>
 
@@ -139,7 +259,6 @@
 
 
     <button type="submit" class="btn btn-primary">Export</button>
-
 </form>
 
 
@@ -150,6 +269,7 @@
     [CascadingParameter]
 
     Task<AuthenticationState> authenticationStateTask { get; set; }
+    private string UserIdentityName = "";
 
     List<Modules> moduleList;
     List<Feedback> feedback;
@@ -162,13 +282,15 @@
     string selectedSection1;
     string selectedCriteria1;
 
-    protected
-    override
-    async Task OnInitializedAsync()
+
+    protected override async Task OnInitializedAsync()
     {
 
-        // Get the current user
         var user = (await authenticationStateTask).User;
+        if (user.Identity != null)
+        {
+            UserIdentityName = user.Identity.Name ?? "";
+        }        
         moduleList = await ModuleService.GetModulesAsync(user.Identity.Name);
         feedback = await FeedbackService.GetFeedbacksAsync(user.Identity.Name);
         criteria = await CriteriaService.GetCriteriasAsync(user.Identity.Name);
@@ -203,7 +325,39 @@
         selectedCriteria1 = e.Value.ToString();
     }
 
+    Modules objModules = new Modules();
+    bool ShowPopUpModule = false;
 
 
+    void ClosePopup()
+    {
+        // Close the Popup
+        ShowPopUpModule = false;
+    }
+
+    void AddNewModule()
+    {
+       // objModules = new Modules();
+        // Set Id to 0 so we know it is a new record
+        //objModules.Id = 0;
+        // Open the Popup
+        ShowPopUpModule = true;
+    }
+
+
+
+    async Task SaveModule()
+    {
+        // Close the Popup
+        ShowPopUpModule = false;
+        if (objModules.Id == 0)
+        {
+            Modules objNewModules = new Modules();
+            objNewModules.ModuleName = objModules.ModuleName;
+            objNewModules.UserName = UserIdentityName;
+            var result = ModuleService.CreateModulesAsync(objNewModules);
+        }
+
+    }
 
 }
