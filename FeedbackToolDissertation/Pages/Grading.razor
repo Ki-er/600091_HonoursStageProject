@@ -142,7 +142,7 @@
         @if (sections == null)
         {
             <p><em>Loading....</em></p>
-            selectedSection1 = "zzz";
+            selectedSection1 = "No Section Chosen";
 
         }
         else
@@ -158,7 +158,7 @@
                 else if(presentSection == false)
                 {
                     <option value="" selected hidden>Select your Section</option>
-                    selectedSection1 = "No ACW Chosen";
+                    selectedSection1 = "No Section Chosen";
                 }
             }
         }
@@ -172,20 +172,21 @@
         @if (criteria == null)
         {
             <p><em>Loading....</em></p>
-            selectedCriteria1 = "zzz";
+            selectedCriteria1 = "No Criteria Chosen";
         }
         else
         {
             <option value="" selected hidden>Select your Criteria</option>
             @foreach (var criteriarecord in criteria)
             {
-                @if (criteria.Any(o => o.SectionName.Contains(selectedSection1)) && (criteria.Any(o => o.ModuleName.Contains(selectedModule))) && (criteria.Any(o => o.Acwname.Contains(selectedACW))))
+                @if (criteriarecord.Acwname.Contains(selectedACW) && (criteriarecord.ModuleName.Contains(selectedModule)))
                 {
                    <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
                 }
-                else
+                else if(presentCriteria == false)
                 {
-                    selectedSection1 = "zzz";
+                    <option value="" selected hidden>Select your Section</option>
+                    selectedCriteria1 = "No Criteria Chosen";
                 }
             }
         }
@@ -279,7 +280,7 @@
     bool presentModule;
     bool presentACW;
     bool presentSection;
-
+    bool presentCriteria;
 
 
     protected override async Task OnInitializedAsync()
