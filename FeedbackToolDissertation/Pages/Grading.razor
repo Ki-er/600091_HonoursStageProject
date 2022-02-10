@@ -110,10 +110,17 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                        <label>Module:</label>
                         <label>@selectedModule </label>
+                        <br />
+                        <h8>Insert ACW</h8>
                         <input class="form-control" type="text"placeholder="ACW Name"@bind="inputACW.AcwName" />
+                        <br />
+                        <h8>Insert Section</h8>
                         <input class="form-control" type="text"placeholder="Section Name"@bind="inputSections.SectionName" />
-                        <input class="form-control" type="text"placeholder="Section Name"@bind="inputCriteria.Criteria1" />
+                        <br />
+                        <h8>Insert Criteria</h8>
+                        <input class="form-control" type="text"placeholder="Criteria Name"@bind="inputCriteria.Criteria1" />
                         <br />
                         <button type="button" class="btn btn-success" @onclick="SaveACW"> Save </button>;
                     </div>
