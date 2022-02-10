@@ -9,7 +9,6 @@ namespace FeedbackToolDissertation.Data.FeedbackToolDissertation
     {
         public int Id { get; set; }
         public string AcwName { get; set; }
-        public int Acwnumber { get; set; }
         public string ModuleName { get; set; }
         public string UserName { get; set; }
     }

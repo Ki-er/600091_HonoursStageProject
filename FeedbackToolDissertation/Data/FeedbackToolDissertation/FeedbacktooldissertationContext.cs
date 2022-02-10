@@ -35,8 +35,6 @@ namespace FeedbackToolDissertation.Data.FeedbackToolDissertation
                     .HasMaxLength(100)
                     .IsFixedLength();
 
-                entity.Property(e => e.Acwnumber).HasColumnName("ACWNumber");
-
                 entity.Property(e => e.ModuleName)
                     .IsRequired()
                     .HasMaxLength(100)

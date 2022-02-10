@@ -27,7 +27,12 @@ namespace FeedbackToolDissertation.Data
             .AsNoTracking().ToListAsync();
         }
 
-
+        public Task<Acw> CreateACWAsync(Acw objACW)
+        {
+            _context.Acw.Add(objACW);
+            _context.SaveChanges();
+            return Task.FromResult(objACW);
+        }
 
 
     }

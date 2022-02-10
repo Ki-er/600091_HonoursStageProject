@@ -27,7 +27,7 @@
         @if (moduleList == null)
         {
             <p><em>Loading....</em></p>
-            selectedModule = "zzz";
+            selectedModule = "No Module Chosen";
         }
         else
         {
@@ -67,8 +67,6 @@
 }
 
 
-
-
     @*ACW Dropdown Box*@
     <br />
     <label> ACW</label>
@@ -77,24 +75,69 @@
         @if (acw == null)
         {
             <p><em>Loading....</em></p>
-            selectedACW = "zzz";
+            selectedACW = "No Module Chosen";
         }
         else
         {
             <option value="" selected hidden>Select your ACW</option>
             @foreach (var acwrecord in acw)
             {
-                @if (acw.Any(o => o.ModuleName.Contains(selectedModule)))
+                @if (acwrecord.ModuleName.Contains(selectedModule))
                 {
                     <option value="@acwrecord.AcwName">@acwrecord.AcwName</option>
                 }
                 else
                 {
-                    selectedModule = "zzz";
+                    selectedACW = "No Module Chosen";
                 }
             }
     }
     </select>
+    <button type="button" class="btn btn-primary"@onclick="AddNewACW">+</button>
+
+
+    @if (ShowPopUpACW)
+    {
+        <div class="modal" tabindex="-1" style="display:block" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Add new ACW</h3>
+                        <button type="button" class="close"
+                                @onclick="ClosePopup">
+                            <span aria-hidden="true">X</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label>@selectedModule </label>
+                        <input class="form-control" type="text"
+                                placeholder="ACW Name"
+                               @bind="objACW.AcwName" />
+                        <br />
+
+
+
+
+                        <button type="button" class="btn btn-success" @onclick="SaveACW"> Save </button>;
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <br />
     <br />
@@ -326,25 +369,36 @@
     }
 
     Modules objModules = new Modules();
+    Acw objACW = new Acw();
+
+
+
     bool ShowPopUpModule = false;
+    bool ShowPopUpACW = false;
+
+
 
 
     void ClosePopup()
     {
         // Close the Popup
         ShowPopUpModule = false;
+        ShowPopUpACW = false;
     }
 
     void AddNewModule()
     {
-       // objModules = new Modules();
-        // Set Id to 0 so we know it is a new record
-        //objModules.Id = 0;
-        // Open the Popup
+        objModules = new Modules();
+        objModules.Id = 0;
         ShowPopUpModule = true;
     }
 
-
+    void AddNewACW()
+    {
+        objACW = new Acw();
+        objACW.Id = 0;
+        ShowPopUpACW = true;
+    }
 
     async Task SaveModule()
     {
@@ -356,8 +410,32 @@
             objNewModules.ModuleName = objModules.ModuleName;
             objNewModules.UserName = UserIdentityName;
             var result = ModuleService.CreateModulesAsync(objNewModules);
+            await InvokeAsync(StateHasChanged);
+            return;
         }
-
     }
+
+    async Task SaveACW()
+    {
+        // Close the Popup
+        ShowPopUpACW = false;
+        if (objACW.Id == 0)
+        {
+            Acw newACW = new Acw();
+            newACW.ModuleName = selectedModule;
+            newACW.AcwName = objACW.AcwName;
+            newACW.UserName = UserIdentityName;
+            var result = ACWService.CreateACWAsync(newACW);
+
+
+
+
+
+            await InvokeAsync(StateHasChanged);
+            return;
+        }
+    }
+
+
 
 }
