@@ -213,12 +213,46 @@
             }
         }
     </select>
+    <button type="button" class="btn btn-primary"@onclick="AddNewFeedback">+</button>
+
+
+    @if (showPopUpFeedback)
+    {
+        <div class="modal" tabindex="-1" style="display:block" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Add new Feedback</h3>
+                        <button type="button" class="close"
+                                @onclick="ClosePopup">
+                            <span aria-hidden="true">X</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label>Module:</label>
+                        <label>@selectedModule </label>
+                        <br />
+                        <label>ACW:</label>
+                        <label>@selectedACW </label>
+                        <br />
+                        <label>Section:</label>
+                        <label>@selectedSection1 </label>
+                        <br />
+                        <label>Criteria:</label>
+                        <label>@selectedCriteria1 </label>
+                        <br />
+                        <h8>Insert Feedback</h8>
+                        <input class="form-control" type="text"placeholder="Feedback"@bind="inputFeedback.Feedback1" />
+                        <br />
+                        <button type="button" class="btn btn-success" @onclick="SaveFeedback"> Save </button>;
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 
     <br />
     <br />
-    @*Section 1*@
-
-    
 
     <button type="submit" class="btn btn-primary">Export</button>
 </form>
@@ -295,17 +329,20 @@
 
     bool ShowPopUpModule = false;
     bool ShowPopUpACW = false;
+    bool showPopUpFeedback = false;
 
     Modules inputModules = new Modules();
     Acw inputACW = new Acw();
     Sections inputSections = new Sections();
     Criteria inputCriteria = new Criteria();
+    Feedback inputFeedback = new Feedback();
 
     void ClosePopup()
     {
         // Close the Popup
         ShowPopUpModule = false;
         ShowPopUpACW = false;
+        showPopUpFeedback = false;
     }
 
     void AddNewModule()
@@ -323,6 +360,13 @@
 
         inputACW.Id = 0;
         ShowPopUpACW = true;
+    }
+
+    void AddNewFeedback()
+    {
+        inputFeedback = new Feedback();
+        inputACW.Id = 0;
+        showPopUpFeedback = true;
     }
 
     async Task SaveModule()
@@ -369,8 +413,26 @@
             newCriteria.UserName = UserIdentityName;
             var criteriaInsert = CriteriaService.CreateCriteriaAsync(newCriteria);
             return;
-
         }
     }
+
+    async Task SaveFeedback()
+    {
+        // Close the Popup
+        showPopUpFeedback = false;
+        if (inputFeedback.Id == 0)
+        {
+            Criteria newCriteria = new Criteria();
+            newCriteria.Id = 0;
+            newCriteria.Criteria1 = inputCriteria.Criteria1;
+            newCriteria.SectionName = inputSections.SectionName;
+            newCriteria.Acwname = inputACW.AcwName;
+            newCriteria.ModuleName = selectedModule;
+            newCriteria.UserName = UserIdentityName;
+            var criteriaInsert = CriteriaService.CreateCriteriaAsync(newCriteria);
+            return;
+        }
+    }
+
 
 }
