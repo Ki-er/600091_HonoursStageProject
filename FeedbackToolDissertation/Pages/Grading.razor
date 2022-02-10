@@ -70,31 +70,32 @@
     @*ACW Dropdown Box*@
     <br />
     <label> ACW</label>
-    <select @onchange="@OnSelectACW">
+    <select @onchange="@OnSelectACW" autocomplete="off">
          
         @if (acw == null)
         {
             <p><em>Loading....</em></p>
-            selectedACW = "No Module Chosen";
+            selectedACW = "zzz";
         }
         else
         {
-            <option value="" selected hidden>Select your ACW</option>
+            <option value="" selected="selected" autocomplete="off">Select your ACW</option>
             @foreach (var acwrecord in acw)
             {
                 @if (acwrecord.ModuleName.Contains(selectedModule))
                 {
                     <option value="@acwrecord.AcwName">@acwrecord.AcwName</option>
+                    presentACW = true;
                 }
-                else
+                else if(presentACW == false)
                 {
-                    selectedACW = "No Module Chosen";
+                    <option value="" selected hidden>Select your ACW</option>
+                    selectedACW = "No ACW Chosen";
                 }
             }
     }
     </select>
     <button type="button" class="btn btn-primary"@onclick="AddNewACW">+</button>
-
 
     @if (ShowPopUpACW)
     {
@@ -112,31 +113,14 @@
                         <label>@selectedModule </label>
                         <input class="form-control" type="text"placeholder="ACW Name"@bind="inputACW.AcwName" />
                         <input class="form-control" type="text"placeholder="Section Name"@bind="inputSections.SectionName" />
-
+                        <input class="form-control" type="text"placeholder="Section Name"@bind="inputCriteria.Criteria1" />
                         <br />
-
-
-
-
                         <button type="button" class="btn btn-success" @onclick="SaveACW"> Save </button>;
                     </div>
                 </div>
             </div>
         </div>
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     <br />
@@ -159,13 +143,15 @@
             <option value="" selected hidden>Select your Sections</option>
             @foreach (var sectionrecord in sections)
             {
-                @if (sections.Any(o => o.Acwname.Contains(selectedACW)) && (sections.Any(o => o.ModuleName.Contains(selectedModule))))
+                @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
                 {
                     <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
+                    presentSection = true;
                 }
-                else
+                else if(presentSection == false)
                 {
-                    selectedACW = "zzz";
+                    <option value="" selected hidden>Select your Section</option>
+                    selectedSection1 = "No ACW Chosen";
                 }
             }
         }
@@ -225,86 +211,10 @@
     <br />
     @*Section 1*@
 
-    @*section*@
-    Section 2
-    <br />
-    <select id="section1" name="section1" @onchange="@OnSelectSection">
-        @if (sections == null)
-        {
-            <p><em>Loading....</em></p>
-            selectedSection1 = "zzz";
-
-        }
-        else
-        {
-            <option value="" selected hidden>Select your Sections</option>
-            @foreach (var sectionrecord in sections)
-            {
-                @if (sections.Any(o => o.Acwname.Contains(selectedACW)) && sections.Any(o => o.ModuleName.Contains(selectedModule)))
-                {
-                    <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
-                }
-                else
-                {
-                    selectedCriteria1 = "zzz";
-                }
-            }
-        }
-    }
-    </select>
-    <br />
-    <br />
-
-    @*Criteria*@
-    <select id="criteria" name="criteria" @onchange = "@OnSelectCriteria">
-        @if (criteria == null)
-        {
-            <p><em>Loading....</em></p>
-            selectedCriteria1 = "zzz";
-        }
-        else
-        {
-            <option value="" selected hidden>Select your Criteria</option>
-            @foreach (var criteriarecord in criteria)
-            {
-                @if (criteria.Any(o => o.SectionName.Contains(selectedSection1)) && criteria.Any(o => o.ModuleName.Contains(selectedModule)))
-                {
-                    <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
-                }
-            }
-        }
-    }
-    </select>
-    <br />
-    <br />
-
-    @*Feedback*@
-    <select id="feedback" name="feedback">
-        @if (feedback == null)
-        {
-            <p><em>Loading....</em></p>
-        }
-        else
-        {            
-            <option value=""  selected hidden>Select your Feedback</option>
-            @foreach (var feedbackrecord in feedback)
-            {
-                @if (feedback.Any(o => o.Criteria.Contains(selectedCriteria1)) && feedback.Any(o => o.ModuleName.Contains(selectedModule)))
-                {
-                   <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1</option>
-
-                }
-            }
-        }
-    </select>
-    <br />
-    <br />
-
+    
 
     <button type="submit" class="btn btn-primary">Export</button>
 </form>
-
-
 
 
 @code {
@@ -324,6 +234,11 @@
     string selectedACW;
     string selectedSection1;
     string selectedCriteria1;
+
+    bool presentModule;
+    bool presentACW;
+    bool presentSection;
+
 
 
     protected override async Task OnInitializedAsync()
@@ -368,17 +283,16 @@
         selectedCriteria1 = e.Value.ToString();
     }
 
-    Modules inputModules = new Modules();
-    Acw inputACW = new Acw();
-    Sections inputSections = new Sections();
 
 
 
     bool ShowPopUpModule = false;
     bool ShowPopUpACW = false;
 
-
-
+    Modules inputModules = new Modules();
+    Acw inputACW = new Acw();
+    Sections inputSections = new Sections();
+    Criteria inputCriteria = new Criteria();
 
     void ClosePopup()
     {
@@ -398,6 +312,7 @@
     {
         inputACW = new Acw();
         inputSections = new Sections();
+        inputCriteria = new Criteria();
 
         inputACW.Id = 0;
         ShowPopUpACW = true;
@@ -428,7 +343,7 @@
             newACW.ModuleName = selectedModule;
             newACW.AcwName = inputACW.AcwName;
             newACW.UserName = UserIdentityName;
-            var Acwresult = ACWService.CreateACWAsync(newACW);
+            var acwInsert = ACWService.CreateACWAsync(newACW);
 
             Sections newSection = new Sections();
             newSection.Id = 0;
@@ -436,7 +351,16 @@
             newSection.ModuleName = selectedModule;
             newSection.Acwname = inputACW.AcwName;
             newSection.UserName = UserIdentityName;
-            var result = SectionService.CreateSectionsAsync(newSection);
+            var sectionInsert = SectionService.CreateSectionsAsync(newSection);
+
+            Criteria newCriteria = new Criteria();
+            newCriteria.Id = 0;
+            newCriteria.Criteria1 = inputCriteria.Criteria1;
+            newCriteria.SectionName = inputSections.SectionName;
+            newCriteria.Acwname = inputACW.AcwName;
+            newCriteria.ModuleName = selectedModule;
+            newCriteria.UserName = UserIdentityName;
+            var criteriaInsert = CriteriaService.CreateCriteriaAsync(newCriteria);
             return;
 
         }

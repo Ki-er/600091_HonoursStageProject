@@ -27,7 +27,12 @@ namespace FeedbackToolDissertation.Data
             .AsNoTracking().ToListAsync();
         }
 
-
+        public Task<Criteria> CreateCriteriaAsync(Criteria criteria)
+        {
+            _context.Criteria.Add(criteria);
+            _context.SaveChanges();
+            return Task.FromResult(criteria);
+        }
 
 
     }
