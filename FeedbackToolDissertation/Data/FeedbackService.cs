@@ -28,6 +28,13 @@ namespace FeedbackToolDissertation.Data
         }
 
 
+        public Task<Feedback> CreateFeedbackAsync(Feedback feedback)
+        {
+            _context.Feedback.Add(feedback);
+            _context.SaveChanges();
+            return Task.FromResult(feedback);
+        }
+
 
 
     }

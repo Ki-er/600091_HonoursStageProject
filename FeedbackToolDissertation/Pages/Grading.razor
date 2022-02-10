@@ -179,13 +179,13 @@
             <option value="" selected hidden>Select your Criteria</option>
             @foreach (var criteriarecord in criteria)
             {
-                @if (criteriarecord.Acwname.Contains(selectedACW) && (criteriarecord.ModuleName.Contains(selectedModule)))
+                @if (criteriarecord.SectionName.Contains(selectedSection1) && (criteriarecord.ModuleName.Contains(selectedModule)))
                 {
                    <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
                 }
                 else if(presentCriteria == false)
                 {
-                    <option value="" selected hidden>Select your Section</option>
+                    <option value="" selected hidden>Select your Criteria</option>
                     selectedCriteria1 = "No Criteria Chosen";
                 }
             }
@@ -206,10 +206,13 @@
             <option value=""  selected hidden>Select your Feedback</option>
             @foreach (var feedbackrecord in feedback)
             {
-                @if (feedback.Any(o => o.Criteria.Contains(selectedCriteria1)) && (feedback.Any(o => o.ModuleName.Contains(selectedModule))) && (feedback.Any(o => o.Acwname.Contains(selectedACW))))
+                @if (feedbackrecord.Criteria.Contains(selectedCriteria1) && (feedbackrecord.ModuleName.Contains(selectedModule)))
                 {
-                    <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1</option>
-
+                   <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1</option>
+                }
+                else if(presentFeedback == false)
+                {
+                    <option value="" selected hidden>Select your Feedback</option>
                 }
             }
         }
@@ -281,6 +284,7 @@
     bool presentACW;
     bool presentSection;
     bool presentCriteria;
+    bool presentFeedback;
 
 
     protected override async Task OnInitializedAsync()
@@ -380,7 +384,6 @@
             NewModule.ModuleName = inputModules.ModuleName;
             NewModule.UserName = UserIdentityName;
             var result = ModuleService.CreateModulesAsync(NewModule);
-            await InvokeAsync(StateHasChanged);
             return;
         }
     }
@@ -423,15 +426,16 @@
         showPopUpFeedback = false;
         if (inputFeedback.Id == 0)
         {
-            Criteria newCriteria = new Criteria();
-            newCriteria.Id = 0;
-            newCriteria.Criteria1 = inputCriteria.Criteria1;
-            newCriteria.SectionName = inputSections.SectionName;
-            newCriteria.Acwname = inputACW.AcwName;
-            newCriteria.ModuleName = selectedModule;
-            newCriteria.UserName = UserIdentityName;
-            var criteriaInsert = CriteriaService.CreateCriteriaAsync(newCriteria);
+            Feedback newFeedback = new Feedback();
+            newFeedback.Feedback1 = inputFeedback.Feedback1;
+            newFeedback.ModuleName = selectedModule;
+            newFeedback.Acwname = selectedACW;
+            newFeedback.SectionName = selectedSection1;
+            newFeedback.Criteria = selectedCriteria1;
+            newFeedback.UserName = UserIdentityName;
+            var feedbackInsert = FeedbackService.CreateFeedbackAsync(newFeedback);
             return;
+
         }
     }
 
