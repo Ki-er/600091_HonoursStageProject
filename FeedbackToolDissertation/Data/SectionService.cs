@@ -27,7 +27,12 @@ namespace FeedbackToolDissertation.Data
             .AsNoTracking().ToListAsync();
         }
 
-
+        public Task<Sections> CreateSectionsAsync(Sections sections)
+        {
+            _context.Sections.Add(sections);
+            _context.SaveChanges();
+            return Task.FromResult(sections);
+        }
 
 
     }

@@ -57,7 +57,7 @@
                             <div class="modal-body">
                                 <input class="form-control" type="text"
                                 placeholder="Module Name"
-                               @bind="objModules.ModuleName" />
+                               @bind="inputModules.ModuleName" />
                                 <br />
                                 <button type="button" class="btn btn-success" @onclick="SaveModule"> Save </button>;
                              </div>
@@ -110,9 +110,9 @@
                     </div>
                     <div class="modal-body">
                         <label>@selectedModule </label>
-                        <input class="form-control" type="text"
-                                placeholder="ACW Name"
-                               @bind="objACW.AcwName" />
+                        <input class="form-control" type="text"placeholder="ACW Name"@bind="inputACW.AcwName" />
+                        <input class="form-control" type="text"placeholder="Section Name"@bind="inputSections.SectionName" />
+
                         <br />
 
 
@@ -368,8 +368,9 @@
         selectedCriteria1 = e.Value.ToString();
     }
 
-    Modules objModules = new Modules();
-    Acw objACW = new Acw();
+    Modules inputModules = new Modules();
+    Acw inputACW = new Acw();
+    Sections inputSections = new Sections();
 
 
 
@@ -388,15 +389,17 @@
 
     void AddNewModule()
     {
-        objModules = new Modules();
-        objModules.Id = 0;
+        inputModules = new Modules();
+        inputModules.Id = 0;
         ShowPopUpModule = true;
     }
 
     void AddNewACW()
     {
-        objACW = new Acw();
-        objACW.Id = 0;
+        inputACW = new Acw();
+        inputSections = new Sections();
+
+        inputACW.Id = 0;
         ShowPopUpACW = true;
     }
 
@@ -404,12 +407,12 @@
     {
         // Close the Popup
         ShowPopUpModule = false;
-        if (objModules.Id == 0)
+        if (inputModules.Id == 0)
         {
-            Modules objNewModules = new Modules();
-            objNewModules.ModuleName = objModules.ModuleName;
-            objNewModules.UserName = UserIdentityName;
-            var result = ModuleService.CreateModulesAsync(objNewModules);
+            Modules NewModule = new Modules();
+            NewModule.ModuleName = inputModules.ModuleName;
+            NewModule.UserName = UserIdentityName;
+            var result = ModuleService.CreateModulesAsync(NewModule);
             await InvokeAsync(StateHasChanged);
             return;
         }
@@ -419,23 +422,24 @@
     {
         // Close the Popup
         ShowPopUpACW = false;
-        if (objACW.Id == 0)
+        if (inputACW.Id == 0)
         {
             Acw newACW = new Acw();
             newACW.ModuleName = selectedModule;
-            newACW.AcwName = objACW.AcwName;
+            newACW.AcwName = inputACW.AcwName;
             newACW.UserName = UserIdentityName;
-            var result = ACWService.CreateACWAsync(newACW);
+            var Acwresult = ACWService.CreateACWAsync(newACW);
 
-
-
-
-
-            await InvokeAsync(StateHasChanged);
+            Sections newSection = new Sections();
+            newSection.Id = 0;
+            newSection.SectionName = inputSections.SectionName;
+            newSection.ModuleName = selectedModule;
+            newSection.Acwname = inputACW.AcwName;
+            newSection.UserName = UserIdentityName;
+            var result = SectionService.CreateSectionsAsync(newSection);
             return;
+
         }
     }
-
-
 
 }
