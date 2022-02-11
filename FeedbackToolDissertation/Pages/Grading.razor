@@ -258,6 +258,255 @@
     <br />
     <br />
 
+    @*Section 1*@
+    <br />
+    Section 1
+    <br />
+    <select id="section1" name="section1" @onchange="@OnSelectSection">
+        @if (sections == null)
+        {
+            <p><em>Loading....</em></p>
+            selectedSection1 = "No Section Chosen";
+
+        }
+        else
+        {
+            <option value="" selected hidden>Select your Sections</option>
+            @foreach (var sectionrecord in sections)
+            {
+                @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
+                {
+                    <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
+                    presentSection = true;
+                }
+                else if(presentSection == false)
+                {
+                    <option value="" selected hidden>Select your Section</option>
+                    selectedSection1 = "No Section Chosen";
+                }
+            }
+        }
+    }
+    </select>
+    <br />
+    <br />
+
+    @*Criteria*@
+    <select id="criteria" name="criteria" @onchange = "@OnSelectCriteria">
+        @if (criteria == null)
+        {
+            <p><em>Loading....</em></p>
+            selectedCriteria1 = "No Criteria Chosen";
+        }
+        else
+        {
+            <option value="" selected hidden>Select your Criteria</option>
+            @foreach (var criteriarecord in criteria)
+            {
+                @if (criteriarecord.SectionName.Contains(selectedSection1) && (criteriarecord.ModuleName.Contains(selectedModule)))
+                {
+                   <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
+                }
+                else if(presentCriteria == false)
+                {
+                    <option value="" selected hidden>Select your Criteria</option>
+                    selectedCriteria1 = "No Criteria Chosen";
+                }
+            }
+        }
+    }
+    </select>
+    <br />
+    <br />
+
+    @*Feedback*@
+    <select id="feedback" name="feedback">
+        @if (feedback == null)
+        {
+            <p><em>Loading....</em></p>
+        }
+        else
+        {            
+            <option value=""  selected hidden>Select your Feedback</option>
+            @foreach (var feedbackrecord in feedback)
+            {
+                @if (feedbackrecord.Criteria.Contains(selectedCriteria1) && (feedbackrecord.ModuleName.Contains(selectedModule)))
+                {
+                   <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1</option>
+                }
+                else if(presentFeedback == false)
+                {
+                    <option value="" selected hidden>Select your Feedback</option>
+                }
+            }
+        }
+    </select>
+    <button type="button" class="btn btn-primary"@onclick="AddNewFeedback">+</button>
+
+
+    @if (showPopUpFeedback)
+    {
+        <div class="modal" tabindex="-1" style="display:block" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Add new Feedback</h3>
+                        <button type="button" class="close"
+                                @onclick="ClosePopup">
+                            <span aria-hidden="true">X</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label>Module:</label>
+                        <label>@selectedModule </label>
+                        <br />
+                        <label>ACW:</label>
+                        <label>@selectedACW </label>
+                        <br />
+                        <label>Section:</label>
+                        <label>@selectedSection1 </label>
+                        <br />
+                        <label>Criteria:</label>
+                        <label>@selectedCriteria1 </label>
+                        <br />
+                        <h8>Insert Feedback</h8>
+                        <input class="form-control" type="text"placeholder="Feedback"@bind="inputFeedback.Feedback1" />
+                        <br />
+                        <button type="button" class="btn btn-success" @onclick="SaveFeedback"> Save </button>;
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <br />
+    <br />
+
+    @*Section 1*@
+    <br />
+    Section 1
+    <br />
+    <select id="section1" name="section1" @onchange="@OnSelectSection">
+        @if (sections == null)
+        {
+            <p><em>Loading....</em></p>
+            selectedSection1 = "No Section Chosen";
+
+        }
+        else
+        {
+            <option value="" selected hidden>Select your Sections</option>
+            @foreach (var sectionrecord in sections)
+            {
+                @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
+                {
+                    <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
+                    presentSection = true;
+                }
+                else if(presentSection == false)
+                {
+                    <option value="" selected hidden>Select your Section</option>
+                    selectedSection1 = "No Section Chosen";
+                }
+            }
+        }
+    }
+    </select>
+    <br />
+    <br />
+
+    @*Criteria*@
+    <select id="criteria" name="criteria" @onchange = "@OnSelectCriteria">
+        @if (criteria == null)
+        {
+            <p><em>Loading....</em></p>
+            selectedCriteria1 = "No Criteria Chosen";
+        }
+        else
+        {
+            <option value="" selected hidden>Select your Criteria</option>
+            @foreach (var criteriarecord in criteria)
+            {
+                @if (criteriarecord.SectionName.Contains(selectedSection1) && (criteriarecord.ModuleName.Contains(selectedModule)))
+                {
+                   <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
+                   presentCriteria = true;
+                }
+                else if(presentCriteria == false)
+                {
+                    <option value="" selected hidden>Select your Criteria</option>
+                    selectedCriteria1 = "No Criteria Chosen";
+                }
+            }
+        }
+    }
+    </select>
+    <br />
+    <br />
+
+    @*Feedback*@
+    <select id="feedback" name="feedback">
+        @if (feedback == null)
+        {
+            <p><em>Loading....</em></p>
+        }
+        else
+        {            
+            <option value=""  selected hidden>Select your Feedback</option>
+            @foreach (var feedbackrecord in feedback)
+            {
+                @if (feedbackrecord.Criteria.Contains(selectedCriteria1) && (feedbackrecord.ModuleName.Contains(selectedModule)))
+                {
+                   <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1</option>
+                }
+                else if(presentFeedback == false)
+                {
+                    <option value="" selected hidden>Select your Feedback</option>
+                }
+            }
+        }
+    </select>
+    <button type="button" class="btn btn-primary"@onclick="AddNewFeedback">+</button>
+
+
+    @if (showPopUpFeedback)
+    {
+        <div class="modal" tabindex="-1" style="display:block" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Add new Feedback</h3>
+                        <button type="button" class="close"
+                                @onclick="ClosePopup">
+                            <span aria-hidden="true">X</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label>Module:</label>
+                        <label>@selectedModule </label>
+                        <br />
+                        <label>ACW:</label>
+                        <label>@selectedACW </label>
+                        <br />
+                        <label>Section:</label>
+                        <label>@selectedSection1 </label>
+                        <br />
+                        <label>Criteria:</label>
+                        <label>@selectedCriteria1 </label>
+                        <br />
+                        <h8>Insert Feedback</h8>
+                        <input class="form-control" type="text"placeholder="Feedback"@bind="inputFeedback.Feedback1" />
+                        <br />
+                        <button type="button" class="btn btn-success" @onclick="SaveFeedback"> Save </button>;
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <br />
+    <br />
+
     <button type="submit" class="btn btn-primary">Export</button>
 </form>
 
@@ -326,6 +575,7 @@
 
     public void OnSelectCriteria(ChangeEventArgs e)
     {
+
         selectedCriteria1 = e.Value.ToString();
     }
 
@@ -388,35 +638,40 @@
         }
     }
 
+
+
     async Task SaveACW()
     {
-        // Close the Popup
-        ShowPopUpACW = false;
-        if (inputACW.Id == 0)
-        {
-            Acw newACW = new Acw();
-            newACW.ModuleName = selectedModule;
-            newACW.AcwName = inputACW.AcwName;
-            newACW.UserName = UserIdentityName;
-            var acwInsert = ACWService.CreateACWAsync(newACW);
 
-            Sections newSection = new Sections();
-            newSection.Id = 0;
-            newSection.SectionName = inputSections.SectionName;
-            newSection.ModuleName = selectedModule;
-            newSection.Acwname = inputACW.AcwName;
-            newSection.UserName = UserIdentityName;
-            var sectionInsert = SectionService.CreateSectionsAsync(newSection);
+             // Close the Popup
+            ShowPopUpACW = false;
+            if (inputACW.Id == 0)
+            {
+                Acw newACW = new Acw();
+                newACW.ModuleName = selectedModule;
+                newACW.AcwName = inputACW.AcwName;
+                newACW.UserName = UserIdentityName;
+                var acwInsert = ACWService.CreateACWAsync(newACW);
 
-            Criteria newCriteria = new Criteria();
-            newCriteria.Id = 0;
-            newCriteria.Criteria1 = inputCriteria.Criteria1;
-            newCriteria.SectionName = inputSections.SectionName;
-            newCriteria.Acwname = inputACW.AcwName;
-            newCriteria.ModuleName = selectedModule;
-            newCriteria.UserName = UserIdentityName;
-            var criteriaInsert = CriteriaService.CreateCriteriaAsync(newCriteria);
-            return;
+                Sections newSection = new Sections();
+                newSection.Id = 0;
+                newSection.SectionName = inputSections.SectionName;
+                newSection.ModuleName = selectedModule;
+                newSection.Acwname = inputACW.AcwName;
+                newSection.UserName = UserIdentityName;
+                var sectionInsert = SectionService.CreateSectionsAsync(newSection);
+
+                Criteria newCriteria = new Criteria();
+                newCriteria.Id = 0;
+                newCriteria.Criteria1 = inputCriteria.Criteria1;
+                newCriteria.SectionName = inputSections.SectionName;
+                newCriteria.Acwname = inputACW.AcwName;
+                newCriteria.ModuleName = selectedModule;
+                newCriteria.UserName = UserIdentityName;
+                var criteriaInsert = CriteriaService.CreateCriteriaAsync(newCriteria);
+                return;
+      
+       
         }
     }
 
