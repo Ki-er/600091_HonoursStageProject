@@ -64,7 +64,14 @@
                                 <br />
                                 @if(errorModule == true)
                                 {
-                                    <label class="alert-danger">No Module Entered</label>
+                                    if(inputModules.ModuleName == null || inputModules.ModuleName == "")
+                                    {
+                                        <label class="alert-danger">No Module Entered</label>
+                                    }
+                                    else if(moduleList.Any(o => o.ModuleName.Contains(inputModules.ModuleName)))
+                                    {
+                                        <label class="alert-danger">Already within Database</label>
+                                    }
                                 }
 
 
@@ -453,10 +460,12 @@
         {
             errorModule = true;
         }
-        else
+
+        if(moduleList.Any(o => o.ModuleName.Contains(inputModules.ModuleName)))
         {
-            errorModule = false;
+            errorModule = true;
         }
+
 
         if(errorModule == false)
         {
