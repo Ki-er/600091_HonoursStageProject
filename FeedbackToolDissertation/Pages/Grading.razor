@@ -125,9 +125,16 @@
                         <br />
                         <button type="button" class="btn btn-success" @onclick="SaveACW"> Save </button>;
                         <br />
-                        @if(noModule)
+                        <br />
+                        @if(errorModule)
                         {
-                        <label>No Module Chosen</label>
+                        <label class="alert-warning">No Module Chosen</label>
+                        <br />
+                        <br />
+                        }
+                        @if(errorAcw)
+                        {
+                        <label class="alert-warning">No Acw Entered</label>
                         }
                     </div>
                 </div>
@@ -401,6 +408,9 @@
         ShowPopUpModule = false;
         ShowPopUpACW = false;
         showPopUpFeedback = false;
+
+        errorModule = false;
+        errorAcw = false;
     }
 
     void AddNewModule()
@@ -441,18 +451,33 @@
         }
     }
 
-    bool noModule = false;
+    bool errorModule = false;
+    bool errorAcw = false;
 
     async Task SaveACW()
     {
         @if(selectedModule == "No Module Chosen")
         {
-            noModule = true;
-            return;
+            errorModule = true;
         }
         else
         {
-            noModule = false;
+            errorModule = false;
+
+        }
+
+        if(inputACW.AcwName == null || inputACW.AcwName == "")
+        {
+            errorAcw = true;
+        }
+        else
+        {
+            errorAcw = false;
+        }
+
+        if(errorAcw == false && errorModule == false)
+        {
+
             // Close the Popup
             ShowPopUpACW = false;
             if (inputACW.Id == 0)
@@ -480,6 +505,10 @@
                 newCriteria.UserName = UserIdentityName;
                 var criteriaInsert = CriteriaService.CreateCriteriaAsync(newCriteria);
                 return; 
+            }
+            else
+            {
+                return;
             }
 
         }
