@@ -60,8 +60,15 @@
                                @bind="inputModules.ModuleName" />
                                 <br />
                                 <button type="button" class="btn btn-success" @onclick="SaveModule"> Save </button>;
+                                <br />
+                                <br />
+                                @if(errorModule == true)
+                                {
+                                    <label class="alert-danger">No Module Entered</label>
+                                }
 
-                    </div>
+
+                             </div>
                         </div>
                     </div>
                 </div> 
@@ -437,22 +444,45 @@
         showPopUpFeedback = true;
     }
 
-    async Task SaveModule()
-    {
-        // Close the Popup
-        ShowPopUpModule = false;
-        if (inputModules.Id == 0)
-        {
-            Modules NewModule = new Modules();
-            NewModule.ModuleName = inputModules.ModuleName;
-            NewModule.UserName = UserIdentityName;
-            var result = ModuleService.CreateModulesAsync(NewModule);
-            return;
-        }
-    }
-
     bool errorModule = false;
     bool errorAcw = false;
+
+    async Task SaveModule()
+    {
+        if(inputModules.ModuleName == null || inputModules.ModuleName == "")
+        {
+            errorModule = true;
+        }
+        else
+        {
+            errorModule = false;
+        }
+
+        if(errorModule == false)
+        {
+            // Close the Popup
+            ShowPopUpModule = false;
+            if (inputModules.Id == 0)
+            {
+                Modules NewModule = new Modules();
+                NewModule.ModuleName = inputModules.ModuleName;
+                NewModule.UserName = UserIdentityName;
+                var result = ModuleService.CreateModulesAsync(NewModule);
+                return;
+            }
+        }
+        else
+        {
+            return;
+        }
+
+
+
+
+
+    }
+
+
 
     async Task SaveACW()
     {
