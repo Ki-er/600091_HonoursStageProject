@@ -2,12 +2,16 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace FeedbackToolDissertation.Data.FeedbackToolDissertation
 {
     public partial class Modules
     {
         public int Id { get; set; }
+
+        [Required]
         public string ModuleName { get; set; }
         public string UserName { get; set; }
     }

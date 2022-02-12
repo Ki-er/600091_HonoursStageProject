@@ -60,7 +60,8 @@
                                @bind="inputModules.ModuleName" />
                                 <br />
                                 <button type="button" class="btn btn-success" @onclick="SaveModule"> Save </button>;
-                             </div>
+
+                    </div>
                         </div>
                     </div>
                 </div> 
@@ -123,6 +124,11 @@
                         <input class="form-control" type="text"placeholder="Criteria Name"@bind="inputCriteria.Criteria1" />
                         <br />
                         <button type="button" class="btn btn-success" @onclick="SaveACW"> Save </button>;
+                        <br />
+                        @if(noModule)
+                        {
+                        <label>No Module Chosen</label>
+                        }
                     </div>
                 </div>
             </div>
@@ -435,12 +441,19 @@
         }
     }
 
-
+    bool noModule = false;
 
     async Task SaveACW()
     {
-
-             // Close the Popup
+        @if(selectedModule == "No Module Chosen")
+        {
+            noModule = true;
+            return;
+        }
+        else
+        {
+            noModule = false;
+            // Close the Popup
             ShowPopUpACW = false;
             if (inputACW.Id == 0)
             {
@@ -466,9 +479,9 @@
                 newCriteria.ModuleName = selectedModule;
                 newCriteria.UserName = UserIdentityName;
                 var criteriaInsert = CriteriaService.CreateCriteriaAsync(newCriteria);
-                return;
-      
-       
+                return; 
+            }
+
         }
     }
 
