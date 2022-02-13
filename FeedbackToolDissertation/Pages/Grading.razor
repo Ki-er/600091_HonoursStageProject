@@ -478,8 +478,7 @@
         {
             errorModule = true;
         }
-
-        if(moduleList.Any(o => o.ModuleName.Contains(inputModules.ModuleName)))
+        else if(moduleList.Any(o => o.ModuleName.Contains(inputModules.ModuleName)))
         {
             errorModule = true;
         }
