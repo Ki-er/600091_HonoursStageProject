@@ -17,57 +17,68 @@
 <InputFile OnChange="@LoadFiles" />
 </div>
 <br />
+
+@*Post Form*@
 <form method="post">
+   @*Student input section*@
     <label> Student </label>
     <input type="text" id="snumber" placeholder="Student Number" name="snumber">
     <br />
-    <label> Module</label>
 
+
+    @*Module selection part*@
+    <label> Module</label>
+    @*When a module is chosen, will run selectmodule method*@
     <select @onchange="@OnSelectModule">
+        @*Used for when loading page so page does not crash from modulelist being null on*@
         @if (moduleList == null)
         {
             <p><em>Loading....</em></p>
             selectedModule = "No Module Chosen";
         }
+        @*Once the page has loaded, modulelist will not be null so this will be run everytime*@
         else
         {
+            @*Select your module will always be at the top. Has been hidden so the user cannot select it*@
             <option value="" selected hidden>Select your Module</option>
+            @*For every module in the database, it will be loaded into the selection box and will be displayed to the user*@
             @foreach (var module in moduleList)
             {
+                @*Displayed the module name to the user*@
                 <option value = "@module.ModuleName">@module.ModuleName</option>
             }
-  
-
         }
+    @*End Module Select*@
     </select>
+    @*Added module button next to the selection box. When this is clicked, the add module button will be run and ShowPopUpModule will be set as true*@
     <button type="button" class="btn btn-primary"@onclick="AddNewModule">+</button>
 
-     @if(ShowPopUpModule)
-    {
-    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+        @*When the button above is clicked, this modal (pop up) box will appear, allowing the user to input a new module*@
+        @if(ShowPopUpModule)
+        {
+        <div class="modal" tabindex="-1" style="display:block" role="dialog">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h3 class="modal-title">Add new module</h3>
-                                <button type="button" class="close"
-                                @onclick="ClosePopup">
-                                    <span aria-hidden="true">X</span>
-                                </button>
+                                @*Close button on top right of modal*@
+                                <button type="button" class="close"@onclick="ClosePopup"><span aria-hidden="true">X</span></button>
                             </div>
                             <div class="modal-body">
-                                <input class="form-control" type="text"
-                                placeholder="Module Name"
-                               @bind="inputModules.ModuleName" />
+                                <input class="form-control" type="text" placeholder="Module Name" @bind="inputModules.ModuleName"/>
                                 <br />
                                 <button type="button" class="btn btn-success" @onclick="SaveModule"> Save </button>;
                                 <br />
-                                <br />
+                                <br />          
+                                @*If there is something wrong with the form, error module will be true and the following code will run*@
                                 @if(errorModule == true)
                                 {
+                                    @*If the user has not entered anything within the input box, then they will be reminded to enter something*@
                                     if(inputModules.ModuleName == null || inputModules.ModuleName == "")
                                     {
                                         <label class="alert-danger">No Module Entered</label>
                                     }
+                                    @*If the user has not entered anything within the input box that already exsists, then they will be reminded to enter something else *@
                                     else if(moduleList.Any(o => o.ModuleName.Contains(inputModules.ModuleName)))
                                     {
                                         <label class="alert-danger">Module is already within Database</label>
@@ -77,7 +88,7 @@
                         </div>
                     </div>
                 </div> 
-}
+    }
 
 
     @*ACW Dropdown Box*@
@@ -92,7 +103,7 @@
         }
         else
         {
-            <option value="" selected="selected" autocomplete="off">Select your ACW</option>
+            <option value="" selected="selected" hidden>Select your ACW</option>
             @foreach (var acwrecord in acw)
             {
                 @if (acwrecord.ModuleName.Contains(selectedModule))
@@ -150,14 +161,12 @@
                             <br />
                             <br />
                         }
-
                         @if(errorSections)
                         {
                             <label class="alert-warning">No Section Entered</label>
                             <br />
                             <br />
                         }
-
                         @if(errorCriteria)
                         {
                             <label class="alert-warning">No Criteria Entered</label>
@@ -370,6 +379,21 @@
     bool presentCriteria;
     bool presentFeedback;
 
+    bool ShowPopUpModule = false;
+    bool ShowPopUpACW = false;
+    bool showPopUpFeedback = false;
+
+    Modules inputModules = new Modules();
+    Acw inputACW = new Acw();
+    Sections inputSections = new Sections();
+    Criteria inputCriteria = new Criteria();
+    Feedback inputFeedback = new Feedback();
+
+    bool errorModule = false;
+    bool errorAcw = false;
+    bool errorSections = false;
+    bool errorCriteria = false;
+
     int i = 0;
 
 
@@ -420,15 +444,6 @@
 
 
 
-    bool ShowPopUpModule = false;
-    bool ShowPopUpACW = false;
-    bool showPopUpFeedback = false;
-
-    Modules inputModules = new Modules();
-    Acw inputACW = new Acw();
-    Sections inputSections = new Sections();
-    Criteria inputCriteria = new Criteria();
-    Feedback inputFeedback = new Feedback();
 
     void ClosePopup()
     {
@@ -467,10 +482,7 @@
         showPopUpFeedback = true;
     }
 
-    bool errorModule = false;
-    bool errorAcw = false;
-    bool errorSections = false;
-    bool errorCriteria = false;
+
 
     async Task SaveModule()
     {
@@ -501,11 +513,6 @@
         {
             return;
         }
-
-
-
-
-
     }
 
 
