@@ -70,11 +70,9 @@
                                     }
                                     else if(moduleList.Any(o => o.ModuleName.Contains(inputModules.ModuleName)))
                                     {
-                                        <label class="alert-danger">Already within Database</label>
+                                        <label class="alert-danger">Module is already within Database</label>
                                     }
                                 }
-
-
                              </div>
                         </div>
                     </div>
@@ -137,19 +135,29 @@
                         <h8>Insert Criteria</h8>
                         <input class="form-control" type="text"placeholder="Criteria Name"@bind="inputCriteria.Criteria1" />
                         <br />
-                        <button type="button" class="btn btn-success" @onclick="SaveACW"> Save </button>;
+                        <button type="button" class="btn btn-success" @onclick="SaveACW"> Save </button>
                         <br />
                         <br />
                         @if(errorModule)
                         {
-                        <label class="alert-warning">No Module Chosen</label>
-                        <br />
-                        <br />
+                            <label class="alert-warning">No Module Chosen</label>
+                            <br />
+                            <br />
                         }
                         @if(errorAcw)
                         {
-                        <label class="alert-warning">No Acw Entered</label>
+                            <label class="alert-warning">No Acw Entered</label>
+                            <br />
+                            <br />
                         }
+
+                        @if(errorSections)
+                        {
+                            <label class="alert-warning">No Section Entered</label>
+                            <br />
+                            <br />
+                        }
+
                     </div>
                 </div>
             </div>
@@ -453,6 +461,7 @@
 
     bool errorModule = false;
     bool errorAcw = false;
+    bool errorSections = false;
 
     async Task SaveModule()
     {
@@ -514,8 +523,17 @@
             errorAcw = false;
         }
 
-        if(errorAcw == false && errorModule == false)
+        if(inputSections.SectionName == null || inputSections.SectionName == "")
         {
+            errorSections = true;
+        }
+        else
+        {
+            errorSections = false;
+        }
+
+        if (errorAcw == false && errorModule == false && errorSections == false)
+    {
 
             // Close the Popup
             ShowPopUpACW = false;
