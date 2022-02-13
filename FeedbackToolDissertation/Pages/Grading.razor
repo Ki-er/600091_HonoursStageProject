@@ -158,6 +158,12 @@
                             <br />
                         }
 
+                        @if(errorCriteria)
+                        {
+                            <label class="alert-warning">No Criteria Entered</label>
+                        }
+
+
                     </div>
                 </div>
             </div>
@@ -433,6 +439,8 @@
 
         errorModule = false;
         errorAcw = false;
+        errorSections = false;
+        errorCriteria = false;
     }
 
     void AddNewModule()
@@ -462,6 +470,7 @@
     bool errorModule = false;
     bool errorAcw = false;
     bool errorSections = false;
+    bool errorCriteria = false;
 
     async Task SaveModule()
     {
@@ -532,7 +541,16 @@
             errorSections = false;
         }
 
-        if (errorAcw == false && errorModule == false && errorSections == false)
+        if(inputCriteria.Criteria1 == null || inputCriteria.Criteria1 == "")
+        {
+            errorCriteria = true;
+        }
+        else
+        {
+            errorCriteria = false;
+        }
+
+        if (errorAcw == false && errorModule == false && errorSections == false && errorCriteria == false)
     {
 
             // Close the Popup
