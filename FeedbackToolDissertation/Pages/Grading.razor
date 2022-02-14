@@ -26,7 +26,7 @@
     <br />
     @*Select Module Section*@
     <select @onchange="@OnSelectModule">
-        @*Used for when loading page so page does not crash from modulelist being null on*@
+        @*Used for when loading page so page does not crash from modulelist being null when the page first loads*@
         @if (moduleList == null)
         {
             <p><em>Loading....</em></p>
@@ -63,6 +63,7 @@
                     <div class="modal-body">
                         <input class="form-control" type="text" placeholder="Module Name" @bind="inputModules.ModuleName" />
                         <br />
+                        @*When the user has entered a module, and presses save, the saveModule method will run*@
                         <button type="button" class="btn btn-success" @onclick="SaveModule"> Save </button>;
                         <br />
                         <br />
@@ -91,78 +92,98 @@
     @*ACW Dropdown Box*@
     <label> ACW </label>
     <select @onchange="@OnSelectACW" autocomplete="off">
-
+        @*Used for when loading page so page does not crash from acw being null when the page first loads*@
         @if (acw == null)
         {
             <p><em>Loading....</em></p>
-            selectedACW = "zzz";
+            selectedACW = "No ACW Chosen";
         }
+        @*Once the page has loaded, acw will not be null so this will be run everytime*@
         else
         {
+            @*Select your acw will always be at the top. Has been hidden so the user cannot select it*@
             <option value="" selected="selected" hidden>Select your ACW</option>
+            @*For each acw within the acw table, the following codw will run*@
             @foreach (var acwrecord in acw)
             {
+                @*If the records module name element has the selected module by the user, the  correct acws will load within the select*@
                 @if (acwrecord.ModuleName.Contains(selectedModule))
                 {
+                    @*The acws that match the selectedmodule will load*@
                     <option value="@acwrecord.AcwName">@acwrecord.AcwName</option>
+                    @*PresentACW will be set to true if there is an acw that matches the module selected by the user*@
                     presentACW = true;
                 }
+                @*If there are no acws that match the module, then the following code will run *@
                 else if (presentACW == false)
                 {
+                    @*Select your acw will always be at the top. Has been hidden so the user cannot select it*@
                     <option value="" selected hidden>Select your ACW</option>
+                    @*SelectedACW will be set as No Acw chosen so that data validation can occur and the variable is not left as null or "" *@
                     selectedACW = "No ACW Chosen";
                 }
             }
         }
     </select>
+    @*Added acw button next to the selection box. When this is clicked, the add module button will be run and ShowPopUpACW will be set as true*@
     <button type="button" class="btn btn-primary" @onclick="AddNewACW">+</button>
 
+
+    @*When showPopUpACW is true, the following modal will display*@
     @if (ShowPopUpACW)
     {
         <div class="modal" tabindex="-1" style="display:block" role="dialog">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
+                        @*Modal title *@
                         <h3 class="modal-title">Add new ACW</h3>
-                        <button type="button" class="close"
-                            @onclick="ClosePopup">
-                            <span aria-hidden="true">X</span>
-                        </button>
+                        @*Button that closes the modal and resets any error messages displayed*@
+                        <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
                     </div>
                     <div class="modal-body">
+                        @*Displays selectedModule variable*@
                         <label>Module:</label>
                         <label>@selectedModule </label>
                         <br />
+                        @*Insert ACW for the selected module*@
                         <h8>Insert ACW</h8>
                         <input class="form-control" type="text" placeholder="ACW Name" @bind="inputACW.AcwName" />
                         <br />
+                        @*Insert section for the inputted acw*@
                         <h8>Insert Section</h8>
                         <input class="form-control" type="text" placeholder="Section Name" @bind="inputSections.SectionName" />
                         <br />
+                        @*Insert criteria for the inputted section*@
                         <h8>Insert Criteria</h8>
                         <input class="form-control" type="text" placeholder="Criteria Name" @bind="inputCriteria.Criteria1" />
                         <br />
+                        @*When the user has entered the appropiate details, and presses save, the saveACW method will run*@
                         <button type="button" class="btn btn-success" @onclick="SaveACW"> Save </button>
                         <br />
                         <br />
+                        @*If errorModule is true, they will be warned that no module has been chosen*@
                         @if (errorModule)
                         {
                             <label class="alert-warning">No Module Chosen</label>
                             <br />
                             <br />
                         }
+                        @*If erorrACW is true then the following code will run, independantly of the selection statements around it*@
                         @if (errorAcw)
                         {
                             <label class="alert-warning">No Acw Entered</label>
                             <br />
                             <br />
                         }
+                        @*If errorSections is true, then the following code will run independantly of the selection statements around it*@
                         @if (errorSections)
                         {
                             <label class="alert-warning">No Section Entered</label>
                             <br />
                             <br />
                         }
+                        @*If errorCriteria is true, then the following code will run, independantly of the selection statements around it*@
                         @if (errorCriteria)
                         {
                             <label class="alert-warning">No Criteria Entered</label>
@@ -173,33 +194,41 @@
             </div>
         </div>
     }
-
-
     <br />
     <br />
 
+
+    @*Seperates feedback section to module section*@
     <h8> Feedback </h8>
-    @*Section 1*@
     <br />
+    @*Section 1*@
     Section 1
     <br />
     <select id="section1" name="section1" @onchange="@OnSelectSection">
+        @*Used for when loading page so page does not crash from sections being null when the page first loads*@
         @if (sections == null)
         {
             <p><em>Loading....</em></p>
             selectedSection1 = "No Section Chosen";
 
         }
+         @*Once the page has loaded, sections will not be null so this will be run everytime*@
         else
         {
+            @*Select your section will always be at the top. Has been hidden so the user cannot select it*@
             <option value="" selected hidden>Select your Sections</option>
+            @*For each section within the sections table, the following codw will run*@
             @foreach (var sectionrecord in sections)
             {
+                @*If the section has a selectedACW and selectedModule then the following code will run*@ 
                 @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
                 {
+                    @*The sections that match the acw and module will be loaded within the select*@
                     <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
+                    @*If there is sections present, presentSections will be set as true*@
                     presentSection = true;
                 }
+                @*If there is no sections present, the following code will run*@
                 else if (presentSection == false)
                 {
                     <option value="" selected hidden>Select your Section</option>
