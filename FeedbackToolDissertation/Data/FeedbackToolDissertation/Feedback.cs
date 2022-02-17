@@ -10,6 +10,7 @@ namespace FeedbackToolDissertation.Data.FeedbackToolDissertation
         public int Id { get; set; }
         public string Feedback1 { get; set; }
         public string Criteria { get; set; }
+        public int Grade { get; set; }
         public string SectionName { get; set; }
         public string Acwname { get; set; }
         public string ModuleName { get; set; }

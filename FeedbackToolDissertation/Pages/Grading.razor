@@ -24,6 +24,7 @@
     <label> Student </label>
     <input type="text" id="snumber" placeholder="Student Number" name="snumber">
     <br />
+    <label> Module </label>
     @*Select Module Section*@
     <select @onchange="@OnSelectModule">
         @*Used for when loading page so page does not crash from modulelist being null when the page first loads*@
@@ -64,7 +65,7 @@
                         <input class="form-control" type="text" placeholder="Module Name" @bind="inputModules.ModuleName" />
                         <br />
                         @*When the user has entered a module, and presses save, the saveModule method will run*@
-                        <button type="button" class="btn btn-success" @onclick="SaveModule"> Save </button>;
+                        <button type="button" class="btn btn-success" @onclick="SaveModule"> Save </button>
                         <br />
                         <br />
                         @*If there is something wrong with the form, error module will be true and the following code will run*@
@@ -150,14 +151,6 @@
                         <h8>Insert ACW</h8>
                         <input class="form-control" type="text" placeholder="ACW Name" @bind="inputACW.AcwName" />
                         <br />
-                        @*Insert section for the inputted acw*@
-                        <h8>Insert Section</h8>
-                        <input class="form-control" type="text" placeholder="Section Name" @bind="inputSections.SectionName" />
-                        <br />
-                        @*Insert criteria for the inputted section*@
-                        <h8>Insert Criteria</h8>
-                        <input class="form-control" type="text" placeholder="Criteria Name" @bind="inputCriteria.Criteria1" />
-                        <br />
                         @*When the user has entered the appropiate details, and presses save, the saveACW method will run*@
                         <button type="button" class="btn btn-success" @onclick="SaveACW"> Save </button>
                         <br />
@@ -239,6 +232,7 @@
         }
         }
     </select>
+    <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
     <br />
     <br />
 
@@ -275,6 +269,7 @@
             }
         }
     </select>
+    <button type="button" class="btn btn-primary" @onclick="AddNewCriteria">+</button>
     <br />
     <br />
 
@@ -302,7 +297,7 @@
                     @*presentFeedback will be set to true if there is criteria*@
                     presentFeedback = true;
                 }
-                 @*If there is no feedback within the database matching the section and module, the following code will run*@
+                @*If there is no feedback within the database matching the section and module, the following code will run*@
                 else if (presentFeedback == false)
                 {
                     <option value="" selected hidden>Select your Feedback</option>
@@ -322,7 +317,7 @@
                     <div class="modal-header">
                         <h3 class="modal-title">Add new Feedback</h3>
                         @*Button that closes the modal and resets any error messages displayed*@
-                        <button type="button" class="close"@onclick="ClosePopup"><span aria-hidden="true">X</span></button>
+                        <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
                     </div>
                     <div class="modal-body">
                         @*Displays selected module*@
@@ -354,7 +349,7 @@
     }
     <br />
     <br />
-   
+
     <button type="submit" class="btn btn-primary">Export</button>
 </form>
 
@@ -487,6 +482,15 @@
         ShowPopUpACW = true;
     }
 
+    void AddNewSection()
+    {
+    }
+
+
+    void AddNewCriteria()
+    {
+    }
+
     // When the user presses the button to add feedback, the code below creates the variables needed for the saveModule method and then displays the modal
     void AddNewFeedback()
     {
@@ -538,25 +542,25 @@
     // When the user presses save in the acw modal, the following code will run
     async Task SaveACW()
     {
-         // if the user has not selected a module and presses save, the error will display
+        // if the user has not selected a module and presses save, the error will display
         @if (selectedModule == "No Module Chosen")
         {
             errorModule = true;
         }
 
-         // if the user has not entered anything and presses save, the error will display
+        // if the user has not entered anything and presses save, the error will display
         if (inputACW.AcwName == null || inputACW.AcwName == "")
         {
             errorAcw = true;
         }
 
-         // if the user has not entered anything and presses save, the error will display
+        // if the user has not entered anything and presses save, the error will display
         if (inputSections.SectionName == null || inputSections.SectionName == "")
         {
             errorSections = true;
         }
 
-         // if the user has not entered anything and presses save, the error will display
+        // if the user has not entered anything and presses save, the error will display
         if (inputCriteria.Criteria1 == null || inputCriteria.Criteria1 == "")
         {
             errorCriteria = true;
@@ -608,7 +612,7 @@
         }
     }
 
-     // When the user presses save in the feedback modal, the following code will run
+    // When the user presses save in the feedback modal, the following code will run
     async Task SaveFeedback()
     {
         // Close the Popup
