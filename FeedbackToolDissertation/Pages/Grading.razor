@@ -128,67 +128,10 @@
     </select>
     @*Add acw button next to the selection box. When this is clicked, the add module button will be run and ShowPopUpACW will be set as true*@
     <button type="button" class="btn btn-primary" @onclick="AddNewACW">+</button>
-
-
-    @*When showPopUpACW is true, the following modal will display*@
-    @if (ShowPopUpACW)
-    {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        @*Modal title *@
-                        <h3 class="modal-title">Add new ACW</h3>
-                        @*Button that closes the modal and resets any error messages displayed*@
-                        <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
-                    </div>
-                    <div class="modal-body">
-                        @*Displays selectedModule variable*@
-                        <label>Module:</label>
-                        <label>@selectedModule </label>
-                        <br />
-                        @*Insert ACW for the selected module*@
-                        <h8>Insert ACW</h8>
-                        <input class="form-control" type="text" placeholder="ACW Name" @bind="inputACW.AcwName" />
-                        <br />
-                        @*When the user has entered the appropiate details, and presses save, the saveACW method will run*@
-                        <button type="button" class="btn btn-success" @onclick="SaveACW"> Save </button>
-                        <br />
-                        <br />
-                        @*If errorModule is true, they will be warned that no module has been chosen*@
-                        @if (errorModule)
-                        {
-                            <label class="alert-warning">No Module Chosen</label>
-                            <br />
-                            <br />
-                        }
-                        @*If erorrACW is true then the following code will run, independantly of the selection statements around it*@
-                        @if (errorAcw)
-                        {
-                            <label class="alert-warning">No Acw Entered</label>
-                            <br />
-                            <br />
-                        }
-                        @*If errorSections is true, then the following code will run independantly of the selection statements around it*@
-                        @if (errorSections)
-                        {
-                            <label class="alert-warning">No Section Entered</label>
-                            <br />
-                            <br />
-                        }
-                        @*If errorCriteria is true, then the following code will run, independantly of the selection statements around it*@
-                        @if (errorCriteria)
-                        {
-                            <label class="alert-warning">No Criteria Entered</label>
-                        }
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
     <br />
-    <br />
+
+
+
 
 
     @*Seperates feedback section to module section*@
@@ -293,7 +236,7 @@
                 @if (feedbackrecord.Criteria.Contains(selectedCriteria1) && (feedbackrecord.ModuleName.Contains(selectedModule)))
                 {
                     @*The feedback macthing the criteria and module will be displayed to the user*@
-                    <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1</option>
+                    <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
                     @*presentFeedback will be set to true if there is criteria*@
                     presentFeedback = true;
                 }
@@ -307,6 +250,183 @@
     </select>
     @*Add feedback button next to the selection box. When this is clicked, the addNewFeedback button will be run and showPopUpFeedback will be set as true*@
     <button type="button" class="btn btn-primary" @onclick="AddNewFeedback">+</button>
+    <br />
+    <br />
+
+    @if (showNewSection)
+    {
+        @*Section 1*@
+        <h8>Section 2 </h8>
+        <br />
+        <select id="section1" name="section1" @onchange="@OnSelectSection">
+            @*Used for when loading page so page does not crash from sections being null when the page first loads*@
+            @if (sections == null)
+            {
+                <p><em>Loading....</em></p>
+                selectedSection1 = "No Section Chosen";
+
+            }
+            @*Once the page has loaded, sections will not be null so this will be run everytime*@
+            else
+            {
+                @*Select your section will always be at the top. Has been hidden so the user cannot select it*@
+                <option value="" selected hidden>Select your Sections</option>
+                @*For each section within the sections table, the following code will run*@
+                @foreach (var sectionrecord in sections)
+                {
+                    @*If the section has a selectedACW and selectedModule then the following code will run*@
+                    @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
+                    {
+                        @*The sections that match the acw and module will be loaded within the select*@
+                        <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
+                        @*If there is sections present, presentSections will be set as true*@
+                        presentSection = true;
+                    }
+                    @*If there is no sections present, the following code will run*@
+                    else if (presentSection == false)
+                    {
+                        @*If there is no sections present then select your section will be at the top. Has been hidden so the user cannot select it *@
+                        <option value="" selected hidden>Select your Section</option>
+                        selectedSection1 = "No Section Chosen";
+                    }
+                }
+            }
+        </select>
+        <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
+        <br />
+        <br />
+
+        @*Criteria dropdown box*@
+        <select id="criteria" name="criteria" @onchange="@OnSelectCriteria">
+            @*Used for when loading page so page does not crash from criteria being null when the page first loads*@
+            @if (criteria == null)
+            {
+                <p><em>Loading....</em></p>
+                selectedCriteria1 = "No Criteria Chosen";
+            }
+            @*Once the page has loaded, criteria will not be null so this will be run everytime*@
+            else
+            {
+                @*Select your criteria will always be at the top. Has been hidden so the user cannot select it*@
+                <option value="" selected hidden>Select your Criteria</option>
+                @*For each criteria within the criteria table, the following code will run*@
+                @foreach (var criteriarecord in criteria)
+                {
+                    @*If the section has a selectedSection1 and selectedModule then the following code will run*@
+                    @if (criteriarecord.SectionName.Contains(selectedSection1) && (criteriarecord.ModuleName.Contains(selectedModule)))
+                    {
+                        @*The criteria macthing the section and module will be displayed to the user*@
+                        <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
+                        @*presentCriteria will be set to true if there is criteria*@
+                        presentCriteria = true;
+                    }
+                    @*If there is no criteria within the database matching the section and module, the following code will run*@
+                    else if (presentCriteria == false)
+                    {
+                        <option value="" selected hidden>Select your Criteria</option>
+                        selectedCriteria1 = "No Criteria Chosen";
+                    }
+                }
+            }
+        </select>
+        <button type="button" class="btn btn-primary" @onclick="AddNewCriteria">+</button>
+        <br />
+        <br />
+
+        @*Feedback Dropdown Box*@
+        <select id="feedback" name="feedback">
+            @*Used for when loading page so page does not crash from criteria being null when the page first loads*@
+            @if (feedback == null)
+            {
+                <p><em>Loading....</em></p>
+                selectedFeedback1 = "No Feedback Chosen";
+            }
+            @*Once the page has loaded, criteria will not be null so this will be run everytime*@
+            else
+            {
+                @*Select your feedback will always be at the top. Has been hidden so the user cannot select it*@
+                <option value="" selected hidden>Select your Feedback</option>
+                @*For each feedback within the feedback table, the following code will run*@
+                @foreach (var feedbackrecord in feedback)
+                {
+                    @*If the section has a selectedCriteria and selectedModule then the following code will run*@
+                    @if (feedbackrecord.Criteria.Contains(selectedCriteria1) && (feedbackrecord.ModuleName.Contains(selectedModule)))
+                    {
+                        @*The feedback macthing the criteria and module will be displayed to the user*@
+                        <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
+                        @*presentFeedback will be set to true if there is criteria*@
+                        presentFeedback = true;
+                    }
+                    @*If there is no feedback within the database matching the section and module, the following code will run*@
+                    else if (presentFeedback == false)
+                    {
+                        <option value="" selected hidden>Select your Feedback</option>
+                    }
+                }
+            }
+        </select>
+        @*Add feedback button next to the selection box. When this is clicked, the addNewFeedback button will be run and showPopUpFeedback will be set as true*@
+        <button type="button" class="btn btn-primary" @onclick="AddNewFeedback">+</button>
+        <br />
+        <br />
+    }
+    <button type="button" class="btn btn-primary" @onclick="ShowNewSection">Show New Section</button>
+
+
+
+
+
+
+
+
+
+
+    @*When showPopUpACW is true, the following modal will display*@
+    @if (ShowPopUpACW)
+    {
+        <div class="modal" tabindex="-1" style="display:block" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        @*Modal title *@
+                        <h3 class="modal-title">Add new ACW</h3>
+                        @*Button that closes the modal and resets any error messages displayed*@
+                        <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
+                    </div>
+                    <div class="modal-body">
+                        @*Displays selectedModule variable*@
+                        <label>Module:</label>
+                        <label>@selectedModule </label>
+                        <br />
+                        @*Insert ACW for the selected module*@
+                        <h8>Insert ACW</h8>
+                        <input class="form-control" type="text" placeholder="ACW Name" @bind="inputACW.AcwName" />
+                        <br />
+                        @*When the user has entered the appropiate details, and presses save, the saveACW method will run*@
+                        <button type="button" class="btn btn-success" @onclick="SaveACW"> Save </button>
+                        <br />
+                        <br />
+                        @*If errorModule is true, they will be warned that no module has been chosen*@
+                        @if (errorModule)
+                        {
+                            <label class="alert-warning">No Module Chosen</label>
+                            <br />
+                            <br />
+                        }
+                        @*If erorrACW is true then the following code will run, independantly of the selection statements around it*@
+                        @if (errorAcw)
+                        {
+                            <label class="alert-warning">No Acw Entered</label>
+                            <br />
+                            <br />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <br />
+    <br />
 
 
     @if (showPopUpFeedback)
@@ -340,6 +460,9 @@
                         <h8>Insert Feedback</h8>
                         <input class="form-control" type="text" placeholder="Feedback" @bind="inputFeedback.Feedback1" />
                         <br />
+                        <h8>Insert Feedback</h8>
+                        <input class="form-control" type="number" placeholder="Grade" @bind="inputFeedback.Grade" />
+                        <br />
                         @*When the user has entered the appropiate details, and presses save, the saveFeedback method will run*@
                         <button type="button" class="btn btn-success" @onclick="SaveFeedback"> Save </button>;
                     </div>
@@ -349,6 +472,12 @@
     }
     <br />
     <br />
+
+
+
+
+
+
 
     <button type="submit" class="btn btn-primary">Export</button>
 </form>
@@ -387,6 +516,9 @@
     bool ShowPopUpModule = false;
     bool ShowPopUpACW = false;
     bool showPopUpFeedback = false;
+
+    // The variables that show new sections
+    bool showNewSection = false;
 
     // The variables that allow for new data to be added to the databases
     Modules inputModules = new Modules();
@@ -622,14 +754,21 @@
             // Creates the new feedback
             Feedback newFeedback = new Feedback();
             newFeedback.Feedback1 = inputFeedback.Feedback1;
+            newFeedback.Grade = inputFeedback.Grade;
             newFeedback.ModuleName = selectedModule;
             newFeedback.Acwname = selectedACW;
             newFeedback.SectionName = selectedSection1;
             newFeedback.Criteria = selectedCriteria1;
             newFeedback.UserName = UserIdentityName;
+
             // Passes the new feedback to be created in the criteria service
             var feedbackInsert = FeedbackService.CreateFeedbackAsync(newFeedback);
             return;
         }
+    }
+
+    void ShowNewSection()
+    {
+        showNewSection = true;
     }
 }
