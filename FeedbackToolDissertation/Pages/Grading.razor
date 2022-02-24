@@ -874,11 +874,7 @@
             errorAcw = true;
         }
 
-        // if the user has not entered anything and presses save, the error will display
-        if (inputSections.SectionName == null || inputSections.SectionName == "")
-        {
-            errorSections = true;
-        }
+
 
         // if the user has not entered anything and presses save, the error will display
         if (inputCriteria.Criteria1 == null || inputCriteria.Criteria1 == "")
@@ -902,27 +898,9 @@
                 // Passes the new acw to be created in the acw service
                 var acwInsert = ACWService.CreateACWAsync(newACW);
 
-                // Creates the new section
-                Sections newSection = new Sections();
-                newSection.Id = 0;
-                newSection.SectionName = inputSections.SectionName;
-                newSection.ModuleName = selectedModule;
-                newSection.Acwname = inputACW.AcwName;
-                newSection.UserName = UserIdentityName;
-                // Passes the new section to be created in the section service
-                var sectionInsert = SectionService.CreateSectionsAsync(newSection);
 
-                // Creates the new criteria
-                Criteria newCriteria = new Criteria();
-                newCriteria.Id = 0;
-                newCriteria.Criteria1 = inputCriteria.Criteria1;
-                newCriteria.SectionName = inputSections.SectionName;
-                newCriteria.Acwname = inputACW.AcwName;
-                newCriteria.ModuleName = selectedModule;
-                newCriteria.UserName = UserIdentityName;
-                // Passes the new criteria to be created in the criteria service
-                var criteriaInsert = CriteriaService.CreateCriteriaAsync(newCriteria);
-                return;
+
+
             }
             else
             {
@@ -934,12 +912,52 @@
 
     async Task SaveSections()
     {
+        // if the user has not entered anything and presses save, the error will display
+        if (inputSections.SectionName == null || inputSections.SectionName == "")
+        {
+            errorSections = true;
+        }
+
+        if (errorSections == false)
+        {
+            // Close the Popup
+            ShowPopUpSection = false;
+
+            // Creates the new section
+            Sections newSection = new Sections();
+            newSection.Id = 0;
+            newSection.SectionName = inputSections.SectionName;
+            newSection.ModuleName = selectedModule;
+            newSection.Acwname = inputACW.AcwName;
+            newSection.UserName = UserIdentityName;
+            // Passes the new section to be created in the section service
+            var sectionInsert = SectionService.CreateSectionsAsync(newSection);
+            return;
+        }
+
+
 
     }
 
     async Task SaveCriteria()
     {
+        if(errorCriteria == false)
+        {
+            // Close the Popup
+            ShowPopUpCriteria = false;
 
+            // Creates the new criteria
+            Criteria newCriteria = new Criteria();
+            newCriteria.Id = 0;
+            newCriteria.Criteria1 = inputCriteria.Criteria1;
+            newCriteria.SectionName = selectedSection1;
+            newCriteria.Acwname = selectedACW;
+            newCriteria.ModuleName = selectedModule;
+            newCriteria.UserName = UserIdentityName;
+            // Passes the new criteria to be created in the criteria service
+            var criteriaInsert = CriteriaService.CreateCriteriaAsync(newCriteria);
+            return;
+        }
     }
 
 
