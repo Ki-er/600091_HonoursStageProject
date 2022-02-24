@@ -550,7 +550,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="modal-title">Add new module</h3>
+                        <h3 class="modal-title">Add new section</h3>
                         @*Close button on top right of modal*@
                         <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
                     </div>
@@ -597,6 +597,12 @@
                         <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
                     </div>
                     <div class="modal-body">
+                        <label>ACW:</label>
+                        <label>@selectedACW </label>
+                        <br />
+                        <label>Section:</label>
+                        <label>@selectedSection1 </label>
+                        <br />
                         <input class="form-control" type="text" placeholder="Criteria" @bind="inputCriteria.Criteria1" />
                         <br />
                         @*When the user has entered a module, and presses save, the saveModule method will run*@
