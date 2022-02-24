@@ -876,6 +876,11 @@
 
 
 
+        // if the user has not entered anything and presses save, the error will display
+        if (inputCriteria.Criteria1 == null || inputCriteria.Criteria1 == "")
+        {
+            errorCriteria = true;
+        }
 
         // if there are no errors, the following code will run
         if (errorAcw == false && errorModule == false && errorSections == false && errorCriteria == false)
@@ -893,6 +898,9 @@
                 // Passes the new acw to be created in the acw service
                 var acwInsert = ACWService.CreateACWAsync(newACW);
                 return;
+
+
+
             }
             else
             {
@@ -927,15 +935,19 @@
             return;
         }
 
+
+
     }
 
     async Task SaveCriteria()
     {
-        // if the user has not entered anything and presses save, the error will display
-        if (inputCriteria.Criteria1 == null || inputCriteria.Criteria1 == "")
+                // if the user has not entered anything and presses save, the error will display
+        if (inputSections.SectionName == null || inputSections.SectionName == "")
         {
             errorCriteria = true;
         }
+
+
 
         if (errorCriteria == false)
         {
@@ -946,8 +958,8 @@
             Criteria newCriteria = new Criteria();
             newCriteria.Id = 0;
             newCriteria.Criteria1 = inputCriteria.Criteria1;
-            newCriteria.SectionName = selectedSection1;
-            newCriteria.Acwname = selectedACW;
+            newCriteria.SectionName = inputSections.SectionName;
+            newCriteria.Acwname = inputACW.AcwName;
             newCriteria.ModuleName = selectedModule;
             newCriteria.UserName = UserIdentityName;
             // Passes the new criteria to be created in the criteria service
