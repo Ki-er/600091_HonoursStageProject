@@ -26,7 +26,7 @@
     <br />
     <label> Module </label>
     @*Select Module Section*@
-    <select @onchange="@OnSelectModule">
+    <select @bind = "@selectedModule">
         @*Used for when loading page so page does not crash from modulelist being null when the page first loads*@
         @if (moduleList == null)
         {
@@ -54,7 +54,7 @@
 
     @*ACW Dropdown Box*@
     <label> ACW </label>
-    <select @onchange="@OnSelectACW" autocomplete="off">
+    <select @bind="@selectedACW" autocomplete="off">
         @*Used for when loading page so page does not crash from acw being null when the page first loads*@
         @if (acw == null)
         {
@@ -102,7 +102,7 @@
     @*Section 1*@
     Section 1
     <br />
-    <select id="section1" name="section1" @onchange="@OnSelectSection">
+    <select id="section1" name="section1" @bind="@selectedSection1">
         @*Used for when loading page so page does not crash from sections being null when the page first loads*@
         @if (sections == null)
         {
@@ -142,7 +142,7 @@
     <br />
 
     @*Criteria dropdown box*@
-    <select id="criteria" name="criteria" @onchange="@OnSelectCriteria">
+    <select id="criteria" name="criteria" @bind="@selectedCriteria1">
         @*Used for when loading page so page does not crash from criteria being null when the page first loads*@
         @if (criteria == null)
         {
@@ -179,7 +179,7 @@
     <br />
 
     @*Feedback Dropdown Box*@
-    <select id="feedback" name="feedback">
+    <select id="feedback" name="feedback" @bind="@selectedFeedback1">
         @*Used for when loading page so page does not crash from criteria being null when the page first loads*@
         @if (feedback == null)
         {
@@ -217,24 +217,16 @@
 
     @if (showNewSection)
     {
-        <h8>Section @sectionCounter </h8>
+        <h8>Section 2 </h8>
         <br />
-        <select id="section1" name="section1" @onchange="@OnSelectSection">
-            @*Used for when loading page so page does not crash from sections being null when the page first loads*@
-            @if (sections == null)
-            {
-                <p><em>Loading....</em></p>
-                selectedSection1 = "No Section Chosen";
+        <select id="section1" name="section1" @bind="@selectedSection2">
 
-            }
-            @*Once the page has loaded, sections will not be null so this will be run everytime*@
-            else
-            {
                 @*Select your section will always be at the top. Has been hidden so the user cannot select it*@
                 <option value="" selected hidden>Select your Sections</option>
                 @*For each section within the sections table, the following code will run*@
                 @foreach (var sectionrecord in sections)
                 {
+
                     @*If the section has a selectedACW and selectedModule then the following code will run*@
                     @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
                     {
@@ -248,10 +240,9 @@
                     {
                         @*If there is no sections present then select your section will be at the top. Has been hidden so the user cannot select it *@
                         <option value="" selected hidden>Select your Section</option>
-                        selectedSection1 = "No Section Chosen";
+                        selectedSection2 = "No Section Chosen";
                     }
                 }
-            }
         </select>
 
         <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
@@ -260,23 +251,15 @@
 
 
         @*Criteria dropdown box*@
-        <select id="criteria" name="criteria" @onchange="@OnSelectCriteria">
-            @*Used for when loading page so page does not crash from criteria being null when the page first loads*@
-            @if (criteria == null)
-            {
-                <p><em>Loading....</em></p>
-                selectedCriteria1 = "No Criteria Chosen";
-            }
-            @*Once the page has loaded, criteria will not be null so this will be run everytime*@
-            else
-            {
+        <select id="criteria" name="criteria" @bind="@selectedCriteria2">
+            
                 @*Select your criteria will always be at the top. Has been hidden so the user cannot select it*@
                 <option value="" selected hidden>Select your Criteria</option>
                 @*For each criteria within the criteria table, the following code will run*@
                 @foreach (var criteriarecord in criteria)
                 {
                     @*If the section has a selectedSection1 and selectedModule then the following code will run*@
-                    @if (criteriarecord.SectionName.Contains(selectedSection1) && (criteriarecord.ModuleName.Contains(selectedModule)))
+                    @if (criteriarecord.SectionName.Contains(selectedSection2) && (criteriarecord.ModuleName.Contains(selectedModule)))
                     {
                         @*The criteria macthing the section and module will be displayed to the user*@
                         <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
@@ -287,10 +270,10 @@
                     else if (presentCriteria == false)
                     {
                         <option value="" selected hidden>Select your Criteria</option>
-                        selectedCriteria1 = "No Criteria Chosen";
+                        selectedCriteria2 = "No Criteria Chosen";
                     }
                 }
-            }
+            
         </select>
         <button type="button" class="btn btn-primary" @onclick="AddNewCriteria">+</button>
         <br />
@@ -298,22 +281,13 @@
 
         @*Feedback Dropdown Box*@
         <select id="feedback" name="feedback">
-            @*Used for when loading page so page does not crash from criteria being null when the page first loads*@
-            @if (feedback == null)
-            {
-                <p><em>Loading....</em></p>
-                selectedFeedback1 = "No Feedback Chosen";
-            }
-            @*Once the page has loaded, criteria will not be null so this will be run everytime*@
-            else
-            {
                 @*Select your feedback will always be at the top. Has been hidden so the user cannot select it*@
                 <option value="" selected hidden>Select your Feedback</option>
                 @*For each feedback within the feedback table, the following code will run*@
                 @foreach (var feedbackrecord in feedback)
                 {
                     @*If the section has a selectedCriteria and selectedModule then the following code will run*@
-                    @if (feedbackrecord.Criteria.Contains(selectedCriteria1) && (feedbackrecord.ModuleName.Contains(selectedModule)))
+                    @if (feedbackrecord.Criteria.Contains(selectedCriteria2) && (feedbackrecord.ModuleName.Contains(selectedModule)))
                     {
                         @*The feedback macthing the criteria and module will be displayed to the user*@
                         <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
@@ -326,7 +300,7 @@
                         <option value="" selected hidden>Select your Feedback</option>
                     }
                 }
-            }
+            
         </select>
         @*Add feedback button next to the selection box. When this is clicked, the addNewFeedback button will be run and showPopUpFeedback will be set as true*@
         <button type="button" class="btn btn-primary" @onclick="AddNewFeedback">+</button>
@@ -338,12 +312,12 @@
     {
         <h8>Section @sectionCounter </h8>
         <br />
-        <select id="section1" name="section1" @onchange="@OnSelectSection">
+        <select id="section1" name="section1" @bind="@selectedSection3">
             @*Used for when loading page so page does not crash from sections being null when the page first loads*@
             @if (sections == null)
             {
                 <p><em>Loading....</em></p>
-                selectedSection1 = "No Section Chosen";
+                selectedSection3 = "No Section Chosen";
 
             }
             @*Once the page has loaded, sections will not be null so this will be run everytime*@
@@ -367,7 +341,7 @@
                     {
                         @*If there is no sections present then select your section will be at the top. Has been hidden so the user cannot select it *@
                         <option value="" selected hidden>Select your Section</option>
-                        selectedSection1 = "No Section Chosen";
+                        selectedSection3 = "No Section Chosen";
                     }
                 }
             }
@@ -379,12 +353,12 @@
 
 
         @*Criteria dropdown box*@
-        <select id="criteria" name="criteria" @onchange="@OnSelectCriteria">
+        <select id="criteria" name="criteria" @bind="@selectedCriteria3">
             @*Used for when loading page so page does not crash from criteria being null when the page first loads*@
             @if (criteria == null)
             {
                 <p><em>Loading....</em></p>
-                selectedCriteria1 = "No Criteria Chosen";
+                selectedCriteria3 = "No Criteria Chosen";
             }
             @*Once the page has loaded, criteria will not be null so this will be run everytime*@
             else
@@ -395,7 +369,7 @@
                 @foreach (var criteriarecord in criteria)
                 {
                     @*If the section has a selectedSection1 and selectedModule then the following code will run*@
-                    @if (criteriarecord.SectionName.Contains(selectedSection1) && (criteriarecord.ModuleName.Contains(selectedModule)))
+                    @if (criteriarecord.SectionName.Contains(selectedSection3) && (criteriarecord.ModuleName.Contains(selectedModule)))
                     {
                         @*The criteria macthing the section and module will be displayed to the user*@
                         <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
@@ -406,7 +380,7 @@
                     else if (presentCriteria == false)
                     {
                         <option value="" selected hidden>Select your Criteria</option>
-                        selectedCriteria1 = "No Criteria Chosen";
+                        selectedCriteria3 = "No Criteria Chosen";
                     }
                 }
             }
@@ -432,7 +406,7 @@
                 @foreach (var feedbackrecord in feedback)
                 {
                     @*If the section has a selectedCriteria and selectedModule then the following code will run*@
-                    @if (feedbackrecord.Criteria.Contains(selectedCriteria1) && (feedbackrecord.ModuleName.Contains(selectedModule)))
+                    @if (feedbackrecord.Criteria.Contains(selectedCriteria3) && (feedbackrecord.ModuleName.Contains(selectedModule)))
                     {
                         @*The feedback macthing the criteria and module will be displayed to the user*@
                         <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
@@ -459,8 +433,6 @@
          <button type="button" class="btn btn-primary" @onclick="ShowNewSection">Show New Section</button>
     }
    
-
-
 
     @*When the button above is clicked, this modal (pop up) box will appear, allowing the user to input a new module*@
     @if (ShowPopUpModule)
@@ -499,7 +471,7 @@
             </div>
         </div>
     }
-    <br />
+   
 
     @*When showPopUpACW is true, the following modal will display*@
     @if (ShowPopUpACW)
@@ -533,8 +505,6 @@
                             {
                                 <label class="alert-danger">No Module Entered</label>
                             }
-                            <br />
-
 
                             @*If the user has not entered anything within the input box that already exsists, then they will be reminded to enter something else *@
                             @foreach (var acwrecord in acw)
@@ -550,7 +520,6 @@
             </div>
         </div>
     }
-    <br />
 
     @*When the button above is clicked, this modal (pop up) box will appear, allowing the user to input a new module*@
     @if (ShowPopUpSection)
@@ -592,7 +561,6 @@
             </div>
         </div>
     }
-    <br />
 
     @*When the button above is clicked, this modal (pop up) box will appear, allowing the user to input a new module*@
     @if (ShowPopUpCriteria)
@@ -623,7 +591,6 @@
             </div>
         </div>
     }
-    <br />
 
     @if (showPopUpFeedback)
     {
@@ -667,6 +634,7 @@
         </div>
     }
     <br />
+    <br />
 
     <button type="submit" class="btn btn-primary">Export</button>
 </form>
@@ -690,9 +658,19 @@
     // The variables that will be edited when the user interactes with the dropdown boxes
     string selectedModule;
     string selectedACW;
+
     string selectedSection1;
+    string selectedSection2 = "";
+    string selectedSection3 = "";
+
     string selectedCriteria1;
+    string selectedCriteria2 = "";
+    string selectedCriteria3 = "";
+
     string selectedFeedback1;
+    string selectedFeedback2 = "";
+    string selectedFeedback3 = "";
+
 
     // The variables that prevent overwriting of the selected variables
     bool presentModule;
@@ -744,32 +722,6 @@
     private void LoadFiles(InputFileChangeEventArgs e)
     {
 
-    }
-
-    // When the module selection box is changed, the value of the box is assigned to selectedModule
-    public void OnSelectModule(ChangeEventArgs e)
-    {
-        selectedModule = e.Value.ToString();
-
-    }
-
-    // When the acw selection box is changed, the value of the box is assigned to selectedAcw
-    public void OnSelectACW(ChangeEventArgs e)
-    {
-        selectedACW = e.Value.ToString();
-    }
-
-    // When the section selection box is changed, the value of the box is assigned to selectedSection
-    public void OnSelectSection(ChangeEventArgs e)
-    {
-        selectedSection1 = e.Value.ToString();
-    }
-
-    // When the criteria selection box is changed, the value of the box is assigned to selectedCriteria
-    public void OnSelectCriteria(ChangeEventArgs e)
-    {
-
-        selectedCriteria1 = e.Value.ToString();
     }
 
     // Will run when the user closes the modal
@@ -933,7 +885,7 @@
             newSection.Id = 0;
             newSection.SectionName = inputSections.SectionName;
             newSection.ModuleName = selectedModule;
-            newSection.Acwname = inputACW.AcwName;
+            newSection.Acwname = selectedACW;
             newSection.UserName = UserIdentityName;
             // Passes the new section to be created in the section service
             var sectionInsert = SectionService.CreateSectionsAsync(newSection);
