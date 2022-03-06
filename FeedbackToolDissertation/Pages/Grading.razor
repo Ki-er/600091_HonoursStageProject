@@ -215,7 +215,7 @@
     <br />
     <br />
 
-    @if (showNewSection && sectionCounter == 2)
+    @if (showNewSection)
     {
         <h8>Section @sectionCounter </h8>
         <br />
@@ -333,7 +333,8 @@
         <br />
         <br />
     }
-    else if (showNewSection && sectionCounter == 3)
+    
+    @if (showNewSection && sectionCounter == 3)
     {
         <h8>Section @sectionCounter </h8>
         <br />
@@ -453,7 +454,11 @@
 
     }
 
-    <button type="button" class="btn btn-primary" @onclick="ShowNewSection">Show New Section</button>
+    @if(sectionCounter != 3)
+    {
+         <button type="button" class="btn btn-primary" @onclick="ShowNewSection">Show New Section</button>
+    }
+   
 
 
 
@@ -521,26 +526,30 @@
                         <button type="button" class="btn btn-success" @onclick="SaveACW"> Save </button>
                         <br />
                         <br />
-                        @*If errorModule is true, they will be warned that no module has been chosen*@
-                        @if (errorModule)
+                        @if (errorAcw == true)
                         {
-                            <label class="alert-warning">No Module Chosen</label>
+                            @*If the user has not entered anything within the input box, then they will be reminded to enter something*@
+                            if (selectedModule == "No Module Chosen")
+                            {
+                                <label class="alert-danger">No Module Entered</label>
+                            }
                             <br />
-                            <br />
+
+
+                            @*If the user has not entered anything within the input box that already exsists, then they will be reminded to enter something else *@
+                            @foreach (var acwrecord in acw)
+                            {
+                                if (acwrecord.AcwName.Contains(inputACW.AcwName) && acwrecord.ModuleName.Contains(selectedModule))
+                                {
+                                    <label class="alert-danger">Already in database</label>
+                                }
+                            }
                         }
-                        @*If erorrACW is true then the following code will run, independantly of the selection statements around it*@
-                        @if (errorAcw)
-                        {
-                            <label class="alert-warning">No Acw Entered</label>
-                            <br />
-                            <br />
-                        }
-                    </div>
+                    </div>t
                 </div>
             </div>
         </div>
     }
-    <br />
     <br />
 
     @*When the button above is clicked, this modal (pop up) box will appear, allowing the user to input a new module*@
@@ -657,7 +666,6 @@
             </div>
         </div>
     }
-    <br />
     <br />
 
     <button type="submit" class="btn btn-primary">Export</button>
@@ -874,8 +882,13 @@
             errorAcw = true;
         }
 
-
-
+        foreach (var acwrecord in acw)
+        {
+            if (acwrecord.AcwName.Contains(inputACW.AcwName) && acwrecord.ModuleName.Contains(selectedModule))
+            {
+                errorAcw = true;
+            }
+        }
 
         // if there are no errors, the following code will run
         if (errorAcw == false && errorModule == false && errorSections == false && errorCriteria == false)
