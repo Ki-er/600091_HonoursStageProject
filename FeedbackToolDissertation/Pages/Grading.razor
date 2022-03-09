@@ -326,6 +326,7 @@
         <h8>Section @sectionCounter </h8>
         <br />
         <select id="section1" name="section1" @bind="@selectedSection3">
+                
                 @*Select your section will always be at the top. Has been hidden so the user cannot select it*@
                 <option value="" selected hidden>Select your Sections</option>
                 @*For each section within the sections table, the following code will run*@
@@ -566,12 +567,12 @@
                             <label>Section:</label>
                             <label>@selectedSection1 </label>
                         }
-                        else if(selectedSection2Bool)
+                        @if(selectedSection2Bool)
                         {
                             <label>Section:</label>
                             <label>@selectedSection2 </label>
                         }
-                        else if(selectedSection3Bool)
+                        @if(selectedSection3Bool)
                         {
                             <label>Section:</label>
                             <label>@selectedSection3 </label>
@@ -608,13 +609,33 @@
                         <label>ACW:</label>
                         <label>@selectedACW </label>
                         <br />
-                        @*Displays selected section*@
-                        <label>Section:</label>
-                        <label>@selectedSection1 </label>
-                        <br />
-                        @*Displays selected criteria*@
-                        <label>Criteria:</label>
-                        <label>@selectedCriteria1 </label>
+                        @if(selectedSection1Bool)
+                        {
+                            <label>Section:</label>
+                            <label>@selectedSection1 </label>
+                            <br />
+                            @*Displays selected criteria*@
+                            <label>Criteria:</label>
+                            <label>@selectedCriteria1 </label>
+                        }
+                        else if(selectedSection2Bool)
+                        {
+                            <label>Section:</label>
+                            <label>@selectedSection2 </label>
+                            <br />
+                            @*Displays selected criteria*@
+                            <label>Criteria:</label>
+                            <label>@selectedCriteria2 </label>
+                        }
+                        else if(selectedSection3Bool)
+                        {
+                            <label>Section:</label>
+                            <label>@selectedSection3 </label>
+                            <br />
+                            @*Displays selected criteria*@
+                            <label>Criteria:</label>
+                            <label>@selectedCriteria3 </label>
+                        }
                         <br />
                         @*Input box to allow for adding feedback*@
                         <h8>Insert Feedback</h8>
@@ -658,16 +679,16 @@
 
     string selectedSection1;
     bool selectedSection1Bool = false;
-    string selectedSection2 = "";
+    string selectedSection2 = "No Section Chosen";
     bool selectedSection2Bool = false;
-    string selectedSection3 = "";
+    string selectedSection3 = "No Section Chosen";
     bool selectedSection3Bool = false;
 
     string selectedCriteria1;
     bool selectedCriteria1bool = false;
-    string selectedCriteria2 = "";
+    string selectedCriteria2 = "No Criteria Chosen";
     bool selectedCriteria2bool = false;
-    string selectedCriteria3 = "";
+    string selectedCriteria3 = "No Criteria Chosen";
     bool selectedCriteria3bool = false;
 
     string selectedFeedback1;
@@ -747,6 +768,10 @@
         selectedSection1Bool = false;
         selectedSection2Bool = false;
         selectedSection3Bool = false;
+
+        selectedCriteria1bool = false;
+        selectedCriteria2bool = false;
+        selectedCriteria3bool = false;
     }
 
     // When the user presses the button to add a module, the code below creates the variables needed for the saveModule method and then displays the modal
@@ -782,16 +807,19 @@
     void SetSection1BoolTrue()
     {
         selectedSection1Bool = true;
+        selectedCriteria1bool = true;
     }
 
     void SetSection2BoolTrue()
     {
         selectedSection2Bool = true;
+        selectedCriteria2bool = true;
     }
 
     void SetSection3BoolTrue()
     {
-        selectedSection2Bool = true;
+        selectedSection3Bool = true;
+        selectedCriteria3bool = true;
     }
 
     // When the user presses the button to add feedback, the code below creates the variables needed for the saveModule method and then displays the modal
@@ -971,8 +999,31 @@
             newFeedback.Grade = inputFeedback.Grade;
             newFeedback.ModuleName = selectedModule;
             newFeedback.Acwname = selectedACW;
-            newFeedback.SectionName = selectedSection1;
-            newFeedback.Criteria = selectedCriteria1;
+            if(selectedSection1Bool)
+            {
+                newFeedback.SectionName = selectedSection1;
+            }
+            else if(selectedSection2Bool)
+            {
+                newFeedback.SectionName = selectedSection2;
+            }
+            else if(selectedSection3Bool)
+            {
+                newFeedback.SectionName = selectedSection3;
+            }
+
+            if(selectedSection1Bool)
+            {
+                newFeedback.Criteria = selectedCriteria1;
+            }
+            else if(selectedSection2Bool)
+            {
+                newFeedback.Criteria = selectedCriteria2;
+            }
+            else if(selectedSection3Bool)
+            {
+                newFeedback.Criteria = selectedCriteria3;
+            }
             newFeedback.UserName = UserIdentityName;
 
             // Passes the new feedback to be created in the criteria service
