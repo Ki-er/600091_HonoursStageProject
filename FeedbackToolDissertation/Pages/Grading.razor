@@ -1,8 +1,12 @@
-﻿@using Blazored.Modal
-@using Blazored.Modal.Services
+﻿@using System 
+@using System.IO
 @using FeedbackToolDissertation.Data
 @using FeedbackToolDissertation.Data.FeedbackToolDissertation
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.Extensions.Logging
 
+@inject ILogger<Grading> Logger
+@inject IWebHostEnvironment Environment
 @inject ModuleService ModuleService
 @inject ACWService ACWService
 @inject CriteriaService CriteriaService
@@ -17,6 +21,8 @@
 <InputFile OnChange="@LoadFiles" />
 </div>
 <br />
+
+
 
 @*Post Form*@
 <form method="post">
@@ -135,7 +141,7 @@
                 }
             }
         }
-        }
+        
     </select>
     <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
     <br />
@@ -174,7 +180,7 @@
             }
         }
     </select>
-    <button type="button" class="btn btn-primary" @onclick="AddNewCriteria">+</button>
+    <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection1BoolTrue(); AddNewCriteria(); })">+</button>
     <br />
     <br />
 
@@ -211,9 +217,13 @@
         }
     </select>
     @*Add feedback button next to the selection box. When this is clicked, the addNewFeedback button will be run and showPopUpFeedback will be set as true*@
-    <button type="button" class="btn btn-primary" @onclick="AddNewFeedback">+</button>
+    <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection1BoolTrue(); AddNewFeedback(); })">+</button>
     <br />
     <br />
+
+
+
+
 
     @if (showNewSection)
     {
@@ -275,7 +285,7 @@
                 }
             
         </select>
-        <button type="button" class="btn btn-primary" @onclick="AddNewCriteria">+</button>
+        <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection2BoolTrue(); AddNewCriteria(); })">+</button>
         <br />
         <br />
 
@@ -303,26 +313,19 @@
             
         </select>
         @*Add feedback button next to the selection box. When this is clicked, the addNewFeedback button will be run and showPopUpFeedback will be set as true*@
-        <button type="button" class="btn btn-primary" @onclick="AddNewFeedback">+</button>
+         <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection2BoolTrue(); AddNewFeedback(); })">+</button>
         <br />
         <br />
     }
     
+
+
+
     @if (showNewSection && sectionCounter == 3)
     {
         <h8>Section @sectionCounter </h8>
         <br />
         <select id="section1" name="section1" @bind="@selectedSection3">
-            @*Used for when loading page so page does not crash from sections being null when the page first loads*@
-            @if (sections == null)
-            {
-                <p><em>Loading....</em></p>
-                selectedSection3 = "No Section Chosen";
-
-            }
-            @*Once the page has loaded, sections will not be null so this will be run everytime*@
-            else
-            {
                 @*Select your section will always be at the top. Has been hidden so the user cannot select it*@
                 <option value="" selected hidden>Select your Sections</option>
                 @*For each section within the sections table, the following code will run*@
@@ -344,7 +347,6 @@
                         selectedSection3 = "No Section Chosen";
                     }
                 }
-            }
         </select>
 
         <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
@@ -354,15 +356,6 @@
 
         @*Criteria dropdown box*@
         <select id="criteria" name="criteria" @bind="@selectedCriteria3">
-            @*Used for when loading page so page does not crash from criteria being null when the page first loads*@
-            @if (criteria == null)
-            {
-                <p><em>Loading....</em></p>
-                selectedCriteria3 = "No Criteria Chosen";
-            }
-            @*Once the page has loaded, criteria will not be null so this will be run everytime*@
-            else
-            {
                 @*Select your criteria will always be at the top. Has been hidden so the user cannot select it*@
                 <option value="" selected hidden>Select your Criteria</option>
                 @*For each criteria within the criteria table, the following code will run*@
@@ -383,23 +376,14 @@
                         selectedCriteria3 = "No Criteria Chosen";
                     }
                 }
-            }
+            
         </select>
-        <button type="button" class="btn btn-primary" @onclick="AddNewCriteria">+</button>
+        <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection3BoolTrue(); AddNewCriteria(); })">+</button>
         <br />
         <br />
 
         @*Feedback Dropdown Box*@
         <select id="feedback" name="feedback">
-            @*Used for when loading page so page does not crash from criteria being null when the page first loads*@
-            @if (feedback == null)
-            {
-                <p><em>Loading....</em></p>
-                selectedFeedback1 = "No Feedback Chosen";
-            }
-            @*Once the page has loaded, criteria will not be null so this will be run everytime*@
-            else
-            {
                 @*Select your feedback will always be at the top. Has been hidden so the user cannot select it*@
                 <option value="" selected hidden>Select your Feedback</option>
                 @*For each feedback within the feedback table, the following code will run*@
@@ -419,10 +403,10 @@
                         <option value="" selected hidden>Select your Feedback</option>
                     }
                 }
-            }
+            
         </select>
         @*Add feedback button next to the selection box. When this is clicked, the addNewFeedback button will be run and showPopUpFeedback will be set as true*@
-        <button type="button" class="btn btn-primary" @onclick="AddNewFeedback">+</button>
+        <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection3BoolTrue(); AddNewFeedback(); })">+</button>
         <br />
         <br />
 
@@ -577,8 +561,21 @@
                         <label>ACW:</label>
                         <label>@selectedACW </label>
                         <br />
-                        <label>Section:</label>
-                        <label>@selectedSection1 </label>
+                        @if(selectedSection1Bool)
+                        {
+                            <label>Section:</label>
+                            <label>@selectedSection1 </label>
+                        }
+                        else if(selectedSection2Bool)
+                        {
+                            <label>Section:</label>
+                            <label>@selectedSection2 </label>
+                        }
+                        else if(selectedSection3Bool)
+                        {
+                            <label>Section:</label>
+                            <label>@selectedSection3 </label>
+                        }
                         <br />
                         <input class="form-control" type="text" placeholder="Criteria" @bind="inputCriteria.Criteria1" />
                         <br />
@@ -660,12 +657,18 @@
     string selectedACW;
 
     string selectedSection1;
+    bool selectedSection1Bool = false;
     string selectedSection2 = "";
+    bool selectedSection2Bool = false;
     string selectedSection3 = "";
+    bool selectedSection3Bool = false;
 
     string selectedCriteria1;
+    bool selectedCriteria1bool = false;
     string selectedCriteria2 = "";
+    bool selectedCriteria2bool = false;
     string selectedCriteria3 = "";
+    bool selectedCriteria3bool = false;
 
     string selectedFeedback1;
     string selectedFeedback2 = "";
@@ -718,10 +721,11 @@
         acw = await ACWService.GetAcwsAsync(user.Identity.Name);
     }
 
+    string trustedFileNameForFileStorage = "";
 
-    private void LoadFiles(InputFileChangeEventArgs e)
+    private async Task LoadFiles(InputFileChangeEventArgs e)
     {
-
+        trustedFileNameForFileStorage = Path.GetRandomFileName();
     }
 
     // Will run when the user closes the modal
@@ -739,6 +743,10 @@
         errorAcw = false;
         errorSections = false;
         errorCriteria = false;
+
+        selectedSection1Bool = false;
+        selectedSection2Bool = false;
+        selectedSection3Bool = false;
     }
 
     // When the user presses the button to add a module, the code below creates the variables needed for the saveModule method and then displays the modal
@@ -769,6 +777,21 @@
         inputCriteria = new Criteria();
         inputCriteria.Id = 0;
         ShowPopUpCriteria = true;
+    }
+
+    void SetSection1BoolTrue()
+    {
+        selectedSection1Bool = true;
+    }
+
+    void SetSection2BoolTrue()
+    {
+        selectedSection2Bool = true;
+    }
+
+    void SetSection3BoolTrue()
+    {
+        selectedSection2Bool = true;
     }
 
     // When the user presses the button to add feedback, the code below creates the variables needed for the saveModule method and then displays the modal
@@ -911,7 +934,19 @@
             Criteria newCriteria = new Criteria();
             newCriteria.Id = 0;
             newCriteria.Criteria1 = inputCriteria.Criteria1;
-            newCriteria.SectionName = selectedSection1;
+            if(selectedSection1Bool)
+            {
+                newCriteria.SectionName = selectedSection1;
+            }
+            else if(selectedSection2Bool)
+            {
+                newCriteria.SectionName = selectedSection2;
+            }
+            else if(selectedSection3Bool)
+            {
+                newCriteria.SectionName = selectedSection3;
+            }
+            
             newCriteria.Acwname = selectedACW;
             newCriteria.ModuleName = selectedModule;
             newCriteria.UserName = UserIdentityName;
