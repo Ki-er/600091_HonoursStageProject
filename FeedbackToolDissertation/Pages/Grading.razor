@@ -230,13 +230,13 @@
         <h8>Section 2 </h8>
         <br />
         <select id="section1" name="section1" @bind="@selectedSection2">
-
+                
                 @*Select your section will always be at the top. Has been hidden so the user cannot select it*@
                 <option value="" selected hidden>Select your Sections</option>
                 @*For each section within the sections table, the following code will run*@
                 @foreach (var sectionrecord in sections)
                 {
-
+                    selectedSection2 = "No Section Chosen";
                     @*If the section has a selectedACW and selectedModule then the following code will run*@
                     @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
                     {
@@ -250,7 +250,6 @@
                     {
                         @*If there is no sections present then select your section will be at the top. Has been hidden so the user cannot select it *@
                         <option value="" selected hidden>Select your Section</option>
-                        selectedSection2 = "No Section Chosen";
                     }
                 }
         </select>
@@ -279,8 +278,8 @@
                     @*If there is no criteria within the database matching the section and module, the following code will run*@
                     else if (presentCriteria == false)
                     {
+                         selectedCriteria2 = "No Criteria Chosen";
                         <option value="" selected hidden>Select your Criteria</option>
-                        selectedCriteria2 = "No Criteria Chosen";
                     }
                 }
             
@@ -318,8 +317,6 @@
         <br />
     }
     
-
-
 
     @if (showNewSection && sectionCounter == 3)
     {
@@ -669,6 +666,7 @@
     // Creates the lists pulled from the database tables
     List<Modules> moduleList;
     List<Feedback> feedback;
+    List<Feedback> unsortedFeedback;
     List<Criteria> criteria;
     List<Sections> sections;
     List<Acw> acw;
@@ -736,10 +734,12 @@
             UserIdentityName = user.Identity.Name ?? "";
         }
         moduleList = await ModuleService.GetModulesAsync(user.Identity.Name);
-        feedback = await FeedbackService.GetFeedbacksAsync(user.Identity.Name);
+        unsortedFeedback = await FeedbackService.GetFeedbacksAsync(user.Identity.Name);
         criteria = await CriteriaService.GetCriteriasAsync(user.Identity.Name);
         sections = await SectionService.GetSectionsAsync(user.Identity.Name);
         acw = await ACWService.GetAcwsAsync(user.Identity.Name);
+
+        feedback = unsortedFeedback.OrderByDescending(o=>o.Grade).ToList();
     }
 
     string trustedFileNameForFileStorage = "";
