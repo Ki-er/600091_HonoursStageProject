@@ -22,7 +22,8 @@
 </div>
 <br />
 
-
+<object data="@trustedFileNameForFileStorage" type="application/pdf" id=pdfviewer>
+</object>
 
 @*Post Form*@
 <form method="post">
@@ -55,6 +56,7 @@
     </select>
     @*Added module button next to the selection box. When this is clicked, the add module button will be run and ShowPopUpModule will be set as true*@
     <button type="button" class="btn btn-primary" @onclick="AddNewModule">+</button>
+    <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>
     <br />
 
 
@@ -96,9 +98,8 @@
     </select>
     @*Add acw button next to the selection box. When this is clicked, the add module button will be run and ShowPopUpACW will be set as true*@
     <button type="button" class="btn btn-primary" @onclick="AddNewACW">+</button>
+    <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>
     <br />
-
-
 
 
 
@@ -114,28 +115,21 @@
         {
             <p><em>Loading....</em></p>
             selectedSection1 = "No Section Chosen";
-
         }
-        @*Once the page has loaded, sections will not be null so this will be run everytime*@
         else
         {
-            @*Select your section will always be at the top. Has been hidden so the user cannot select it*@
+            presentCriteria = false;
+            presentFeedback = false;
             <option value="" selected hidden>Select your Sections</option>
-            @*For each section within the sections table, the following code will run*@
             @foreach (var sectionrecord in sections)
             {
-                @*If the section has a selectedACW and selectedModule then the following code will run*@
                 @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
                 {
-                    @*The sections that match the acw and module will be loaded within the select*@
                     <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
-                    @*If there is sections present, presentSections will be set as true*@
                     presentSection = true;
                 }
-                @*If there is no sections present, the following code will run*@
                 else if (presentSection == false)
                 {
-                    @*If there is no sections present then select your section will be at the top. Has been hidden so the user cannot select it *@
                     <option value="" selected hidden>Select your Section</option>
                     selectedSection1 = "No Section Chosen";
                 }
@@ -144,34 +138,26 @@
         
     </select>
     <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
+    <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>
     <br />
     <br />
 
-    @*Criteria dropdown box*@
     <select id="criteria" name="criteria" @bind="@selectedCriteria1">
-        @*Used for when loading page so page does not crash from criteria being null when the page first loads*@
         @if (criteria == null)
         {
             <p><em>Loading....</em></p>
             selectedCriteria1 = "No Criteria Chosen";
         }
-        @*Once the page has loaded, criteria will not be null so this will be run everytime*@
         else
         {
-            @*Select your criteria will always be at the top. Has been hidden so the user cannot select it*@
             <option value="" selected hidden>Select your Criteria</option>
-            @*For each criteria within the criteria table, the following code will run*@
             @foreach (var criteriarecord in criteria)
             {
-                @*If the section has a selectedSection1 and selectedModule then the following code will run*@
                 @if (criteriarecord.SectionName.Contains(selectedSection1) && (criteriarecord.ModuleName.Contains(selectedModule)))
                 {
-                    @*The criteria macthing the section and module will be displayed to the user*@
                     <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
-                    @*presentCriteria will be set to true if there is criteria*@
                     presentCriteria = true;
                 }
-                @*If there is no criteria within the database matching the section and module, the following code will run*@
                 else if (presentCriteria == false)
                 {
                     <option value="" selected hidden>Select your Criteria</option>
@@ -181,6 +167,7 @@
         }
     </select>
     <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection1BoolTrue(); AddNewCriteria(); })">+</button>
+    <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>
     <br />
     <br />
 
@@ -218,6 +205,7 @@
     </select>
     @*Add feedback button next to the selection box. When this is clicked, the addNewFeedback button will be run and showPopUpFeedback will be set as true*@
     <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection1BoolTrue(); AddNewFeedback(); })">+</button>
+    <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>
     <br />
     <br />
 
@@ -232,11 +220,11 @@
         <select id="section1" name="section1" @bind="@selectedSection2">
                 
                 @*Select your section will always be at the top. Has been hidden so the user cannot select it*@
-                <option value="" selected hidden>Select your Sections</option>
+                <option value=""  hidden>Select your Sections</option>
                 @*For each section within the sections table, the following code will run*@
                 @foreach (var sectionrecord in sections)
                 {
-                    selectedSection2 = "No Section Chosen";
+                    
                     @*If the section has a selectedACW and selectedModule then the following code will run*@
                     @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
                     {
@@ -255,6 +243,7 @@
         </select>
 
         <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
+        <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>
         <br />
         <br />
 
@@ -263,7 +252,7 @@
         <select id="criteria" name="criteria" @bind="@selectedCriteria2">
             
                 @*Select your criteria will always be at the top. Has been hidden so the user cannot select it*@
-                <option value="" selected hidden>Select your Criteria</option>
+                <option value="" hidden>Select your Criteria</option>
                 @*For each criteria within the criteria table, the following code will run*@
                 @foreach (var criteriarecord in criteria)
                 {
@@ -285,6 +274,7 @@
             
         </select>
         <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection2BoolTrue(); AddNewCriteria(); })">+</button>
+        <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>
         <br />
         <br />
 
@@ -313,6 +303,7 @@
         </select>
         @*Add feedback button next to the selection box. When this is clicked, the addNewFeedback button will be run and showPopUpFeedback will be set as true*@
          <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection2BoolTrue(); AddNewFeedback(); })">+</button>
+         <button type="button" class="btn btn-danger" @onclick="@(() => { SetSection2BoolTrue();                 })">-</button>
         <br />
         <br />
     }
@@ -325,7 +316,8 @@
         <select id="section1" name="section1" @bind="@selectedSection3">
                 
                 @*Select your section will always be at the top. Has been hidden so the user cannot select it*@
-                <option value="" selected hidden>Select your Sections</option>
+                <option value="" selected>Select your Sections</option>
+
                 @*For each section within the sections table, the following code will run*@
                 @foreach (var sectionrecord in sections)
                 {
@@ -348,6 +340,7 @@
         </select>
 
         <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
+        <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>
         <br />
         <br />
 
@@ -377,6 +370,7 @@
             
         </select>
         <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection3BoolTrue(); AddNewCriteria(); })">+</button>
+        <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>
         <br />
         <br />
 
@@ -405,6 +399,7 @@
         </select>
         @*Add feedback button next to the selection box. When this is clicked, the addNewFeedback button will be run and showPopUpFeedback will be set as true*@
         <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection3BoolTrue(); AddNewFeedback(); })">+</button>
+        <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>        
         <br />
         <br />
 
@@ -651,7 +646,7 @@
     <br />
     <br />
 
-    <button type="submit" class="btn btn-primary">Export</button>
+<a class="form-control btn btn-primary" href="/download?name=test.txt" target="_blank">Export</a>
 </form>
 
 
@@ -860,6 +855,9 @@
                 NewModule.UserName = UserIdentityName;
                 // Passes the new module to be created in the module service
                 var result = ModuleService.CreateModulesAsync(NewModule);
+
+                var user = (await authenticationStateTask).User;
+                moduleList = await ModuleService.GetModulesAsync(user.Identity.Name);
                 return;
             }
         }
@@ -867,6 +865,14 @@
         {
             return;
         }
+    }
+
+
+    async Task DeleteModule()
+    {
+
+
+        feedback = unsortedFeedback.OrderByDescending(o=>o.Grade).ToList();
     }
 
 
@@ -908,13 +914,14 @@
                 newACW.UserName = UserIdentityName;
                 // Passes the new acw to be created in the acw service
                 var acwInsert = ACWService.CreateACWAsync(newACW);
+                var user = (await authenticationStateTask).User;
+                acw = await ACWService.GetAcwsAsync(user.Identity.Name);
                 return;
             }
             else
             {
                 return;
             }
-
         }
     }
 
@@ -940,6 +947,8 @@
             newSection.UserName = UserIdentityName;
             // Passes the new section to be created in the section service
             var sectionInsert = SectionService.CreateSectionsAsync(newSection);
+            var user = (await authenticationStateTask).User;
+            sections = await SectionService.GetSectionsAsync(user.Identity.Name);
             return;
         }
 
@@ -980,6 +989,8 @@
             newCriteria.UserName = UserIdentityName;
             // Passes the new criteria to be created in the criteria service
             var criteriaInsert = CriteriaService.CreateCriteriaAsync(newCriteria);
+            var user = (await authenticationStateTask).User;
+            criteria = await CriteriaService.GetCriteriasAsync(user.Identity.Name);
             return;
         }
     }
@@ -1028,6 +1039,8 @@
 
             // Passes the new feedback to be created in the criteria service
             var feedbackInsert = FeedbackService.CreateFeedbackAsync(newFeedback);
+            var user = (await authenticationStateTask).User;
+            feedback = await FeedbackService.GetFeedbacksAsync(user.Identity.Name);
             return;
         }
     }

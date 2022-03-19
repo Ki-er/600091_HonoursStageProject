@@ -34,6 +34,21 @@ namespace FeedbackToolDissertation.Data
             return Task.FromResult(objModule);
         }
 
+        public Task<bool> DeleteModulesAsync(Modules objModule)
+        {
+            var moduleToDelete = _context.Modules.Where(x => x.Id == objModule.Id).FirstOrDefault();
+            if (moduleToDelete != null)
+            {
+                _context.Modules.Remove(moduleToDelete);
+                _context.SaveChanges();
+            }
+            else
+            {
+                return Task.FromResult(false);
+            }
+            return Task.FromResult(true);
+        }
+
 
 
 
