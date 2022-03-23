@@ -15,16 +15,9 @@ namespace FeedbackToolDissertation.Data
         {
             _context = context;
         }
-
         public async Task<List<Modules>> GetModulesAsync(string strCurrentUser)
         {
-            return
-            await _context.Modules
-            // Only get entries for the current logged in user
-            .Where(x => x.UserName == strCurrentUser)
-            // Use AsNoTracking to disable EF change tracking
-            // Use ToListAsync to avoid blocking a thread
-            .AsNoTracking().ToListAsync();
+            return await _context.Modules.Where(x => x.UserName == strCurrentUser).AsNoTracking().ToListAsync();
         }
 
         public Task<Modules> CreateModulesAsync(Modules objModule)

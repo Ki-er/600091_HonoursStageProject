@@ -4,6 +4,7 @@
 @using FeedbackToolDissertation.Data.FeedbackToolDissertation
 @using Microsoft.AspNetCore.Hosting
 @using Microsoft.Extensions.Logging
+@using BlazorDownloadFile
 
 @inject ILogger<Grading> Logger
 @inject IWebHostEnvironment Environment
@@ -12,6 +13,7 @@
 @inject CriteriaService CriteriaService
 @inject SectionService SectionService
 @inject FeedbackService FeedbackService
+
 
 @page "/Grading"
 
@@ -22,18 +24,15 @@
 </div>
 <br />
 
-<object data="@trustedFileNameForFileStorage" type="application/pdf" id=pdfviewer>
-</object>
-
 @*Post Form*@
 <form method="post">
     @*Student input section*@
     <label> Student </label>
-    <input type="text" id="snumber" placeholder="Student Number" name="snumber">
+    <input type="text" id="snumber" placeholder="Student Number" name="snumber" @bind=@studentNumber>
     <br />
     <label> Module </label>
     @*Select Module Section*@
-    <select @bind = "@selectedModule">
+    <select  @bind="@selectedModule">
         @*Used for when loading page so page does not crash from modulelist being null when the page first loads*@
         @if (moduleList == null)
         {
@@ -109,7 +108,7 @@
     @*Section 1*@
     Section 1
     <br />
-    <select id="section1" name="section1" @bind="@selectedSection1">
+    <select @bind="@selectedSection1">
         @*Used for when loading page so page does not crash from sections being null when the page first loads*@
         @if (sections == null)
         {
@@ -217,10 +216,10 @@
     {
         <h8>Section 2 </h8>
         <br />
-        <select id="section1" name="section1" @bind="@selectedSection2">
+        <InputSelect  @bind-Value="@selectedSection2">
                 
                 @*Select your section will always be at the top. Has been hidden so the user cannot select it*@
-                <option value=""  hidden>Select your Sections</option>
+                <option value="Select your Sections" selected disabled hidden>Select your Sections</option>
                 @*For each section within the sections table, the following code will run*@
                 @foreach (var sectionrecord in sections)
                 {
@@ -237,10 +236,10 @@
                     else if (presentSection == false)
                     {
                         @*If there is no sections present then select your section will be at the top. Has been hidden so the user cannot select it *@
-                        <option value="" selected hidden>Select your Section</option>
+                        <option value="" hidden>Select your Section</option>
                     }
                 }
-        </select>
+        </InputSelect>
 
         <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
         <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>
@@ -252,7 +251,7 @@
         <select id="criteria" name="criteria" @bind="@selectedCriteria2">
             
                 @*Select your criteria will always be at the top. Has been hidden so the user cannot select it*@
-                <option value="" hidden>Select your Criteria</option>
+                <option value="" selected hidden>Select your Criteria</option>
                 @*For each criteria within the criteria table, the following code will run*@
                 @foreach (var criteriarecord in criteria)
                 {
@@ -646,11 +645,12 @@
     <br />
     <br />
 
-<a class="form-control btn btn-primary" href="/download?name=test.txt" target="_blank">Export</a>
+<button @onclick="DownloadFile">Download File</button>
 </form>
 
 
 @code {
+
     // AuthenticationState is available as a CascadingParameter
     [CascadingParameter]
 
@@ -667,6 +667,7 @@
     List<Acw> acw;
 
     // The variables that will be edited when the user interactes with the dropdown boxes
+    string studentNumber;
     string selectedModule;
     string selectedACW;
 
@@ -868,13 +869,6 @@
     }
 
 
-    async Task DeleteModule()
-    {
-
-
-        feedback = unsortedFeedback.OrderByDescending(o=>o.Grade).ToList();
-    }
-
 
     // When the user presses save in the acw modal, the following code will run
     async Task SaveACW()
@@ -983,7 +977,7 @@
             {
                 newCriteria.SectionName = selectedSection3;
             }
-            
+
             newCriteria.Acwname = selectedACW;
             newCriteria.ModuleName = selectedModule;
             newCriteria.UserName = UserIdentityName;
@@ -1043,6 +1037,47 @@
             feedback = await FeedbackService.GetFeedbacksAsync(user.Identity.Name);
             return;
         }
+    }
+
+    public string Message = String.Empty;
+
+    [Inject] IBlazorDownloadFileService BlazorDownloadFileService { get; set; }
+
+
+    async Task DownloadFile()
+    {
+        var buffer = new MemoryStream();   
+        var writer = new BinaryWriter(buffer);
+
+        writer.Write("Student Number: " + studentNumber + "\r\n");
+        writer.Write("Module: " + selectedModule + "\r\n");
+        writer.Write("ACW: " + selectedACW + "\r\n");
+        writer.Write("\r\n");
+
+
+        writer.Write("Section 1" + "\r\n");
+        writer.Write("Section: " + selectedSection1 + "\r\n");
+        writer.Write("Criteria: " + selectedCriteria1 + "\r\n");
+        writer.Write("Feedback: " + selectedFeedback1 + "\r\n");
+        writer.Write("\r\n");
+
+        if(showNewSection)
+        {
+            writer.Write("Section 2" + "\r\n");
+            writer.Write("Section: " + selectedSection2 + "\r\n");
+            writer.Write("Criteria: " + selectedCriteria2 + "\r\n");
+            writer.Write("Feedback: " + selectedFeedback2 + "\r\n");
+            writer.Write("\r\n");
+            writer.Write("Section 3" + "\r\n");
+            writer.Write("Section: " + selectedSection3 + "\r\n");
+            writer.Write("Criteria: " + selectedCriteria3 + "\r\n");
+            writer.Write("Feedback: " + selectedFeedback3 + "\r\n");
+        }
+
+        writer.Close();
+        byte[] bytes = buffer.ToArray();
+        var task = await BlazorDownloadFileService.DownloadFile("testdownload.txt", bytes,"text/plain");
+        return;
     }
 
     void ShowNewSection()

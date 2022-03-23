@@ -1,4 +1,4 @@
-using Blazored.Modal;
+using BlazorDownloadFile;
 using FeedbackToolDissertation.Areas.Identity;
 using FeedbackToolDissertation.Data;
 using Microsoft.AspNetCore.Builder;
@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
 
 
 namespace FeedbackToolDissertation
@@ -41,7 +40,10 @@ namespace FeedbackToolDissertation
             services.AddScoped<ACWService>();
             services.AddScoped<SectionService>();
             services.AddScoped<CriteriaService>();
-            services.AddBlazoredModal();
+            services.AddBlazorDownloadFile();
+
+
+
 
 
             // Read the connection string from the appsettings.json file
