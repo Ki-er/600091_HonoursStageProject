@@ -216,7 +216,7 @@
     {
         <h8>Section 2 </h8>
         <br />
-        <InputSelect  @bind-Value="@selectedSection2">
+        <select  @bind="@selectedSection2">
                 
                 @*Select your section will always be at the top. Has been hidden so the user cannot select it*@
                 <option value="Select your Sections" selected disabled hidden>Select your Sections</option>
@@ -239,7 +239,7 @@
                         <option value="" hidden>Select your Section</option>
                     }
                 }
-        </InputSelect>
+        </select>
 
         <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
         <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>

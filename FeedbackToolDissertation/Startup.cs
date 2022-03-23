@@ -42,10 +42,6 @@ namespace FeedbackToolDissertation
             services.AddScoped<CriteriaService>();
             services.AddBlazorDownloadFile();
 
-
-
-
-
             // Read the connection string from the appsettings.json file
             // Set the database connection for the EndtoEndContext
             services.AddDbContext<FeedbackToolDissertation.Data.FeedbackToolDissertation.FeedbacktooldissertationContext>(options =>
