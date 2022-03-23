@@ -25,7 +25,7 @@
 <br />
 
 @*Post Form*@
-<form method="post">
+<form>
     @*Student input section*@
     <label> Student </label>
     <input type="text" id="snumber" placeholder="Student Number" name="snumber" @bind=@studentNumber>
@@ -1077,7 +1077,6 @@
         writer.Close();
         byte[] bytes = buffer.ToArray();
         var task = await BlazorDownloadFileService.DownloadFile(studentNumber, bytes,"text/plain");
-        return;
     }
 
     void ShowNewSection()
