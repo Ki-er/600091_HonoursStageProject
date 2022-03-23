@@ -1076,7 +1076,7 @@
 
         writer.Close();
         byte[] bytes = buffer.ToArray();
-        var task = await BlazorDownloadFileService.DownloadFile("testdownload.txt", bytes,"text/plain");
+        var task = await BlazorDownloadFileService.DownloadFile(studentNumber, bytes,"text/plain");
         return;
     }
 
