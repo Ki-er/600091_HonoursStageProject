@@ -9,31 +9,26 @@ namespace FeedbackToolDissertation.Data
 {
     public class ACWService
     {
-        private readonly FeedbacktooldissertationContext _context;
+        private IDbContextFactory<FeedbacktooldissertationContext> _dbContext;
 
-        public ACWService(FeedbacktooldissertationContext context)
+        public ACWService(IDbContextFactory<FeedbacktooldissertationContext> dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public async Task<List<Acw>> GetAcwsAsync(string strCurrentUser)
         {
-            return
-            await _context.Acw
-            // Only get entries for the current logged in user
-            .Where(x => x.UserName == strCurrentUser)
-            // Use AsNoTracking to disable EF change tracking
-            // Use ToListAsync to avoid blocking a thread
-            .AsNoTracking().ToListAsync();
+            using var ctx = _dbContext.CreateDbContext();
+            return await ctx.Acw.Where(x => x.UserName == strCurrentUser).AsNoTracking().ToListAsync();
         }
 
         public Task<Acw> CreateACWAsync(Acw objACW)
         {
-            _context.Acw.Add(objACW);
-            _context.SaveChanges();
+            using var ctx = _dbContext.CreateDbContext();
+            ctx.Acw.Add(objACW);
+            ctx.SaveChanges();
+
             return Task.FromResult(objACW);
         }
-
-
     }
 }

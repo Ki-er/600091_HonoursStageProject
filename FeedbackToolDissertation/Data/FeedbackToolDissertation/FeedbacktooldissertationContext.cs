@@ -7,16 +7,12 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace FeedbackToolDissertation.Data.FeedbackToolDissertation
 {
-    public partial class FeedbacktooldissertationContext : DbContext
+    public class FeedbacktooldissertationContext : DbContext
     {
-        public FeedbacktooldissertationContext()
-        {
-        }
 
         public FeedbacktooldissertationContext(DbContextOptions<FeedbacktooldissertationContext> options)
             : base(options)
-        {
-        }
+        { }
 
         public virtual DbSet<Acw> Acw { get; set; }
         public virtual DbSet<Criteria> Criteria { get; set; }
@@ -26,6 +22,8 @@ namespace FeedbackToolDissertation.Data.FeedbackToolDissertation
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
+
             modelBuilder.Entity<Acw>(entity =>
             {
                 entity.ToTable("ACW");
@@ -148,9 +146,7 @@ namespace FeedbackToolDissertation.Data.FeedbackToolDissertation
                     .IsFixedLength();
             });
 
-            OnModelCreatingPartial(modelBuilder);
         }
 
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

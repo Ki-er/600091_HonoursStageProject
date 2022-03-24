@@ -216,7 +216,7 @@
     {
         <h8>Section 2 </h8>
         <br />
-        <select  @bind="@selectedSection2">
+        <InputSelect  @bind-Value="@selectedSection2">
                 
                 @*Select your section will always be at the top. Has been hidden so the user cannot select it*@
                 <option value="Select your Sections" selected disabled hidden>Select your Sections</option>
@@ -239,7 +239,7 @@
                         <option value="" hidden>Select your Section</option>
                     }
                 }
-        </select>
+        </InputSelect>
 
         <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
         <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>
@@ -250,7 +250,7 @@
         @*Criteria dropdown box*@
         <select id="criteria" name="criteria" @bind="@selectedCriteria2">
             
-                @*Select your criteria will always be at the top. Has been hidden so the user cannot select it*@
+                @*Select your criteria will always be at the top. Has been hidden so the user cannot select it*@ 
                 <option value="" selected hidden>Select your Criteria</option>
                 @*For each criteria within the criteria table, the following code will run*@
                 @foreach (var criteriarecord in criteria)

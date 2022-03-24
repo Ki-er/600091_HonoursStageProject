@@ -9,29 +9,26 @@ namespace FeedbackToolDissertation.Data
 {
     public class SectionService
     {
-        private readonly FeedbacktooldissertationContext _context;
+        private IDbContextFactory<FeedbacktooldissertationContext> _dbContext;
 
-        public SectionService(FeedbacktooldissertationContext context)
+        public SectionService(IDbContextFactory<FeedbacktooldissertationContext> dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public async Task<List<Sections>> GetSectionsAsync(string strCurrentUser)
         {
-            return
-            await _context.Sections
-            // Only get entries for the current logged in user
-            .Where(x => x.UserName == strCurrentUser)
-            // Use AsNoTracking to disable EF change tracking
-            // Use ToListAsync to avoid blocking a thread
-            .AsNoTracking().ToListAsync();
+            using var ctx = _dbContext.CreateDbContext();
+            return await ctx.Sections.Where(x => x.UserName == strCurrentUser).AsNoTracking().ToListAsync();
         }
 
-        public Task<Sections> CreateSectionsAsync(Sections sections)
+        public Task<Sections> CreateSectionsAsync(Sections objSections)
         {
-            _context.Sections.Add(sections);
-            _context.SaveChanges();
-            return Task.FromResult(sections);
+            using var ctx = _dbContext.CreateDbContext();
+            ctx.Sections.Add(objSections);
+            ctx.SaveChanges();
+
+            return Task.FromResult(objSections);
         }
 
 

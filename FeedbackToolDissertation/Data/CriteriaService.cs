@@ -9,31 +9,26 @@ namespace FeedbackToolDissertation.Data
 {
     public class CriteriaService
     {
-        private readonly FeedbacktooldissertationContext _context;
+        private IDbContextFactory<FeedbacktooldissertationContext> _dbContext;
 
-        public CriteriaService(FeedbacktooldissertationContext context)
+        public CriteriaService(IDbContextFactory<FeedbacktooldissertationContext> dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public async Task<List<Criteria>> GetCriteriasAsync(string strCurrentUser)
         {
-            return
-            await _context.Criteria
-            // Only get entries for the current logged in user
-            .Where(x => x.UserName == strCurrentUser)
-            // Use AsNoTracking to disable EF change tracking
-            // Use ToListAsync to avoid blocking a thread
-            .AsNoTracking().ToListAsync();
+            using var ctx = _dbContext.CreateDbContext();
+            return await ctx.Criteria.Where(x => x.UserName == strCurrentUser).AsNoTracking().ToListAsync();
         }
 
-        public Task<Criteria> CreateCriteriaAsync(Criteria criteria)
+        public Task<Criteria> CreateCriteriaAsync(Criteria objCriteria)
         {
-            _context.Criteria.Add(criteria);
-            _context.SaveChanges();
-            return Task.FromResult(criteria);
+            using var ctx = _dbContext.CreateDbContext();
+            ctx.Criteria.Add(objCriteria);
+            ctx.SaveChanges();
+
+            return Task.FromResult(objCriteria);
         }
-
-
     }
 }

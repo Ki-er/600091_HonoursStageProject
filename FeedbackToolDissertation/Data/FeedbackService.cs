@@ -9,18 +9,18 @@ namespace FeedbackToolDissertation.Data
 {
     public class FeedbackService
     {
-        private readonly FeedbacktooldissertationContext _context;
+        private IDbContextFactory<FeedbacktooldissertationContext> _dbContext;
 
-        public FeedbackService(FeedbacktooldissertationContext context)
+        public FeedbackService(IDbContextFactory<FeedbacktooldissertationContext> dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
         public async Task<List<Feedback>> GetFeedbacksAsync(string strCurrentUser)
         {
-            return
-            await _context.Feedback
-            // Only get entries for the current logged in user
+            using var context = _dbContext.CreateDbContext();
+
+            return await context.Feedback            // Only get entries for the current logged in user
             .Where(x => x.UserName == strCurrentUser)
             // Use AsNoTracking to disable EF change tracking
             // Use ToListAsync to avoid blocking a thread
@@ -30,12 +30,11 @@ namespace FeedbackToolDissertation.Data
 
         public Task<Feedback> CreateFeedbackAsync(Feedback feedback)
         {
-            _context.Feedback.Add(feedback);
-            _context.SaveChanges();
+            using var context = _dbContext.CreateDbContext();
+            context.Feedback.Add(feedback);
+            context.SaveChanges();
+
             return Task.FromResult(feedback);
         }
-
-
-
     }
 }
