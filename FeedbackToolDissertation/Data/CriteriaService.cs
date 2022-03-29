@@ -1,8 +1,8 @@
-﻿using FeedbackToolDissertation.Data.FeedbackToolDissertation;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FeedbackToolDissertation.Data.FeedbackToolDissertation;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace FeedbackToolDissertation.Data
@@ -16,19 +16,19 @@ namespace FeedbackToolDissertation.Data
             _dbContext = dbContext;
         }
 
-        public async Task<List<Criteria>> GetCriteriasAsync(string strCurrentUser)
+        public async Task<List<Criteria>> GetCriteriasAsync(string currentUser)
         {
             using var ctx = _dbContext.CreateDbContext();
-            return await ctx.Criteria.Where(x => x.UserName == strCurrentUser).AsNoTracking().ToListAsync();
+            return await ctx.Criteria.Where(x => x.UserName == currentUser).AsNoTracking().ToListAsync();
         }
 
-        public Task<Criteria> CreateCriteriaAsync(Criteria objCriteria)
+        public Task<Criteria> CreateCriteriaAsync(Criteria criteria)
         {
             using var ctx = _dbContext.CreateDbContext();
-            ctx.Criteria.Add(objCriteria);
+            ctx.Criteria.Add(criteria);
             ctx.SaveChanges();
 
-            return Task.FromResult(objCriteria);
+            return Task.FromResult(criteria);
         }
     }
 }

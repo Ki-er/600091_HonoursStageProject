@@ -1,8 +1,8 @@
-﻿using FeedbackToolDissertation.Data.FeedbackToolDissertation;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FeedbackToolDissertation.Data.FeedbackToolDissertation;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace FeedbackToolDissertation.Data
@@ -16,15 +16,10 @@ namespace FeedbackToolDissertation.Data
             _dbContext = dbContext;
         }
 
-        public async Task<List<Feedback>> GetFeedbacksAsync(string strCurrentUser)
+        public async Task<List<Feedback>> GetFeedbacksAsync(string currentUser)
         {
             using var context = _dbContext.CreateDbContext();
-
-            return await context.Feedback            // Only get entries for the current logged in user
-            .Where(x => x.UserName == strCurrentUser)
-            // Use AsNoTracking to disable EF change tracking
-            // Use ToListAsync to avoid blocking a thread
-            .AsNoTracking().ToListAsync();
+            return await context.Feedback.Where(x => x.UserName == currentUser).AsNoTracking().ToListAsync();
         }
 
 
