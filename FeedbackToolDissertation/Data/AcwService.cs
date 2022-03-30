@@ -30,5 +30,24 @@ namespace FeedbackToolDissertation.Data
 
             return Task.FromResult(acw);
         }
+
+        public Task<bool> DeleteACWAsync(Acw acw)
+        {
+            using var ctx = _dbContext.CreateDbContext();
+            var acwToBeDeleted = ctx.Acw.Where(x => x.AcwName == acw.AcwName).FirstOrDefault();
+            if (acwToBeDeleted != null)
+            {
+                ctx.Acw.Remove(acwToBeDeleted);
+                ctx.SaveChanges();
+                return Task.FromResult(true);
+            }
+            else
+            {
+                return Task.FromResult(false);
+            }
+
+        }
+
+
     }
 }

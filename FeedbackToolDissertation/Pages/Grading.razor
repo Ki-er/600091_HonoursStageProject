@@ -1,4 +1,4 @@
-﻿@using System 
+﻿@using System
 @using System.IO
 @using FeedbackToolDissertation.Data
 @using FeedbackToolDissertation.Data.FeedbackToolDissertation
@@ -30,7 +30,7 @@
     <br />
     @*Module Dropdown Box*@
     <label> Module </label>
-    <select  @bind="@selectedModule">
+    <select @bind="@selectedModule">
         @if (moduleList == null)
         {
             <p><em>Loading....</em></p>
@@ -46,7 +46,7 @@
         }
     </select>
     <button type="button" class="btn btn-primary" @onclick="AddNewModule">+</button>
-    <button type="button" class="btn btn-danger" @onclick="DeleteModule">-</button>
+    <button type="button" class="btn btn-danger" @onclick="@(() => { SetModuleBoolTrue(); DeletePopUp(); })">-</button>
     <br />
 
 
@@ -111,10 +111,10 @@
                 }
             }
         }
-        
+
     </select>
     <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
-    <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>
+    <button type="button" class="btn btn-danger" @onclick="@(() => { SetSection1BoolTrue(); DeletePopUp(); })">-</button>
     <br />
     <br />
 
@@ -143,8 +143,6 @@
         }
     </select>
     <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection1BoolTrue(); AddNewCriteria(); })">+</button>
-    <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>
-    <br />
     <br />
 
     @*Feedback Dropdown Box*@
@@ -182,19 +180,19 @@
         <h8>Section 2 </h8>
         <br />
         <select @bind="@selectedSection2">
-                <option value="" selected>Select your Sections</option>
-                @foreach (var sectionrecord in sections)
+            <option value="" selected>Select your Sections</option>
+            @foreach (var sectionrecord in sections)
+            {
+                @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
                 {
-                    @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
-                    {
-                        <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
-                        presentSection = true;
-                    }
-                    else if (presentSection == false)
-                    {
-                        <option value="" hidden>Select your Section</option>
-                    }
+                    <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
+                    presentSection = true;
                 }
+                else if (presentSection == false)
+                {
+                    <option value="" hidden>Select your Section</option>
+                }
+            }
         </select>
 
         <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
@@ -204,21 +202,21 @@
 
 
         <select id="criteria" name="criteria" @bind="@selectedCriteria2">
-            
+
             <option value="" selected hidden>Select your Criteria</option>
-                @foreach (var criteriarecord in criteria)
+            @foreach (var criteriarecord in criteria)
+            {
+                @if (criteriarecord.SectionName.Contains(selectedSection2) && (criteriarecord.ModuleName.Contains(selectedModule)))
                 {
-                    @if (criteriarecord.SectionName.Contains(selectedSection2) && (criteriarecord.ModuleName.Contains(selectedModule)))
-                    {
-                        <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
-                        presentCriteria = true;
-                    }
-                    else if (presentCriteria == false)
-                    {
-                         selectedCriteria2 = "No Criteria Chosen";
-                        <option value="" selected hidden>Select your Criteria</option>
-                    }
+                    <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
+                    presentCriteria = true;
                 }
+                else if (presentCriteria == false)
+                {
+                    selectedCriteria2 = "No Criteria Chosen";
+                    <option value="" selected hidden>Select your Criteria</option>
+                }
+            }
         </select>
         <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection2BoolTrue(); AddNewCriteria(); })">+</button>
         <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>
@@ -226,47 +224,47 @@
         <br />
 
         <select id="feedback" name="feedback">
-                <option value="" selected hidden>Select your Feedback</option>
-                @foreach (var feedbackrecord in feedback)
+            <option value="" selected hidden>Select your Feedback</option>
+            @foreach (var feedbackrecord in feedback)
+            {
+                @if (feedbackrecord.Criteria.Contains(selectedCriteria2) && (feedbackrecord.ModuleName.Contains(selectedModule)))
                 {
-                    @if (feedbackrecord.Criteria.Contains(selectedCriteria2) && (feedbackrecord.ModuleName.Contains(selectedModule)))
-                    {
-                        <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
-                        presentFeedback = true;
-                    }
-                    else if (presentFeedback == false)
-                    {
-                        <option value="" selected hidden>Select your Feedback</option>
-                    }
+                    <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
+                    presentFeedback = true;
                 }
-            
+                else if (presentFeedback == false)
+                {
+                    <option value="" selected hidden>Select your Feedback</option>
+                }
+            }
+
         </select>
-         <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection2BoolTrue(); AddNewFeedback(); })">+</button>
+        <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection2BoolTrue(); AddNewFeedback(); })">+</button>
         <br />
         <br />
     }
-    
+
 
     @if (showNewSection && sectionCounter == 3)
     {
         <h8>Section @sectionCounter </h8>
         <br />
         <select id="section1" name="section1" @bind="@selectedSection3">
-                <option value="" selected>Select your Sections</option>
+            <option value="" selected>Select your Sections</option>
 
-                @foreach (var sectionrecord in sections)
+            @foreach (var sectionrecord in sections)
+            {
+                @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
                 {
-                    @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
-                    {
-                        <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
-                        presentSection = true;
-                    }
-                    else if (presentSection == false)
-                    {
-                        <option value="" selected hidden>Select your Section</option>
-                        selectedSection3 = "No Section Chosen";
-                    }
+                    <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
+                    presentSection = true;
                 }
+                else if (presentSection == false)
+                {
+                    <option value="" selected hidden>Select your Section</option>
+                    selectedSection3 = "No Section Chosen";
+                }
+            }
         </select>
 
         <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
@@ -276,21 +274,21 @@
 
 
         <select id="criteria" name="criteria" @bind="@selectedCriteria3">
-                <option value="" selected hidden>Select your Criteria</option>
-                @foreach (var criteriarecord in criteria)
+            <option value="" selected hidden>Select your Criteria</option>
+            @foreach (var criteriarecord in criteria)
+            {
+                @if (criteriarecord.SectionName.Contains(selectedSection3) && (criteriarecord.ModuleName.Contains(selectedModule)))
                 {
-                    @if (criteriarecord.SectionName.Contains(selectedSection3) && (criteriarecord.ModuleName.Contains(selectedModule)))
-                    {
-                        <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
-                        presentCriteria = true;
-                    }
-                    else if (presentCriteria == false)
-                    {
-                        <option value="" selected hidden>Select your Criteria</option>
-                        selectedCriteria3 = "No Criteria Chosen";
-                    }
+                    <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
+                    presentCriteria = true;
                 }
-            
+                else if (presentCriteria == false)
+                {
+                    <option value="" selected hidden>Select your Criteria</option>
+                    selectedCriteria3 = "No Criteria Chosen";
+                }
+            }
+
         </select>
         <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection3BoolTrue(); AddNewCriteria(); })">+</button>
         <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>
@@ -298,33 +296,33 @@
         <br />
 
         <select id="feedback" name="feedback">
-                <option value="" selected hidden>Select your Feedback</option>
-                @foreach (var feedbackrecord in feedback)
+            <option value="" selected hidden>Select your Feedback</option>
+            @foreach (var feedbackrecord in feedback)
+            {
+                @if (feedbackrecord.Criteria.Contains(selectedCriteria3) && (feedbackrecord.ModuleName.Contains(selectedModule)))
                 {
-                    @if (feedbackrecord.Criteria.Contains(selectedCriteria3) && (feedbackrecord.ModuleName.Contains(selectedModule)))
-                    {
-                        <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
-                        presentFeedback = true;
-                    }
-                    else if (presentFeedback == false)
-                    {
-                        <option value="" selected hidden>Select your Feedback</option>
-                    }
+                    <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
+                    presentFeedback = true;
                 }
-            
+                else if (presentFeedback == false)
+                {
+                    <option value="" selected hidden>Select your Feedback</option>
+                }
+            }
+
         </select>
         <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection3BoolTrue(); AddNewFeedback(); })">+</button>
-        <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>        
+        <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>
         <br />
         <br />
 
     }
 
-    @if(sectionCounter != 3)
+    @if (sectionCounter != 3)
     {
-         <button type="button" class="btn btn-primary" @onclick="ShowNewSection">Show New Section</button>
+        <button type="button" class="btn btn-primary" @onclick="ShowNewSection">Show New Section</button>
     }
-   
+
 
 
     @*When the button above is clicked, this modal (pop up) box will appear, allowing the user to input a new module*@
@@ -470,17 +468,17 @@
                         <label>ACW:</label>
                         <label>@selectedACW </label>
                         <br />
-                        @if(selectedSection1Bool)
+                        @if (selectedSection1Bool)
                         {
                             <label>Section:</label>
                             <label>@selectedSection1 </label>
                         }
-                        @if(selectedSection2Bool)
+                        @if (selectedSection2Bool)
                         {
                             <label>Section:</label>
                             <label>@selectedSection2 </label>
                         }
-                        @if(selectedSection3Bool)
+                        @if (selectedSection3Bool)
                         {
                             <label>Section:</label>
                             <label>@selectedSection3 </label>
@@ -517,7 +515,7 @@
                         <label>ACW:</label>
                         <label>@selectedACW </label>
                         <br />
-                        @if(selectedSection1Bool)
+                        @if (selectedSection1Bool)
                         {
                             <label>Section:</label>
                             <label>@selectedSection1 </label>
@@ -526,7 +524,7 @@
                             <label>Criteria:</label>
                             <label>@selectedCriteria1 </label>
                         }
-                        else if(selectedSection2Bool)
+                        else if (selectedSection2Bool)
                         {
                             <label>Section:</label>
                             <label>@selectedSection2 </label>
@@ -535,7 +533,7 @@
                             <label>Criteria:</label>
                             <label>@selectedCriteria2 </label>
                         }
-                        else if(selectedSection3Bool)
+                        else if (selectedSection3Bool)
                         {
                             <label>Section:</label>
                             <label>@selectedSection3 </label>
@@ -573,12 +571,46 @@
                         <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
                     </div>
                     <div class="modal-body">
-                        <label>Confirmation: This will delete the selected  </label>
+
+                        <label>Confirmation: This will delete</label>
+                        @if (selectedModulebool)
+                        {
+                            <label>@selectedModule</label>
+                        }
+                        else if (selectedACWbool)
+                        {
+                            <label>@selectedACW</label>
+                        }
+                        else if (@selectedSection1Bool)
+                        {
+                            <label>@selectedSection1</label>
+                        }
+                        else if (@selectedSection2Bool)
+                        {
+                            <label>@selectedSection2</label>
+                        }
+                        else if (@selectedSection3Bool)
+                        {
+                            <label>@selectedSection3</label>
+                        }
+                        else if (@selectedCriteria1bool)
+                        {
+                            <label>@selectedCriteria1</label>
+                        }
+                        else if (@selectedCriteria2bool)
+                        {
+                            <label>@selectedCriteria2</label>
+                        }
+                        else if (@selectedCriteria3bool)
+                        {
+                            <label>@selectedCriteria3</label>
+                        }
                         <br />
                         @*When the user has entered the appropiate details, and presses save, the saveACW method will run*@
                         <button type="button" class="btn btn-danger" @onclick="ConfirmDeletion"> Delete </button>
                         <br />
                         <br />
+
                         @if (errorModule == true)
                         {
                             @*If the user has not entered anything within the input box, then they will be reminded to enter something*@
@@ -587,7 +619,7 @@
                                 <label class="alert-danger">No Module Chosen</label>
                             }
                         }
-                    </div>t
+                    </div>
                 </div>
             </div>
         </div>
@@ -595,7 +627,7 @@
     <br />
     <br />
 
-<button  type="button" class="btn btn-primary" @onclick="DownloadFile">Export to File</button>
+    <button type="button" class="btn btn-primary" @onclick="DownloadFile">Export to File</button>
 </form>
 
 
@@ -623,6 +655,7 @@
     string studentNumber;
     string selectedModule;
     string selectedACW;
+    bool selectedModulebool, selectedACWbool;
 
     string selectedSection1;
     string selectedSection2 = "No Section Chosen";
@@ -686,7 +719,7 @@
         sections = await SectionService.GetSectionsAsync(user.Identity.Name);
         acw = await ACWService.GetAcwsAsync(user.Identity.Name);
 
-        feedback = unsortedFeedback.OrderByDescending(o=>o.Grade).ToList();
+        feedback = unsortedFeedback.OrderByDescending(o => o.Grade).ToList();
     }
 
     string trustedFileNameForFileStorage = "";
@@ -718,6 +751,9 @@
         errorSections = false;
         errorCriteria = false;
 
+        selectedModulebool = false;
+        selectedACWbool = false;
+
         selectedSection1Bool = false;
         selectedSection2Bool = false;
         selectedSection3Bool = false;
@@ -737,12 +773,6 @@
         ShowPopUpModule = true;
     }
 
-
-
-
-
-
-
     // When the user presses the button to add an acw, the code below creates the variables needed for the saveModule method and then displays the modal
     void AddNewACW()
     {
@@ -750,8 +780,6 @@
         inputACW.Id = 0;
         ShowPopUpACW = true;
     }
-
-
 
     void AddNewSection()
     {
@@ -769,7 +797,23 @@
         ShowPopUpCriteria = true;
     }
 
+    // When the user presses the button to add feedback, the code below creates the variables needed for the saveModule method and then displays the modal
+    void AddNewFeedback()
+    {
+        inputFeedback = new Feedback();
+        inputACW.Id = 0;
+        showPopUpFeedback = true;
+    }
 
+    void SetModuleBoolTrue()
+    {
+        selectedModulebool = true;
+    }
+
+    void SetACWBoolTrue()
+    {
+        selectedACWbool = true;
+    }
 
     void SetSection1BoolTrue()
     {
@@ -789,13 +833,7 @@
         selectedCriteria3bool = true;
     }
 
-    // When the user presses the button to add feedback, the code below creates the variables needed for the saveModule method and then displays the modal
-    void AddNewFeedback()
-    {
-        inputFeedback = new Feedback();
-        inputACW.Id = 0;
-        showPopUpFeedback = true;
-    }
+
 
 
     // When the user presses save in the module modal, the following code will run
@@ -838,8 +876,6 @@
             return;
         }
     }
-
-
 
     // When the user presses save in the acw modal, the following code will run
     async Task SaveACW()
@@ -936,15 +972,15 @@
             Criteria newCriteria = new Criteria();
             newCriteria.Id = 0;
             newCriteria.Criteria1 = inputCriteria.Criteria1;
-            if(selectedSection1Bool)
+            if (selectedSection1Bool)
             {
                 newCriteria.SectionName = selectedSection1;
             }
-            else if(selectedSection2Bool)
+            else if (selectedSection2Bool)
             {
                 newCriteria.SectionName = selectedSection2;
             }
-            else if(selectedSection3Bool)
+            else if (selectedSection3Bool)
             {
                 newCriteria.SectionName = selectedSection3;
             }
@@ -967,50 +1003,47 @@
     {
         // Close the Popup
         showPopUpFeedback = false;
-        if (inputFeedback.Id == 0)
+        // Creates the new feedback
+        Feedback newFeedback = new Feedback();
+        newFeedback.Feedback1 = inputFeedback.Feedback1;
+        newFeedback.Grade = inputFeedback.Grade;
+        newFeedback.ModuleName = selectedModule;
+        newFeedback.Acwname = selectedACW;
+        if (selectedSection1Bool)
         {
-            // Creates the new feedback
-            Feedback newFeedback = new Feedback();
-            newFeedback.Feedback1 = inputFeedback.Feedback1;
-            newFeedback.Grade = inputFeedback.Grade;
-            newFeedback.ModuleName = selectedModule;
-            newFeedback.Acwname = selectedACW;
-            if(selectedSection1Bool)
-            {
-                newFeedback.SectionName = selectedSection1;
-            }
-            else if(selectedSection2Bool)
-            {
-                newFeedback.SectionName = selectedSection2;
-            }
-            else if(selectedSection3Bool)
-            {
-                newFeedback.SectionName = selectedSection3;
-            }
-
-            if(selectedSection1Bool)
-            {
-                newFeedback.Criteria = selectedCriteria1;
-            }
-            else if(selectedSection2Bool)
-            {
-                newFeedback.Criteria = selectedCriteria2;
-            }
-            else if(selectedSection3Bool)
-            {
-                newFeedback.Criteria = selectedCriteria3;
-            }
-            newFeedback.UserName = UserIdentityName;
-
-            // Passes the new feedback to be created in the criteria service
-            var feedbackInsert = FeedbackService.CreateFeedbackAsync(newFeedback);
-            var user = (await authenticationStateTask).User;
-            feedback = await FeedbackService.GetFeedbacksAsync(user.Identity.Name);
-            return;
+            newFeedback.SectionName = selectedSection1;
         }
+        else if (selectedSection2Bool)
+        {
+            newFeedback.SectionName = selectedSection2;
+        }
+        else if (selectedSection3Bool)
+        {
+            newFeedback.SectionName = selectedSection3;
+        }
+
+        if (selectedSection1Bool)
+        {
+            newFeedback.Criteria = selectedCriteria1;
+        }
+        else if (selectedSection2Bool)
+        {
+            newFeedback.Criteria = selectedCriteria2;
+        }
+        else if (selectedSection3Bool)
+        {
+            newFeedback.Criteria = selectedCriteria3;
+        }
+        newFeedback.UserName = UserIdentityName;
+
+        // Passes the new feedback to be created in the criteria service
+        var feedbackInsert = FeedbackService.CreateFeedbackAsync(newFeedback);
+        var user = (await authenticationStateTask).User;
+        feedback = await FeedbackService.GetFeedbacksAsync(user.Identity.Name);
+        return;
     }
 
-    void DeleteModule()
+    void DeletePopUp()
     {
         confirmationPopup = true;
     }
@@ -1018,15 +1051,41 @@
     async Task ConfirmDeletion()
     {
         confirmationPopup = false;
+        if (selectedModulebool)
+        {
+            foreach (var module in moduleList)
+            {
+                if (module.ModuleName == selectedModule)
+                {
+                    var moduleDelete = ModuleService.DeleteModulesAsync(module);
+                }
+            }
+            var user = (await authenticationStateTask).User;
+            moduleList = await ModuleService.GetModulesAsync(user.Identity.Name);
+            return;
+        }
+        else if (selectedACWbool)
+        {
+                foreach (var acoursework in acw)
+                {
+                    if (acoursework.AcwName == selectedACW)
+                    {
+                        var acwDelete = ACWService.DeleteACWAsync(acoursework);
+                    }
+                }
+                var user = (await authenticationStateTask).User;
+                moduleList = await ModuleService.GetModulesAsync(user.Identity.Name);
+                return;
+            }
+        }
 
     }
 
 
 
-
     async Task DownloadFile()
     {
-        var buffer = new MemoryStream();   
+        var buffer = new MemoryStream();
         var writer = new BinaryWriter(buffer);
 
         writer.Write("Student Number: " + studentNumber + "\r\n");
@@ -1041,7 +1100,7 @@
         writer.Write("Feedback: " + selectedFeedback1 + "\r\n");
         writer.Write("\r\n");
 
-        if(showNewSection)
+        if (showNewSection)
         {
             writer.Write("Section 2" + "\r\n");
             writer.Write("Section: " + selectedSection2 + "\r\n");
@@ -1056,8 +1115,8 @@
 
         writer.Close();
         byte[] bytes = buffer.ToArray();
-        var task = await BlazorDownloadFileService.DownloadFile(studentNumber, bytes,"text/plain");
-        
+        var task = await BlazorDownloadFileService.DownloadFile(studentNumber, bytes, "text/plain");
+
     }
 
 
