@@ -77,7 +77,7 @@
         }
     </select>
     <button type="button" class="btn btn-primary" @onclick="AddNewACW">+</button>
-    <button type="button" class="btn btn-danger" @onclick="@(() => {})">-</button>
+    <button type="button" class="btn btn-danger" @onclick="@(() => { SetACWBoolTrue(); DeletePopUp(); })">-</button>
     <br />
 
 
@@ -1066,20 +1066,33 @@
         }
         else if (selectedACWbool)
         {
-                foreach (var acoursework in acw)
+            foreach (var acoursework in acw)
+            {
+                if (acoursework.AcwName == selectedACW)
                 {
-                    if (acoursework.AcwName == selectedACW)
-                    {
-                        var acwDelete = ACWService.DeleteACWAsync(acoursework);
-                    }
+                    var acwDelete = ACWService.DeleteACWAsync(acoursework);
                 }
-                var user = (await authenticationStateTask).User;
-                moduleList = await ModuleService.GetModulesAsync(user.Identity.Name);
-                return;
             }
+            var user = (await authenticationStateTask).User;
+            acw = await ACWService.GetAcwsAsync(user.Identity.Name);
+            return;
         }
-
+        else if (selectedSection1Bool || selectedSection2Bool || selectedSection3Bool)
+        {
+            foreach (var section in sections)
+            {
+                if (section.SectionName == selectedSection1 || section.SectionName == selectedSection2 || section.SectionName == selectedSection3)
+                {
+                    var acwDelete = SectionService.DeleteSectionsAsync(section);
+                }
+            }
+            var user = (await authenticationStateTask).User;
+            sections = await SectionService.GetSectionsAsync(user.Identity.Name);
+            return;
+        }
     }
+
+
 
 
 

@@ -30,6 +30,21 @@ namespace FeedbackToolDissertation.Data
             return Task.FromResult(sections);
         }
 
+        public Task<bool> DeleteSectionsAsync(Sections section)
+        {
+            using var ctx = _dbContext.CreateDbContext();
+            var sectionToBeDeleted = ctx.Sections.Where(x => x.SectionName == section.SectionName).FirstOrDefault();
+            if (sectionToBeDeleted != null)
+            {
+                ctx.Sections.Remove(sectionToBeDeleted);
+                ctx.SaveChanges();
+                return Task.FromResult(true);
+            }
+            else
+            {
+                return Task.FromResult(false);
+            }
 
+        }
     }
 }
