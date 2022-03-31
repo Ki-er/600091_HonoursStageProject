@@ -31,5 +31,22 @@ namespace FeedbackToolDissertation.Data
 
             return Task.FromResult(feedback);
         }
+
+        public Task<bool> DeleteFeedbackAsync(Feedback feedback)
+        {
+            using var ctx = _dbContext.CreateDbContext();
+            var feeddbackToBeDeleted = ctx.Feedback.Where(x => x.Feedback1 == feedback.Feedback1).FirstOrDefault();
+            if (feeddbackToBeDeleted != null)
+            {
+                ctx.Feedback.Remove(feeddbackToBeDeleted);
+                ctx.SaveChanges();
+                return Task.FromResult(true);
+            }
+            else
+            {
+                return Task.FromResult(false);
+            }
+
+        }
     }
 }

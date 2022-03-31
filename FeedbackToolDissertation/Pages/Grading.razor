@@ -670,6 +670,7 @@
     string selectedFeedback1;
     string selectedFeedback2 = "";
     string selectedFeedback3 = "";
+    bool selectedFeedback1bool, selectedFeedback2bool, selectedFeedback3bool = false;
 
 
     // The variables that prevent overwriting of the selected variables
@@ -1103,6 +1104,21 @@
             criteria = await CriteriaService.GetCriteriasAsync(user.Identity.Name);
             return;
         }
+        else if (selectedFeedback1bool || selectedFeedback2bool || selectedFeedback3bool)
+        {
+            foreach (var feedback in feedback)
+            
+                if (feedback.Feedback1 == selectedFeedback1 || feedback.Feedback1 == selectedFeedback2 || feedback.Feedback1 == selectedFeedback3 )
+                {
+                    var criteriaDelete = FeedbackService.DeleteFeedbackAsync(feedback);
+                }
+            }
+            var user = (await authenticationStateTask).User;
+            feedback = await FeedbackService.GetFeedbacksAsync(user.Identity.Name);
+            return;
+        }
+
+
     }
 
 
