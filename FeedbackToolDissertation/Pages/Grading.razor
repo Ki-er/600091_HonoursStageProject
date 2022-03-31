@@ -1083,11 +1083,24 @@
             {
                 if (section.SectionName == selectedSection1 || section.SectionName == selectedSection2 || section.SectionName == selectedSection3)
                 {
-                    var acwDelete = SectionService.DeleteSectionsAsync(section);
+                    var sectionDelete = SectionService.DeleteSectionsAsync(section);
                 }
             }
             var user = (await authenticationStateTask).User;
             sections = await SectionService.GetSectionsAsync(user.Identity.Name);
+            return;
+        }
+        else if (selectedCriteria1bool || selectedCriteria2bool || selectedCriteria3bool)
+        {
+            foreach (var criterion in criteria)
+            {
+                if (criterion.Criteria1 == selectedCriteria1 || criterion.Criteria1 == selectedCriteria2 || criterion.Criteria1 == selectedCriteria3)
+                {
+                    var criteriaDelete = CriteriaService.DeleteCriteriaAsync(criterion);
+                }
+            }
+            var user = (await authenticationStateTask).User;
+            criteria = await CriteriaService.GetCriteriasAsync(user.Identity.Name);
             return;
         }
     }

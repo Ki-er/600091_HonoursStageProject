@@ -30,5 +30,22 @@ namespace FeedbackToolDissertation.Data
 
             return Task.FromResult(criteria);
         }
+
+        public Task<bool> DeleteCriteriaAsync(Criteria criterion)
+        {
+            using var ctx = _dbContext.CreateDbContext();
+            var criteriaToBeDeleted = ctx.Criteria.Where(x => x.Criteria1 == criterion.Criteria1).FirstOrDefault();
+            if (criteriaToBeDeleted != null)
+            {
+                ctx.Criteria.Remove(criteriaToBeDeleted);
+                ctx.SaveChanges();
+                return Task.FromResult(true);
+            }
+            else
+            {
+                return Task.FromResult(false);
+            }
+
+        }
     }
 }
