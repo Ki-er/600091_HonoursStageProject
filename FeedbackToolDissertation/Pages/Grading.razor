@@ -144,6 +144,8 @@
     </select>
     <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection1BoolTrue(); AddNewCriteria(); })">+</button>
     <br />
+    <br />
+
 
     @*Feedback Dropdown Box*@
     <select id="feedback" name="feedback" @bind="@selectedFeedback1">
@@ -655,15 +657,15 @@
     bool selectedModulebool, selectedACWbool;
 
     string selectedSection1;
-    string selectedSection2, selectedSection3 = "No Section Chosen";
+    string selectedSection2 = "No Section Chosen", selectedSection3 = "No Section Chosen";
     bool selectedSection1Bool, selectedSection2Bool, selectedSection3Bool = false;
 
     string selectedCriteria1;
-    string selectedCriteria2, selectedCriteria3 = "No Criteria Chosen";
+    string selectedCriteria2 = "No Criteria Chosen", selectedCriteria3 = "No Criteria Chosen";
     bool selectedCriteria1bool, selectedCriteria2bool, selectedCriteria3bool = false;
 
     string selectedFeedback1;
-    string selectedFeedback2, selectedFeedback3 = "";
+    string selectedFeedback2 = "", selectedFeedback3 = "";
     bool selectedFeedback1bool, selectedFeedback2bool, selectedFeedback3bool = false;
 
     // The variables that prevent overwriting of the selected variables
