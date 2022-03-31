@@ -627,7 +627,7 @@
     <br />
     <br />
 
-    <button type="button" class="btn btn-primary" @onclick="DownloadFile">Export to File</button>
+    <button type="button" class="btn btn-primary" @onclick="DownloadFile">Export to Text Document</button>
 </form>
 
 
@@ -642,7 +642,6 @@
 
     [Inject] IBlazorDownloadFileService BlazorDownloadFileService { get; set; }
 
-
     // Creates the lists pulled from the database tables
     List<Modules> moduleList;
     List<Feedback> feedback;
@@ -652,40 +651,26 @@
     List<Acw> acw;
 
     // The variables that will be edited when the user interactes with the dropdown boxes
-    string studentNumber;
-    string selectedModule;
-    string selectedACW;
+    string studentNumber, selectedModule, selectedACW;
     bool selectedModulebool, selectedACWbool;
 
     string selectedSection1;
-    string selectedSection2 = "No Section Chosen";
-    string selectedSection3 = "No Section Chosen";
+    string selectedSection2, selectedSection3 = "No Section Chosen";
     bool selectedSection1Bool, selectedSection2Bool, selectedSection3Bool = false;
 
     string selectedCriteria1;
-    string selectedCriteria2 = "No Criteria Chosen";
-    string selectedCriteria3 = "No Criteria Chosen";
+    string selectedCriteria2, selectedCriteria3 = "No Criteria Chosen";
     bool selectedCriteria1bool, selectedCriteria2bool, selectedCriteria3bool = false;
 
     string selectedFeedback1;
-    string selectedFeedback2 = "";
-    string selectedFeedback3 = "";
+    string selectedFeedback2, selectedFeedback3 = "";
     bool selectedFeedback1bool, selectedFeedback2bool, selectedFeedback3bool = false;
 
-
     // The variables that prevent overwriting of the selected variables
-    bool presentModule;
-    bool presentACW;
-    bool presentSection;
-    bool presentCriteria;
-    bool presentFeedback;
+    bool presentModule, presentACW, presentSection, presentCriteria, presentFeedback;
 
     // The variables used for when displaying the modals
-    bool ShowPopUpModule = false;
-    bool ShowPopUpACW = false;
-    bool ShowPopUpSection = false;
-    bool ShowPopUpCriteria = false;
-    bool showPopUpFeedback = false;
+    bool ShowPopUpModule, ShowPopUpACW, ShowPopUpSection, ShowPopUpCriteria, showPopUpFeedback, confirmationPopup = false;
 
     // The variables that show new sections
     bool showNewSection = false;
@@ -699,12 +684,7 @@
     Feedback inputFeedback = new Feedback();
 
     // The variables that check for errors
-    bool errorModule = false;
-    bool errorAcw = false;
-    bool errorSections = false;
-    bool errorCriteria = false;
-
-    bool confirmationPopup = false;
+    bool errorModule, errorAcw, errorSections, errorCriteria = false;
 
     // Is run when the page loads and populates the lists with all data from the database that is appropiate for the user logged in
     protected override async Task OnInitializedAsync()
@@ -1052,6 +1032,8 @@
     async Task ConfirmDeletion()
     {
         confirmationPopup = false;
+        var user = (await authenticationStateTask).User;
+
         if (selectedModulebool)
         {
             foreach (var module in moduleList)
@@ -1061,7 +1043,6 @@
                     var moduleDelete = ModuleService.DeleteModulesAsync(module);
                 }
             }
-            var user = (await authenticationStateTask).User;
             moduleList = await ModuleService.GetModulesAsync(user.Identity.Name);
             return;
         }
@@ -1074,7 +1055,6 @@
                     var acwDelete = ACWService.DeleteACWAsync(acoursework);
                 }
             }
-            var user = (await authenticationStateTask).User;
             acw = await ACWService.GetAcwsAsync(user.Identity.Name);
             return;
         }
@@ -1087,7 +1067,6 @@
                     var sectionDelete = SectionService.DeleteSectionsAsync(section);
                 }
             }
-            var user = (await authenticationStateTask).User;
             sections = await SectionService.GetSectionsAsync(user.Identity.Name);
             return;
         }
@@ -1100,29 +1079,21 @@
                     var criteriaDelete = CriteriaService.DeleteCriteriaAsync(criterion);
                 }
             }
-            var user = (await authenticationStateTask).User;
             criteria = await CriteriaService.GetCriteriasAsync(user.Identity.Name);
             return;
         }
         else if (selectedFeedback1bool || selectedFeedback2bool || selectedFeedback3bool)
         {
             foreach (var feedback in feedback)
-            
-                if (feedback.Feedback1 == selectedFeedback1 || feedback.Feedback1 == selectedFeedback2 || feedback.Feedback1 == selectedFeedback3 )
+
+                if (feedback.Feedback1 == selectedFeedback1 || feedback.Feedback1 == selectedFeedback2 || feedback.Feedback1 == selectedFeedback3)
                 {
                     var criteriaDelete = FeedbackService.DeleteFeedbackAsync(feedback);
                 }
-            }
-            var user = (await authenticationStateTask).User;
-            feedback = await FeedbackService.GetFeedbacksAsync(user.Identity.Name);
-            return;
         }
-
-
+        feedback = await FeedbackService.GetFeedbacksAsync(user.Identity.Name);
+        return;
     }
-
-
-
 
 
     async Task DownloadFile()
@@ -1160,6 +1131,5 @@
         var task = await BlazorDownloadFileService.DownloadFile(studentNumber, bytes, "text/plain");
 
     }
-
 
 }
