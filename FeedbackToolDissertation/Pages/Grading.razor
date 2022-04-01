@@ -101,6 +101,7 @@
             @foreach (var sectionrecord in sections)
             {
                 @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
+
                 {
                     <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
                     presentSection = true;
@@ -169,6 +170,7 @@
                 else if (presentFeedback == false)
                 {
                     <option value="" selected hidden>Select your Feedback</option>
+                    selectedFeedback1 = "No Feedback Chosen";
                 }
             }
         }
@@ -184,21 +186,29 @@
         <h8>Section 2 </h8>
         <br />
         <select @bind="@selectedSection2">
-            <option value="" selected>Select your Sections</option>
-            @foreach (var sectionrecord in sections)
+            <option value="" selected hidden>Select your Sections</option>
+
+            @if (selectedSection2 == null)
             {
-                @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
+                selectedSection2 = "No Section Chosen";
+            }
+            else
+            {
+                @foreach (var sectionrecord in sections)
                 {
-                    <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
-                    presentSection = true;
-                }
-                else if (presentSection == false)
-                {
-                    <option value="" hidden>Select your Section</option>
+                    @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
+                    {
+                        <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
+                        presentSection = true;
+                    }
+                    else if (presentSection == false)
+                    {
+                        <option value="" selected hidden>Select your Section</option>
+                        selectedSection2 = "No Section Chosen";
+                    }
                 }
             }
         </select>
-
         <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
         <button type="button" class="btn btn-danger" @onclick="@(() => { SetSection2BoolTrue(); DeletePopUp(); })">-</button>
         <br />
@@ -206,19 +216,27 @@
 
 
         <select id="criteria" name="criteria" @bind="@selectedCriteria2">
-
             <option value="" selected hidden>Select your Criteria</option>
-            @foreach (var criteriarecord in criteria)
+
+            @if (selectedCriteria2 == null)
             {
-                @if (criteriarecord.SectionName.Contains(selectedSection2) && (criteriarecord.ModuleName.Contains(selectedModule)))
+                selectedCriteria2 = "No Criteria Chosen";
+            }
+            else
+            {
+                @foreach (var criteriarecord in criteria)
                 {
-                    <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
-                    presentCriteria = true;
-                }
-                else if (presentCriteria == false)
-                {
-                    selectedCriteria2 = "No Criteria Chosen";
-                    <option value="" selected hidden>Select your Criteria</option>
+                    @if (criteriarecord.SectionName.Contains(selectedSection2) && (criteriarecord.ModuleName.Contains(selectedModule)))
+                    {
+                        <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
+                        presentCriteria = true;
+                    }
+                    else if (presentCriteria == false)
+                    {
+                        <option value="" selected hidden>Select your Criteria</option>
+                        selectedCriteria2 = "No Criteria Chosen";
+
+                    }
                 }
             }
         </select>
@@ -230,25 +248,43 @@
 
         <select id="feedback" name="feedback" @bind="@selectedFeedback2">
             <option value="" selected hidden>Select your Feedback</option>
-            @foreach (var feedbackrecord in feedback)
+
+            @if (selectedFeedback2 == null)
             {
-                @if (feedbackrecord.Criteria.Contains(selectedCriteria2) && (feedbackrecord.ModuleName.Contains(selectedModule)))
+                selectedFeedback2 = "No Feedback Chosen";
+            }
+            else
+            {
+                @foreach (var feedbackrecord in feedback)
                 {
-                    <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
-                    presentFeedback = true;
-                }
-                else if (presentFeedback == false)
-                {
-                    <option value="" selected hidden>Select your Feedback</option>
+                    @if (feedbackrecord.Criteria.Contains(selectedCriteria2) && (feedbackrecord.ModuleName.Contains(selectedModule)))
+                    {
+                        <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
+                        presentFeedback = true;
+                    }
+                    else if (presentFeedback == false)
+                    {
+                        <option value="" selected hidden>Select your Feedback</option>
+                        selectedFeedback2 = "No Feedback Chosen";
+                    }
                 }
             }
+
+
+
         </select>
         <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection2BoolTrue(); SetCriteria2BoolTrue(); AddNewFeedback(); })">+</button>
         <button type="button" class="btn btn-danger" @onclick="@(() => { SetFeedback2BoolTrue(); DeletePopUp(); })">-</button>
-
         <br />
         <br />
     }
+
+
+
+
+
+
+
 
 
     @if (showNewSection && sectionCounter == 3)
@@ -256,23 +292,28 @@
         <h8>Section @sectionCounter </h8>
         <br />
         <select id="section1" name="section1" @bind="@selectedSection3">
-            <option value="" selected>Select your Sections</option>
-
-            @foreach (var sectionrecord in sections)
+            <option value="" selected hidden>Select your Sections</option>
+            @if (selectedSection3 == null)
             {
-                @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
+                selectedSection3 = "No Section Chosen";
+            }
+            else
+            {
+                @foreach (var sectionrecord in sections)
                 {
-                    <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
-                    presentSection = true;
-                }
-                else if (presentSection == false)
-                {
-                    <option value="" selected hidden>Select your Section</option>
-                    selectedSection3 = "No Section Chosen";
+                    @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
+                    {
+                        <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
+                        presentSection = true;
+                    }
+                    else if (presentSection == false)
+                    {
+                        <option value="" selected hidden>Select your Section</option>
+                        selectedSection3 = "No Section Chosen";
+                    }
                 }
             }
         </select>
-
         <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
         <button type="button" class="btn btn-danger" @onclick="@(() => { SetSection3BoolTrue(); DeletePopUp(); })">-</button>
         <br />
@@ -281,17 +322,24 @@
 
         <select id="criteria" name="criteria" @bind="@selectedCriteria3">
             <option value="" selected hidden>Select your Criteria</option>
-            @foreach (var criteriarecord in criteria)
+            @if (selectedCriteria3 == null)
             {
-                @if (criteriarecord.SectionName.Contains(selectedSection3) && (criteriarecord.ModuleName.Contains(selectedModule)))
+                selectedCriteria3 = "No Criteria Chosen";
+            }
+            else
+            {
+                @foreach (var criteriarecord in criteria)
                 {
-                    <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
-                    presentCriteria = true;
-                }
-                else if (presentCriteria == false)
-                {
-                    <option value="" selected hidden>Select your Criteria</option>
-                    selectedCriteria3 = "No Criteria Chosen";
+                    @if (criteriarecord.SectionName.Contains(selectedSection3) && (criteriarecord.ModuleName.Contains(selectedModule)))
+                    {
+                        <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
+                        presentCriteria = true;
+                    }
+                    else if (presentCriteria == false)
+                    {
+                        <option value="" selected hidden>Select your Criteria</option>
+                        selectedCriteria3 = "No Criteria Chosen";
+                    }
                 }
             }
         </select>
@@ -300,18 +348,28 @@
         <br />
         <br />
 
+
         <select id="feedback" name="feedback" @bind="@selectedFeedback3">
             <option value="" selected hidden>Select your Feedback</option>
-            @foreach (var feedbackrecord in feedback)
+            @if (selectedFeedback3 == null)
             {
-                @if (feedbackrecord.Criteria.Contains(selectedCriteria3) && (feedbackrecord.ModuleName.Contains(selectedModule)))
+                selectedFeedback3 = "No Feedback Chosen";
+            }
+            else
+            {
+                @foreach (var feedbackrecord in feedback)
                 {
-                    <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
-                    presentFeedback = true;
-                }
-                else if (presentFeedback == false)
-                {
-                    <option value="" selected hidden>Select your Feedback</option>
+                    @if (feedbackrecord.Criteria.Contains(selectedCriteria3) && (feedbackrecord.ModuleName.Contains(selectedModule)))
+                    {
+                        <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
+                        presentFeedback = true;
+                    }
+                    else if (presentFeedback == false)
+                    {
+                        <option value="" selected hidden>Select your Feedback</option>
+                        selectedFeedback3 = "No Feedback Chosen";
+
+                    }
                 }
             }
         </select>
@@ -657,16 +715,13 @@
     string studentNumber, selectedModule, selectedACW;
     bool selectedModulebool, selectedACWbool;
 
-    string selectedSection1;
-    string selectedSection2 = "No Section Chosen", selectedSection3 = "No Section Chosen";
+    string selectedSection1, selectedSection2, selectedSection3;
     bool selectedSection1Bool, selectedSection2Bool, selectedSection3Bool = false;
 
-    string selectedCriteria1;
-    string selectedCriteria2 = "No Criteria Chosen", selectedCriteria3 = "No Criteria Chosen";
+    string selectedCriteria1, selectedCriteria2, selectedCriteria3;
     bool selectedCriteria1bool, selectedCriteria2bool, selectedCriteria3bool = false;
 
-    string selectedFeedback1;
-    string selectedFeedback2 = "", selectedFeedback3 = "";
+    string selectedFeedback1, selectedFeedback2, selectedFeedback3;
     bool selectedFeedback1bool, selectedFeedback2bool, selectedFeedback3bool = false;
 
     // The variables that prevent overwriting of the selected variables
