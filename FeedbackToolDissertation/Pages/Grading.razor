@@ -24,179 +24,85 @@
 </div>
 <br />
 
-<form>
-    <label> Student </label>
-    <input type="text" id="snumber" placeholder="Student Number" name="snumber" @bind=@studentNumber>
-    <br />
-
-    @*Module Dropdown Box*@
-    <label> Module </label>
-    <select @bind="@selectedModule">
-        @if (moduleList == null)
-        {
-            <p><em>Loading....</em></p>
-            selectedModule = "No Module Chosen";
-        }
-        else
-        {
-            <option value="" selected hidden>Select your Module</option>
-            @foreach (var module in moduleList)
-            {
-                <option value="@module.ModuleName">@module.ModuleName</option>
-            }
-        }
-    </select>
-    <button type="button" class="btn btn-primary" @onclick="AddNewModule">+</button>
-    <button type="button" class="btn btn-danger" @onclick="@(() => { SetModuleBoolTrue(); DeletePopUp(); })">-</button>
-    <br />
-
-
-    @*ACW Dropdown Box*@
-    <label> ACW </label>
-    <select @bind="@selectedACW" autocomplete="off">
-        @if (acw == null)
-        {
-            <p><em>Loading....</em></p>
-            selectedACW = "No ACW Chosen";
-        }
-        else
-        {
-            <option value="" selected="selected" hidden>Select your ACW</option>
-            @foreach (var acwrecord in acw)
-            {
-                @if (acwrecord.ModuleName.Contains(selectedModule))
-                {
-                    <option value="@acwrecord.AcwName">@acwrecord.AcwName</option>
-                    presentACW = true;
-                }
-                else if (presentACW == false)
-                {
-                    <option value="" selected hidden>Select your ACW</option>
-                    selectedACW = "No ACW Chosen";
-                }
-            }
-        }
-    </select>
-    <button type="button" class="btn btn-primary" @onclick="AddNewACW">+</button>
-    <button type="button" class="btn btn-danger" @onclick="@(() => { SetACWBoolTrue(); DeletePopUp(); })">-</button>
-    <br />
-
-
-
-    <h8> Feedback </h8>
-    <br />
-    Section 1
-    <br />
-    <select @bind="@selectedSection1">
-        @if (sections == null)
-        {
-            <p><em>Loading....</em></p>
-            selectedSection1 = "No Section Chosen";
-        }
-        else
-        {
-            presentCriteria = false;
-            presentFeedback = false;
-            <option value="" selected hidden>Select your Sections</option>
-            @foreach (var sectionrecord in sections)
-            {
-                @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
-
-                {
-                    <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
-                    presentSection = true;
-                }
-                else if (presentSection == false)
-                {
-                    <option value="" selected hidden>Select your Section</option>
-                    selectedSection1 = "No Section Chosen";
-                }
-            }
-        }
-    </select>
-    <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
-    <button type="button" class="btn btn-danger" @onclick="@(() => { SetSection1BoolTrue(); DeletePopUp(); })">-</button>
-    <br />
-    <br />
-
-
-    <select id="criteria" name="criteria" @bind="@selectedCriteria1">
-        @if (criteria == null)
-        {
-            <p><em>Loading....</em></p>
-            selectedCriteria1 = "No Criteria Chosen";
-        }
-        else
-        {
-            <option value="" selected hidden>Select your Criteria</option>
-            @foreach (var criteriarecord in criteria)
-            {
-                @if (criteriarecord.SectionName.Contains(selectedSection1) && (criteriarecord.ModuleName.Contains(selectedModule)))
-                {
-                    <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
-                    presentCriteria = true;
-                }
-                else if (presentCriteria == false)
-                {
-                    <option value="" selected hidden>Select your Criteria</option>
-                    selectedCriteria1 = "No Criteria Chosen";
-                }
-            }
-        }
-    </select>
-    <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection3BoolTrue(); AddNewCriteria(); })">+</button>
-    <button type="button" class="btn btn-danger" @onclick="@(() => { SetCriteria1BoolTrue(); DeletePopUp(); })">-</button>
-    <br />
-    <br />
-
-
-    @*Feedback Dropdown Box*@
-    <select id="feedback" name="feedback" @bind="@selectedFeedback1">
-        @if (feedback == null)
-        {
-            <p><em>Loading....</em></p>
-            selectedFeedback1 = "No Feedback Chosen";
-        }
-        else
-        {
-            <option value="" selected hidden>Select your Feedback</option>
-            @foreach (var feedbackrecord in feedback)
-            {
-                @if (feedbackrecord.Criteria.Contains(selectedCriteria1) && (feedbackrecord.ModuleName.Contains(selectedModule)))
-                {
-                    <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
-                    presentFeedback = true;
-                }
-                else if (presentFeedback == false)
-                {
-                    <option value="" selected hidden>Select your Feedback</option>
-                    selectedFeedback1 = "No Feedback Chosen";
-                }
-            }
-        }
-    </select>
-    <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection1BoolTrue(); SetCriteria1BoolTrue(); AddNewFeedback(); })">+</button>
-    <button type="button" class="btn btn-danger" @onclick="@(() => { SetFeedback1BoolTrue(); DeletePopUp(); })">-</button>
-    <br />
-    <br />
-
-
-    @if (showNewSection)
-    {
-        <h8>Section 2 </h8>
+<body>
+    <form>
+        <label> Student </label>
+        <input type="text" id="snumber" placeholder="Student Number" name="snumber" @bind=@studentNumber>
         <br />
-        <select @bind="@selectedSection2">
-            <option value="" selected hidden>Select your Sections</option>
 
-            @if (selectedSection2 == null)
+        @*Module Dropdown Box*@
+        <label> Module </label>
+        <select @bind="@selectedModule">
+            @if (moduleList == null)
             {
-                selectedSection2 = "No Section Chosen";
+                <p><em>Loading....</em></p>
+                selectedModule = "No Module Chosen";
             }
             else
             {
+                <option value="" selected hidden>Select your Module</option>
+                @foreach (var module in moduleList)
+                {
+                    <option value="@module.ModuleName">@module.ModuleName</option>
+                }
+            }
+        </select>
+        <button type="button" class="btn btn-primary" @onclick="AddNewModule">+</button>
+        <button type="button" class="btn btn-danger" @onclick="@(() => { SetModuleBoolTrue(); DeletePopUp(); })">-</button>
+        <br />
+
+
+        @*ACW Dropdown Box*@
+        <label> ACW </label>
+        <select @bind="@selectedACW" autocomplete="off">
+            @if (acw == null)
+            {
+                <p><em>Loading....</em></p>
+                selectedACW = "No ACW Chosen";
+            }
+            else
+            {
+                <option value="" selected="selected" hidden>Select your ACW</option>
+                @foreach (var acwrecord in acw)
+                {
+                    @if (acwrecord.ModuleName.Contains(selectedModule))
+                    {
+                        <option value="@acwrecord.AcwName">@acwrecord.AcwName</option>
+                        presentACW = true;
+                    }
+                    else if (presentACW == false)
+                    {
+                        <option value="" selected hidden>Select your ACW</option>
+                        selectedACW = "No ACW Chosen";
+                    }
+                }
+            }
+        </select>
+        <button type="button" class="btn btn-primary" @onclick="AddNewACW">+</button>
+        <button type="button" class="btn btn-danger" @onclick="@(() => { SetACWBoolTrue(); DeletePopUp(); })">-</button>
+        <br />
+
+
+
+        <h8> Feedback </h8>
+        <br />
+        Section 1
+        <br />
+        <select @bind="@selectedSection1">
+            @if (sections == null)
+            {
+                <p><em>Loading....</em></p>
+                selectedSection1 = "No Section Chosen";
+            }
+            else
+            {
+                presentCriteria = false;
+                presentFeedback = false;
+                <option value="" selected hidden>Select your Sections</option>
                 @foreach (var sectionrecord in sections)
                 {
                     @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
+
                     {
                         <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
                         presentSection = true;
@@ -204,29 +110,29 @@
                     else if (presentSection == false)
                     {
                         <option value="" selected hidden>Select your Section</option>
-                        selectedSection2 = "No Section Chosen";
+                        selectedSection1 = "No Section Chosen";
                     }
                 }
             }
         </select>
         <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
-        <button type="button" class="btn btn-danger" @onclick="@(() => { SetSection2BoolTrue(); DeletePopUp(); })">-</button>
+        <button type="button" class="btn btn-danger" @onclick="@(() => { SetSection1BoolTrue(); DeletePopUp(); })">-</button>
         <br />
         <br />
 
 
-        <select id="criteria" name="criteria" @bind="@selectedCriteria2">
-            <option value="" selected hidden>Select your Criteria</option>
-
-            @if (selectedCriteria2 == null)
+        <select id="criteria" name="criteria" @bind="@selectedCriteria1">
+            @if (criteria == null)
             {
-                selectedCriteria2 = "No Criteria Chosen";
+                <p><em>Loading....</em></p>
+                selectedCriteria1 = "No Criteria Chosen";
             }
             else
             {
+                <option value="" selected hidden>Select your Criteria</option>
                 @foreach (var criteriarecord in criteria)
                 {
-                    @if (criteriarecord.SectionName.Contains(selectedSection2) && (criteriarecord.ModuleName.Contains(selectedModule)))
+                    @if (criteriarecord.SectionName.Contains(selectedSection1) && (criteriarecord.ModuleName.Contains(selectedModule)))
                     {
                         <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
                         presentCriteria = true;
@@ -234,132 +140,30 @@
                     else if (presentCriteria == false)
                     {
                         <option value="" selected hidden>Select your Criteria</option>
-                        selectedCriteria2 = "No Criteria Chosen";
-
-                    }
-                }
-            }
-        </select>
-        <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection2BoolTrue(); AddNewCriteria(); })">+</button>
-        <button type="button" class="btn btn-danger" @onclick="@(() => { SetCriteria2BoolTrue(); DeletePopUp(); })">-</button>
-        <br />
-        <br />
-
-
-        <select id="feedback" name="feedback" @bind="@selectedFeedback2">
-            <option value="" selected hidden>Select your Feedback</option>
-
-            @if (selectedFeedback2 == null)
-            {
-                selectedFeedback2 = "No Feedback Chosen";
-            }
-            else
-            {
-                @foreach (var feedbackrecord in feedback)
-                {
-                    @if (feedbackrecord.Criteria.Contains(selectedCriteria2) && (feedbackrecord.ModuleName.Contains(selectedModule)))
-                    {
-                        <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
-                        presentFeedback = true;
-                    }
-                    else if (presentFeedback == false)
-                    {
-                        <option value="" selected hidden>Select your Feedback</option>
-                        selectedFeedback2 = "No Feedback Chosen";
-                    }
-                }
-            }
-
-
-
-        </select>
-        <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection2BoolTrue(); SetCriteria2BoolTrue(); AddNewFeedback(); })">+</button>
-        <button type="button" class="btn btn-danger" @onclick="@(() => { SetFeedback2BoolTrue(); DeletePopUp(); })">-</button>
-        <br />
-        <br />
-    }
-
-
-
-
-
-
-
-
-
-    @if (showNewSection && sectionCounter == 3)
-    {
-        <h8>Section @sectionCounter </h8>
-        <br />
-        <select id="section1" name="section1" @bind="@selectedSection3">
-            <option value="" selected hidden>Select your Sections</option>
-            @if (selectedSection3 == null)
-            {
-                selectedSection3 = "No Section Chosen";
-            }
-            else
-            {
-                @foreach (var sectionrecord in sections)
-                {
-                    @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
-                    {
-                        <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
-                        presentSection = true;
-                    }
-                    else if (presentSection == false)
-                    {
-                        <option value="" selected hidden>Select your Section</option>
-                        selectedSection3 = "No Section Chosen";
-                    }
-                }
-            }
-        </select>
-        <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
-        <button type="button" class="btn btn-danger" @onclick="@(() => { SetSection3BoolTrue(); DeletePopUp(); })">-</button>
-        <br />
-        <br />
-
-
-        <select id="criteria" name="criteria" @bind="@selectedCriteria3">
-            <option value="" selected hidden>Select your Criteria</option>
-            @if (selectedCriteria3 == null)
-            {
-                selectedCriteria3 = "No Criteria Chosen";
-            }
-            else
-            {
-                @foreach (var criteriarecord in criteria)
-                {
-                    @if (criteriarecord.SectionName.Contains(selectedSection3) && (criteriarecord.ModuleName.Contains(selectedModule)))
-                    {
-                        <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
-                        presentCriteria = true;
-                    }
-                    else if (presentCriteria == false)
-                    {
-                        <option value="" selected hidden>Select your Criteria</option>
-                        selectedCriteria3 = "No Criteria Chosen";
+                        selectedCriteria1 = "No Criteria Chosen";
                     }
                 }
             }
         </select>
         <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection3BoolTrue(); AddNewCriteria(); })">+</button>
-        <button type="button" class="btn btn-danger" @onclick="@(() => { SetCriteria3BoolTrue(); DeletePopUp(); })">-</button>
+        <button type="button" class="btn btn-danger" @onclick="@(() => { SetCriteria1BoolTrue(); DeletePopUp(); })">-</button>
         <br />
         <br />
 
 
-        <select id="feedback" name="feedback" @bind="@selectedFeedback3">
-            <option value="" selected hidden>Select your Feedback</option>
-            @if (selectedFeedback3 == null)
+        @*Feedback Dropdown Box*@
+        <select id="feedback" name="feedback" @bind="@selectedFeedback1">
+            @if (feedback == null)
             {
-                selectedFeedback3 = "No Feedback Chosen";
+                <p><em>Loading....</em></p>
+                selectedFeedback1 = "No Feedback Chosen";
             }
             else
             {
+                <option value="" selected hidden>Select your Feedback</option>
                 @foreach (var feedbackrecord in feedback)
                 {
-                    @if (feedbackrecord.Criteria.Contains(selectedCriteria3) && (feedbackrecord.ModuleName.Contains(selectedModule)))
+                    @if (feedbackrecord.Criteria.Contains(selectedCriteria1) && (feedbackrecord.ModuleName.Contains(selectedModule)))
                     {
                         <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
                         presentFeedback = true;
@@ -367,329 +171,526 @@
                     else if (presentFeedback == false)
                     {
                         <option value="" selected hidden>Select your Feedback</option>
-                        selectedFeedback3 = "No Feedback Chosen";
-
+                        selectedFeedback1 = "No Feedback Chosen";
                     }
                 }
             }
         </select>
-        <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection3BoolTrue(); SetCriteria3BoolTrue(); AddNewFeedback(); })">+</button>
-        <button type="button" class="btn btn-danger" @onclick="@(() => { SetFeedback3BoolTrue(); DeletePopUp(); })">-</button>
+        <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection1BoolTrue(); SetCriteria1BoolTrue(); AddNewFeedback(); })">+</button>
+        <button type="button" class="btn btn-danger" @onclick="@(() => { SetFeedback1BoolTrue(); DeletePopUp(); })">-</button>
         <br />
         <br />
 
-    }
 
-    @if (sectionCounter != 3)
-    {
-        <button type="button" class="btn btn-primary" @onclick="ShowNewSection">Show New Section</button>
-    }
+        @if (showNewSection)
+        {
+            <h8>Section 2 </h8>
+            <br />
+            <select @bind="@selectedSection2">
+                <option value="" selected hidden>Select your Sections</option>
 
-    @*When the button above is clicked, this modal (pop up) box will appear, allowing the user to input a new module*@
-    @if (ShowPopUpModule)
-    {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title">Add new module</h3>
-                        @*Close button on top right of modal*@
-                        <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <input class="form-control" type="text" placeholder="Module Name" @bind="inputModules.ModuleName" />
-                        <br />
-                        @*When the user has entered a module, and presses save, the saveModule method will run*@
-                        <button type="button" class="btn btn-success" @onclick="SaveModule"> Save </button>
-                        <br />
-                        <br />
-                        @*If there is something wrong with the form, error module will be true and the following code will run*@
-                        @if (errorModule == true)
+                @if (selectedSection2 == null)
+                {
+                    selectedSection2 = "No Section Chosen";
+                }
+                else
+                {
+                    @foreach (var sectionrecord in sections)
+                    {
+                        @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
                         {
-                            @*If the user has not entered anything within the input box, then they will be reminded to enter something*@
-                            if (inputModules.ModuleName == null || inputModules.ModuleName == "")
-                            {
-                                <label class="alert-danger">No Module Entered</label>
-                            }
-                            @*If the user has not entered anything within the input box that already exsists, then they will be reminded to enter something else *@
-                            else if (moduleList.Any(o => o.ModuleName.Contains(inputModules.ModuleName)))
-                            {
-                                <label class="alert-danger">Module is already within Database</label>
-                            }
+                            <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
+                            presentSection = true;
                         }
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-
-
-    @*When showPopUpACW is true, the following modal will display*@
-    @if (ShowPopUpACW)
-    {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        @*Modal title *@
-                        <h3 class="modal-title">Add new ACW</h3>
-                        @*Button that closes the modal and resets any error messages displayed*@
-                        <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
-                    </div>
-                    <div class="modal-body">
-                        @*Displays selectedModule variable*@
-                        <label>Module:</label>
-                        <label>@selectedModule </label>
-                        <br />
-                        @*Insert ACW for the selected module*@
-                        <h8>Insert ACW</h8>
-                        <input class="form-control" type="text" placeholder="ACW Name" @bind="inputACW.AcwName" />
-                        <br />
-                        @*When the user has entered the appropiate details, and presses save, the saveACW method will run*@
-                        <button type="button" class="btn btn-success" @onclick="SaveACW"> Save </button>
-                        <br />
-                        <br />
-                        @if (errorAcw == true)
+                        else if (presentSection == false)
                         {
-                            @*If the user has not entered anything within the input box, then they will be reminded to enter something*@
-                            if (selectedModule == "No Module Chosen")
-                            {
-                                <label class="alert-danger">No Module Entered</label>
-                            }
+                            <option value="" selected hidden>Select your Section</option>
+                            selectedSection2 = "No Section Chosen";
+                        }
+                    }
+                }
+            </select>
+            <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
+            <button type="button" class="btn btn-danger" @onclick="@(() => { SetSection2BoolTrue(); DeletePopUp(); })">-</button>
+            <br />
+            <br />
 
-                            @*If the user has not entered anything within the input box that already exsists, then they will be reminded to enter something else *@
-                            @foreach (var acwrecord in acw)
+
+            <select id="criteria" name="criteria" @bind="@selectedCriteria2">
+                <option value="" selected hidden>Select your Criteria</option>
+
+                @if (selectedCriteria2 == null)
+                {
+                    selectedCriteria2 = "No Criteria Chosen";
+                }
+                else
+                {
+                    @foreach (var criteriarecord in criteria)
+                    {
+                        @if (criteriarecord.SectionName.Contains(selectedSection2) && (criteriarecord.ModuleName.Contains(selectedModule)))
+                        {
+                            <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
+                            presentCriteria = true;
+                        }
+                        else if (presentCriteria == false)
+                        {
+                            <option value="" selected hidden>Select your Criteria</option>
+                            selectedCriteria2 = "No Criteria Chosen";
+
+                        }
+                    }
+                }
+            </select>
+            <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection2BoolTrue(); AddNewCriteria(); })">+</button>
+            <button type="button" class="btn btn-danger" @onclick="@(() => { SetCriteria2BoolTrue(); DeletePopUp(); })">-</button>
+            <br />
+            <br />
+
+
+            <select id="feedback" name="feedback" @bind="@selectedFeedback2">
+                <option value="" selected hidden>Select your Feedback</option>
+
+                @if (selectedFeedback2 == null)
+                {
+                    selectedFeedback2 = "No Feedback Chosen";
+                }
+                else
+                {
+                    @foreach (var feedbackrecord in feedback)
+                    {
+                        @if (feedbackrecord.Criteria.Contains(selectedCriteria2) && (feedbackrecord.ModuleName.Contains(selectedModule)))
+                        {
+                            <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
+                            presentFeedback = true;
+                        }
+                        else if (presentFeedback == false)
+                        {
+                            <option value="" selected hidden>Select your Feedback</option>
+                            selectedFeedback2 = "No Feedback Chosen";
+                        }
+                    }
+                }
+
+
+
+            </select>
+            <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection2BoolTrue(); SetCriteria2BoolTrue(); AddNewFeedback(); })">+</button>
+            <button type="button" class="btn btn-danger" @onclick="@(() => { SetFeedback2BoolTrue(); DeletePopUp(); })">-</button>
+            <br />
+            <br />
+        }
+
+
+
+
+
+
+
+
+
+        @if (showNewSection && sectionCounter == 3)
+        {
+            <h8>Section @sectionCounter </h8>
+            <br />
+            <select id="section1" name="section1" @bind="@selectedSection3">
+                <option value="" selected hidden>Select your Sections</option>
+                @if (selectedSection3 == null)
+                {
+                    selectedSection3 = "No Section Chosen";
+                }
+                else
+                {
+                    @foreach (var sectionrecord in sections)
+                    {
+                        @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
+                        {
+                            <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
+                            presentSection = true;
+                        }
+                        else if (presentSection == false)
+                        {
+                            <option value="" selected hidden>Select your Section</option>
+                            selectedSection3 = "No Section Chosen";
+                        }
+                    }
+                }
+            </select>
+            <button type="button" class="btn btn-primary" @onclick="AddNewSection">+</button>
+            <button type="button" class="btn btn-danger" @onclick="@(() => { SetSection3BoolTrue(); DeletePopUp(); })">-</button>
+            <br />
+            <br />
+
+
+            <select id="criteria" name="criteria" @bind="@selectedCriteria3">
+                <option value="" selected hidden>Select your Criteria</option>
+                @if (selectedCriteria3 == null)
+                {
+                    selectedCriteria3 = "No Criteria Chosen";
+                }
+                else
+                {
+                    @foreach (var criteriarecord in criteria)
+                    {
+                        @if (criteriarecord.SectionName.Contains(selectedSection3) && (criteriarecord.ModuleName.Contains(selectedModule)))
+                        {
+                            <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
+                            presentCriteria = true;
+                        }
+                        else if (presentCriteria == false)
+                        {
+                            <option value="" selected hidden>Select your Criteria</option>
+                            selectedCriteria3 = "No Criteria Chosen";
+                        }
+                    }
+                }
+            </select>
+            <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection3BoolTrue(); AddNewCriteria(); })">+</button>
+            <button type="button" class="btn btn-danger" @onclick="@(() => { SetCriteria3BoolTrue(); DeletePopUp(); })">-</button>
+            <br />
+            <br />
+
+
+            <select id="feedback" name="feedback" @bind="@selectedFeedback3">
+                <option value="" selected hidden>Select your Feedback</option>
+                @if (selectedFeedback3 == null)
+                {
+                    selectedFeedback3 = "No Feedback Chosen";
+                }
+                else
+                {
+                    @foreach (var feedbackrecord in feedback)
+                    {
+                        @if (feedbackrecord.Criteria.Contains(selectedCriteria3) && (feedbackrecord.ModuleName.Contains(selectedModule)))
+                        {
+                            <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
+                            presentFeedback = true;
+                        }
+                        else if (presentFeedback == false)
+                        {
+                            <option value="" selected hidden>Select your Feedback</option>
+                            selectedFeedback3 = "No Feedback Chosen";
+
+                        }
+                    }
+                }
+            </select>
+            <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection3BoolTrue(); SetCriteria3BoolTrue(); AddNewFeedback(); })">+</button>
+            <button type="button" class="btn btn-danger" @onclick="@(() => { SetFeedback3BoolTrue(); DeletePopUp(); })">-</button>
+
+        }
+
+
+
+        @if (sectionCounter != 3)
+        {
+            <button type="button" class="btn btn-primary" @onclick="ShowNewSection">Show New Section</button>
+        }
+        <br />
+        <br />
+
+        @*When the button above is clicked, this modal (pop up) box will appear, allowing the user to input a new module*@
+        @if (ShowPopUpModule)
+        {
+            <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Add new module</h3>
+                            @*Close button on top right of modal*@
+                            <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <input class="form-control" type="text" placeholder="Module Name" @bind="inputModules.ModuleName" />
+                            <br />
+                            @*When the user has entered a module, and presses save, the saveModule method will run*@
+                            <button type="button" class="btn btn-success" @onclick="SaveModule"> Save </button>
+                            <br />
+                            <br />
+                            @*If there is something wrong with the form, error module will be true and the following code will run*@
+                            @if (errorModule == true)
                             {
-                                if (acwrecord.AcwName.Contains(inputACW.AcwName) && acwrecord.ModuleName.Contains(selectedModule))
+                                @*If the user has not entered anything within the input box, then they will be reminded to enter something*@
+                                if (inputModules.ModuleName == null || inputModules.ModuleName == "")
                                 {
-                                    <label class="alert-danger">Already in database</label>
+                                    <label class="alert-danger">No Module Entered</label>
+                                }
+                                @*If the user has not entered anything within the input box that already exsists, then they will be reminded to enter something else *@
+                                else if (moduleList.Any(o => o.ModuleName.Contains(inputModules.ModuleName)))
+                                {
+                                    <label class="alert-danger">Module is already within Database</label>
                                 }
                             }
-                        }
-                    </div>t
-                </div>
-            </div>
-        </div>
-    }
-
-    @*When the button above is clicked, this modal (pop up) box will appear, allowing the user to input a new module*@
-    @if (ShowPopUpSection)
-    {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title">Add new section</h3>
-                        @*Close button on top right of modal*@
-                        <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <label>ACW:</label>
-                        <label>@selectedACW </label>
-                        <br />
-                        <input class="form-control" type="text" placeholder="Section" @bind="inputSections.SectionName" />
-                        <br />
-                        @*When the user has entered a module, and presses save, the saveModule method will run*@
-                        <button type="button" class="btn btn-success" @onclick="SaveSections"> Save </button>
-                        <br />
-                        <br />
-                        @*If there is something wrong with the form, error module will be true and the following code will run*@
-                        @if (errorModule == true)
-                        {
-                            @*If the user has not entered anything within the input box, then they will be reminded to enter something*@
-                            if (inputModules.ModuleName == null || inputModules.ModuleName == "")
-                            {
-                                <label class="alert-danger">No Module Entered</label>
-                            }
-                            @*If the user has not entered anything within the input box that already exsists, then they will be reminded to enter something else *@
-                            else if (moduleList.Any(o => o.ModuleName.Contains(inputModules.ModuleName)))
-                            {
-                                <label class="alert-danger">Module is already within Database</label>
-                            }
-                        }
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    }
+        }
 
-    @*When the button above is clicked, this modal (pop up) box will appear, allowing the user to input a new module*@
-    @if (ShowPopUpCriteria)
-    {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title">Add new module</h3>
-                        @*Close button on top right of modal*@
-                        <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <label>ACW:</label>
-                        <label>@selectedACW </label>
-                        <br />
-                        @if (selectedSection1Bool)
-                        {
-                            <label>Section:</label>
-                            <label>@selectedSection1 </label>
-                        }
-                        @if (selectedSection2Bool)
-                        {
-                            <label>Section:</label>
-                            <label>@selectedSection2 </label>
-                        }
-                        @if (selectedSection3Bool)
-                        {
-                            <label>Section:</label>
-                            <label>@selectedSection3 </label>
-                        }
-                        <br />
-                        <input class="form-control" type="text" placeholder="Criteria" @bind="inputCriteria.Criteria1" />
-                        <br />
-                        @*When the user has entered a module, and presses save, the saveModule method will run*@
-                        <button type="button" class="btn btn-success" @onclick="SaveCriteria"> Save </button>
-                        <br />
-                        <br />
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
 
-    @if (showPopUpFeedback)
-    {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title">Add new Feedback</h3>
-                        @*Button that closes the modal and resets any error messages displayed*@
-                        <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
-                    </div>
-                    <div class="modal-body">
-                        @*Displays selected module*@
-                        <label>Module:</label>
-                        <label>@selectedModule </label>
-                        <br />
-                        @*Displays selected acw*@
-                        <label>ACW:</label>
-                        <label>@selectedACW </label>
-                        <br />
-                        @if (selectedSection1Bool)
-                        {
-                            <label>Section:</label>
-                            <label>@selectedSection1 </label>
+        @*When showPopUpACW is true, the following modal will display*@
+        @if (ShowPopUpACW)
+        {
+            <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            @*Modal title *@
+                            <h3 class="modal-title">Add new ACW</h3>
+                            @*Button that closes the modal and resets any error messages displayed*@
+                            <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
+                        </div>
+                        <div class="modal-body">
+                            @*Displays selectedModule variable*@
+                            <label>Module:</label>
+                            <label>@selectedModule </label>
                             <br />
-                            @*Displays selected criteria*@
-                            <label>Criteria:</label>
-                            <label>@selectedCriteria1 </label>
-                        }
-                        else if (selectedSection2Bool)
-                        {
-                            <label>Section:</label>
-                            <label>@selectedSection2 </label>
+                            @*Insert ACW for the selected module*@
+                            <h8>Insert ACW</h8>
+                            <input class="form-control" type="text" placeholder="ACW Name" @bind="inputACW.AcwName" />
                             <br />
-                            @*Displays selected criteria*@
-                            <label>Criteria:</label>
-                            <label>@selectedCriteria2 </label>
-                        }
-                        else if (selectedSection3Bool)
-                        {
-                            <label>Section:</label>
-                            <label>@selectedSection3 </label>
+                            @*When the user has entered the appropiate details, and presses save, the saveACW method will run*@
+                            <button type="button" class="btn btn-success" @onclick="SaveACW"> Save </button>
                             <br />
-                            @*Displays selected criteria*@
-                            <label>Criteria:</label>
-                            <label>@selectedCriteria3 </label>
-                        }
-                        <br />
-                        @*Input box to allow for adding feedback*@
-                        <h8>Insert Feedback</h8>
-                        <input class="form-control" type="text" placeholder="Feedback" @bind="inputFeedback.Feedback1" />
-                        <br />
-                        <h8>Insert Feedback</h8>
-                        <input class="form-control" type="number" placeholder="Grade" @bind="inputFeedback.Grade" />
-                        <br />
-                        @*When the user has entered the appropiate details, and presses save, the saveFeedback method will run*@
-                        <button type="button" class="btn btn-success" @onclick="SaveFeedback"> Save </button>;
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-
-    @*When the button above is clicked, this modal (pop up) box will appear, allowing the user to input a new module*@
-    @if (confirmationPopup)
-    {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        @*Modal title *@
-                        <h3 class="modal-title">Confirm Deletion</h3>
-                        @*Button that closes the modal and resets any error messages displayed*@
-                        <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
-                    </div>
-                    <div class="modal-body">
-
-                        <label>Confirmation: This will delete</label>
-                        @if (selectedModulebool)
-                        {
-                            <label>@selectedModule</label>
-                        }
-                        else if (selectedACWbool)
-                        {
-                            <label>@selectedACW</label>
-                        }
-                        else if (@selectedSection1Bool)
-                        {
-                            <label>@selectedSection1</label>
-                        }
-                        else if (@selectedSection2Bool)
-                        {
-                            <label>@selectedSection2</label>
-                        }
-                        else if (@selectedSection3Bool)
-                        {
-                            <label>@selectedSection3</label>
-                        }
-                        else if (@selectedCriteria1bool)
-                        {
-                            <label>@selectedCriteria1</label>
-                        }
-                        else if (@selectedCriteria2bool)
-                        {
-                            <label>@selectedCriteria2</label>
-                        }
-                        else if (@selectedCriteria3bool)
-                        {
-                            <label>@selectedCriteria3</label>
-                        }
-                        <br />
-                        @*When the user has entered the appropiate details, and presses save, the saveACW method will run*@
-                        <button type="button" class="btn btn-danger" @onclick="ConfirmDeletion"> Delete </button>
-                        <br />
-                        <br />
-
-                        @if (errorModule == true)
-                        {
-                            @*If the user has not entered anything within the input box, then they will be reminded to enter something*@
-                            if (selectedModule == "No Module Chosen")
+                            <br />
+                            @if (errorAcw == true)
                             {
-                                <label class="alert-danger">No Module Chosen</label>
+                                @*If the user has not entered anything within the input box, then they will be reminded to enter something*@
+                                if (selectedModule == "No Module Chosen")
+                                {
+                                    <label class="alert-danger">No Module Entered</label>
+                                }
+
+                                @*If the user has not entered anything within the input box that already exsists, then they will be reminded to enter something else *@
+                                @foreach (var acwrecord in acw)
+                                {
+                                    if (acwrecord.AcwName.Contains(inputACW.AcwName) && acwrecord.ModuleName.Contains(selectedModule))
+                                    {
+                                        <label class="alert-danger">Already in database</label>
+                                    }
+                                }
                             }
-                        }
+                        </div>t
                     </div>
                 </div>
             </div>
-        </div>
-    }
+        }
 
-    <br />
-    <br />
+        @*When the button above is clicked, this modal (pop up) box will appear, allowing the user to input a new module*@
+        @if (ShowPopUpSection)
+        {
+            <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Add new section</h3>
+                            @*Close button on top right of modal*@
+                            <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <label>ACW:</label>
+                            <label>@selectedACW </label>
+                            <br />
+                            <input class="form-control" type="text" placeholder="Section" @bind="inputSections.SectionName" />
+                            <br />
+                            @*When the user has entered a module, and presses save, the saveModule method will run*@
+                            <button type="button" class="btn btn-success" @onclick="SaveSections"> Save </button>
+                            <br />
+                            <br />
+                            @*If there is something wrong with the form, error module will be true and the following code will run*@
+                            @if (errorModule == true)
+                            {
+                                @*If the user has not entered anything within the input box, then they will be reminded to enter something*@
+                                if (inputModules.ModuleName == null || inputModules.ModuleName == "")
+                                {
+                                    <label class="alert-danger">No Module Entered</label>
+                                }
+                                @*If the user has not entered anything within the input box that already exsists, then they will be reminded to enter something else *@
+                                else if (moduleList.Any(o => o.ModuleName.Contains(inputModules.ModuleName)))
+                                {
+                                    <label class="alert-danger">Module is already within Database</label>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
 
-    <button type="button" class="btn btn-primary" @onclick="DownloadFile">Export to Text Document</button>
-</form>
+        @*When the button above is clicked, this modal (pop up) box will appear, allowing the user to input a new module*@
+        @if (ShowPopUpCriteria)
+        {
+            <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Add new module</h3>
+                            @*Close button on top right of modal*@
+                            <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <label>ACW:</label>
+                            <label>@selectedACW </label>
+                            <br />
+                            @if (selectedSection1Bool)
+                            {
+                                <label>Section:</label>
+                                <label>@selectedSection1 </label>
+                            }
+                            @if (selectedSection2Bool)
+                            {
+                                <label>Section:</label>
+                                <label>@selectedSection2 </label>
+                            }
+                            @if (selectedSection3Bool)
+                            {
+                                <label>Section:</label>
+                                <label>@selectedSection3 </label>
+                            }
+                            <br />
+                            <input class="form-control" type="text" placeholder="Criteria" @bind="inputCriteria.Criteria1" />
+                            <br />
+                            @*When the user has entered a module, and presses save, the saveModule method will run*@
+                            <button type="button" class="btn btn-success" @onclick="SaveCriteria"> Save </button>
+                            <br />
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (showPopUpFeedback)
+        {
+            <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Add new Feedback</h3>
+                            @*Button that closes the modal and resets any error messages displayed*@
+                            <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
+                        </div>
+                        <div class="modal-body">
+                            @*Displays selected module*@
+                            <label>Module:</label>
+                            <label>@selectedModule </label>
+                            <br />
+                            @*Displays selected acw*@
+                            <label>ACW:</label>
+                            <label>@selectedACW </label>
+                            <br />
+                            @if (selectedSection1Bool)
+                            {
+                                <label>Section:</label>
+                                <label>@selectedSection1 </label>
+                                <br />
+                                @*Displays selected criteria*@
+                                <label>Criteria:</label>
+                                <label>@selectedCriteria1 </label>
+                            }
+                            else if (selectedSection2Bool)
+                            {
+                                <label>Section:</label>
+                                <label>@selectedSection2 </label>
+                                <br />
+                                @*Displays selected criteria*@
+                                <label>Criteria:</label>
+                                <label>@selectedCriteria2 </label>
+                            }
+                            else if (selectedSection3Bool)
+                            {
+                                <label>Section:</label>
+                                <label>@selectedSection3 </label>
+                                <br />
+                                @*Displays selected criteria*@
+                                <label>Criteria:</label>
+                                <label>@selectedCriteria3 </label>
+                            }
+                            <br />
+                            @*Input box to allow for adding feedback*@
+                            <h8>Insert Feedback</h8>
+                            <input class="form-control" type="text" placeholder="Feedback" @bind="inputFeedback.Feedback1" />
+                            <br />
+                            <h8>Insert Feedback</h8>
+                            <input class="form-control" type="number" placeholder="Grade" @bind="inputFeedback.Grade" />
+                            <br />
+                            @*When the user has entered the appropiate details, and presses save, the saveFeedback method will run*@
+                            <button type="button" class="btn btn-success" @onclick="SaveFeedback"> Save </button>;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @*When the button above is clicked, this modal (pop up) box will appear, allowing the user to input a new module*@
+        @if (confirmationPopup)
+        {
+            <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            @*Modal title *@
+                            <h3 class="modal-title">Confirm Deletion</h3>
+                            @*Button that closes the modal and resets any error messages displayed*@
+                            <button type="button" class="close" @onclick="ClosePopup"><span aria-hidden="true">X</span></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <label>Confirmation: This will delete</label>
+                            @if (selectedModulebool)
+                            {
+                                <label>@selectedModule</label>
+                            }
+                            else if (selectedACWbool)
+                            {
+                                <label>@selectedACW</label>
+                            }
+                            else if (@selectedSection1Bool)
+                            {
+                                <label>@selectedSection1</label>
+                            }
+                            else if (@selectedSection2Bool)
+                            {
+                                <label>@selectedSection2</label>
+                            }
+                            else if (@selectedSection3Bool)
+                            {
+                                <label>@selectedSection3</label>
+                            }
+                            else if (@selectedCriteria1bool)
+                            {
+                                <label>@selectedCriteria1</label>
+                            }
+                            else if (@selectedCriteria2bool)
+                            {
+                                <label>@selectedCriteria2</label>
+                            }
+                            else if (@selectedCriteria3bool)
+                            {
+                                <label>@selectedCriteria3</label>
+                            }
+                            <br />
+                            @*When the user has entered the appropiate details, and presses save, the saveACW method will run*@
+                            <button type="button" class="btn btn-danger" @onclick="ConfirmDeletion"> Delete </button>
+                            <br />
+                            <br />
+
+                            @if (errorModule == true)
+                            {
+                                @*If the user has not entered anything within the input box, then they will be reminded to enter something*@
+                                if (selectedModule == "No Module Chosen")
+                                {
+                                    <label class="alert-danger">No Module Chosen</label>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <button type="button" class="btn btn-primary" @onclick="DownloadFile">Export to Text Document</button>
+    </form>
+</body>
+
 
 
 @code {
