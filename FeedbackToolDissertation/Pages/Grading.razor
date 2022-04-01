@@ -174,7 +174,7 @@
         }
     </select>
     <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection1BoolTrue(); SetCriteria1BoolTrue(); AddNewFeedback(); })">+</button>
-    <button type="button" class="btn btn-danger" @onclick="@(() => { SetCriteria1BoolTrue(); AddNewFeedback(); })">-</button>
+    <button type="button" class="btn btn-danger" @onclick="@(() => { SetFeedback1BoolTrue(); DeletePopUp(); })">-</button>
     <br />
     <br />
 
@@ -228,7 +228,7 @@
         <br />
 
 
-        <select id="feedback" name="feedback">
+        <select id="feedback" name="feedback" @bind="@selectedFeedback2">
             <option value="" selected hidden>Select your Feedback</option>
             @foreach (var feedbackrecord in feedback)
             {
@@ -244,7 +244,7 @@
             }
         </select>
         <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection2BoolTrue(); SetCriteria2BoolTrue(); AddNewFeedback(); })">+</button>
-        //<button type="button" class="btn btn-danger" @onclick="@(() => { SetCriteria1BoolTrue(); AddNewFeedback(); })">-</button>
+        <button type="button" class="btn btn-danger" @onclick="@(() => { SetFeedback2BoolTrue(); DeletePopUp(); })">-</button>
 
         <br />
         <br />
@@ -300,7 +300,7 @@
         <br />
         <br />
 
-        <select id="feedback" name="feedback">
+        <select id="feedback" name="feedback" @bind="@selectedFeedback3">
             <option value="" selected hidden>Select your Feedback</option>
             @foreach (var feedbackrecord in feedback)
             {
@@ -316,7 +316,7 @@
             }
         </select>
         <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection3BoolTrue(); SetCriteria3BoolTrue(); AddNewFeedback(); })">+</button>
-        //<button type="button" class="btn btn-danger" @onclick="@(() => { SetCriteria1BoolTrue(); AddNewFeedback(); })">-</button>
+        <button type="button" class="btn btn-danger" @onclick="@(() => { SetFeedback3BoolTrue(); DeletePopUp(); })">-</button>
         <br />
         <br />
 
@@ -728,6 +728,8 @@
         showPopUpFeedback = false;
         ShowPopUpSection = false;
         ShowPopUpCriteria = false;
+        confirmationPopup = false;
+
 
         // Resets error messagesS
         errorModule = false;
@@ -746,7 +748,10 @@
         selectedCriteria2bool = false;
         selectedCriteria3bool = false;
 
-        confirmationPopup = false;
+        selectedFeedback1bool = false;
+        selectedFeedback2bool = false;
+        selectedFeedback3bool = false;
+
     }
 
     // When the user presses the button to add a module, the code below creates the variables needed for the saveModule method and then displays the modal
@@ -772,8 +777,6 @@
         ShowPopUpSection = true;
     }
 
-
-
     void AddNewCriteria()
     {
         inputCriteria = new Criteria();
@@ -788,8 +791,6 @@
         inputACW.Id = 0;
         showPopUpFeedback = true;
     }
-
-
 
 
     void SetModuleBoolTrue()
@@ -828,11 +829,33 @@
         selectedCriteria2bool = true;
 
     }
+
     void SetCriteria3BoolTrue()
     {
         selectedCriteria3bool = true;
 
     }
+
+    void SetFeedback1BoolTrue()
+    {
+        selectedFeedback1bool = true;
+    }
+
+    void SetFeedback2BoolTrue()
+    {
+        selectedFeedback2bool = true;
+
+    }
+    void SetFeedback3BoolTrue()
+    {
+        selectedFeedback3bool = true;
+
+    }
+
+
+
+
+
 
 
 
