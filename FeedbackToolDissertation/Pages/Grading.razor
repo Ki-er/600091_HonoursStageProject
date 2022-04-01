@@ -83,7 +83,6 @@
         <br />
 
 
-
         <h8> Feedback </h8>
         <br />
         Section 1
@@ -249,7 +248,6 @@
 
             <select id="feedback" name="feedback" @bind="@selectedFeedback2">
                 <option value="" selected hidden>Select your Feedback</option>
-
                 @if (selectedFeedback2 == null)
                 {
                     selectedFeedback2 = "No Feedback Chosen";
@@ -270,22 +268,12 @@
                         }
                     }
                 }
-
-
-
             </select>
             <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection2BoolTrue(); SetCriteria2BoolTrue(); AddNewFeedback(); })">+</button>
             <button type="button" class="btn btn-danger" @onclick="@(() => { SetFeedback2BoolTrue(); DeletePopUp(); })">-</button>
             <br />
             <br />
         }
-
-
-
-
-
-
-
 
 
         @if (showNewSection && sectionCounter == 3)
@@ -378,8 +366,6 @@
             <button type="button" class="btn btn-danger" @onclick="@(() => { SetFeedback3BoolTrue(); DeletePopUp(); })">-</button>
 
         }
-
-
 
         @if (sectionCounter != 3)
         {
@@ -695,12 +681,11 @@
 
 @code {
 
-    // AuthenticationState is available as a CascadingParameter
-    [CascadingParameter]
-
     // Gets the user who is logged in
+    [CascadingParameter]
     Task<AuthenticationState> authenticationStateTask { get; set; }
     private string UserIdentityName = "";
+
 
     [Inject] IBlazorDownloadFileService BlazorDownloadFileService { get; set; }
 
@@ -810,45 +795,6 @@
 
     }
 
-    // When the user presses the button to add a module, the code below creates the variables needed for the saveModule method and then displays the modal
-    void AddNewModule()
-    {
-        inputModules = new Modules();
-        inputModules.Id = 0;
-        ShowPopUpModule = true;
-    }
-
-    // When the user presses the button to add an acw, the code below creates the variables needed for the saveModule method and then displays the modal
-    void AddNewACW()
-    {
-        inputACW = new Acw();
-        inputACW.Id = 0;
-        ShowPopUpACW = true;
-    }
-
-    void AddNewSection()
-    {
-        inputSections = new Sections();
-        inputSections.Id = 0;
-        ShowPopUpSection = true;
-    }
-
-    void AddNewCriteria()
-    {
-        inputCriteria = new Criteria();
-        inputCriteria.Id = 0;
-        ShowPopUpCriteria = true;
-    }
-
-    // When the user presses the button to add feedback, the code below creates the variables needed for the saveModule method and then displays the modal
-    void AddNewFeedback()
-    {
-        inputFeedback = new Feedback();
-        inputACW.Id = 0;
-        showPopUpFeedback = true;
-    }
-
-
     void SetModuleBoolTrue()
     {
         selectedModulebool = true;
@@ -905,14 +851,52 @@
     void SetFeedback3BoolTrue()
     {
         selectedFeedback3bool = true;
-
     }
 
 
+    // When the user presses the button to add a module, the code below creates the variables needed for the saveModule method and then displays the modal
+    void AddNewModule()
+    {
+        inputModules = new Modules();
+        inputModules.Id = 0;
+        ShowPopUpModule = true;
+    }
+
+    // When the user presses the button to add an acw, the code below creates the variables needed for the saveModule method and then displays the modal
+    void AddNewACW()
+    {
+        inputACW = new Acw();
+        inputACW.Id = 0;
+        ShowPopUpACW = true;
+    }
+
+    void AddNewSection()
+    {
+        inputSections = new Sections();
+        inputSections.Id = 0;
+        ShowPopUpSection = true;
+    }
+
+    void AddNewCriteria()
+    {
+        inputCriteria = new Criteria();
+        inputCriteria.Id = 0;
+        ShowPopUpCriteria = true;
+    }
+
+    // When the user presses the button to add feedback, the code below creates the variables needed for the saveModule method and then displays the modal
+    void AddNewFeedback()
+    {
+        inputFeedback = new Feedback();
+        inputACW.Id = 0;
+        showPopUpFeedback = true;
+    }
 
 
-
-
+    void DeletePopUp()
+    {
+        confirmationPopup = true;
+    }
 
 
     // When the user presses save in the module modal, the following code will run
@@ -1122,10 +1106,6 @@
         return;
     }
 
-    void DeletePopUp()
-    {
-        confirmationPopup = true;
-    }
 
     async Task ConfirmDeletion()
     {
@@ -1227,7 +1207,6 @@
         writer.Close();
         byte[] bytes = buffer.ToArray();
         var task = await BlazorDownloadFileService.DownloadFile(studentNumber, bytes, "text/plain");
-
     }
 
 }
