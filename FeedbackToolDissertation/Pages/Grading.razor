@@ -95,8 +95,6 @@
             }
             else
             {
-                presentCriteria = false;
-                presentFeedback = false;
                 <option value="" selected hidden>Select your Sections</option>
                 @foreach (var sectionrecord in sections)
                 {
@@ -144,7 +142,7 @@
                 }
             }
         </select>
-        <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection3BoolTrue(); AddNewCriteria(); })">+</button>
+        <button type="button" class="btn btn-primary" @onclick="@(() => { SetSection1BoolTrue(); AddNewCriteria(); })">+</button>
         <button type="button" class="btn btn-danger" @onclick="@(() => { SetCriteria1BoolTrue(); DeletePopUp(); })">-</button>
         <br />
         <br />
@@ -931,6 +929,7 @@
 
                 var user = (await authenticationStateTask).User;
                 moduleList = await ModuleService.GetModulesAsync(user.Identity.Name);
+                ClosePopup();
                 return;
             }
         }
@@ -969,23 +968,18 @@
 
             // Close the Popup
             ShowPopUpACW = false;
-            if (inputACW.Id == 0)
-            {
-                // Creates the new acw
-                Acw newACW = new Acw();
-                newACW.ModuleName = selectedModule;
-                newACW.AcwName = inputACW.AcwName;
-                newACW.UserName = UserIdentityName;
-                // Passes the new acw to be created in the acw service
-                var acwInsert = ACWService.CreateACWAsync(newACW);
-                var user = (await authenticationStateTask).User;
-                acw = await ACWService.GetAcwsAsync(user.Identity.Name);
-                return;
-            }
-            else
-            {
-                return;
-            }
+            // Creates the new acw
+            Acw newACW = new Acw();
+            newACW.ModuleName = selectedModule;
+            newACW.AcwName = inputACW.AcwName;
+            newACW.UserName = UserIdentityName;
+            // Passes the new acw to be created in the acw service
+            var acwInsert = ACWService.CreateACWAsync(newACW);
+            var user = (await authenticationStateTask).User;
+            acw = await ACWService.GetAcwsAsync(user.Identity.Name);
+            ClosePopup();
+            return;
+
         }
     }
 
@@ -1013,6 +1007,7 @@
             var sectionInsert = SectionService.CreateSectionsAsync(newSection);
             var user = (await authenticationStateTask).User;
             sections = await SectionService.GetSectionsAsync(user.Identity.Name);
+            ClosePopup();
             return;
         }
 
@@ -1055,6 +1050,7 @@
             var criteriaInsert = CriteriaService.CreateCriteriaAsync(newCriteria);
             var user = (await authenticationStateTask).User;
             criteria = await CriteriaService.GetCriteriasAsync(user.Identity.Name);
+            ClosePopup();
             return;
         }
     }
@@ -1103,6 +1099,7 @@
         var feedbackInsert = FeedbackService.CreateFeedbackAsync(newFeedback);
         var user = (await authenticationStateTask).User;
         feedback = await FeedbackService.GetFeedbacksAsync(user.Identity.Name);
+        ClosePopup();
         return;
     }
 
@@ -1122,7 +1119,6 @@
                 }
             }
             moduleList = await ModuleService.GetModulesAsync(user.Identity.Name);
-            return;
         }
         else if (selectedACWbool)
         {
@@ -1134,7 +1130,7 @@
                 }
             }
             acw = await ACWService.GetAcwsAsync(user.Identity.Name);
-            return;
+
         }
         else if (selectedSection1Bool || selectedSection2Bool || selectedSection3Bool)
         {
@@ -1146,7 +1142,6 @@
                 }
             }
             sections = await SectionService.GetSectionsAsync(user.Identity.Name);
-            return;
         }
         else if (selectedCriteria1bool || selectedCriteria2bool || selectedCriteria3bool)
         {
@@ -1158,7 +1153,6 @@
                 }
             }
             criteria = await CriteriaService.GetCriteriasAsync(user.Identity.Name);
-            return;
         }
         else if (selectedFeedback1bool || selectedFeedback2bool || selectedFeedback3bool)
         {
@@ -1168,8 +1162,9 @@
                 {
                     var criteriaDelete = FeedbackService.DeleteFeedbackAsync(feedback);
                 }
+            feedback = await FeedbackService.GetFeedbacksAsync(user.Identity.Name);
         }
-        feedback = await FeedbackService.GetFeedbacksAsync(user.Identity.Name);
+        ClosePopup();
         return;
     }
 
