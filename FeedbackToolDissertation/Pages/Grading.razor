@@ -672,6 +672,14 @@
             </div>
         }
         <button type="button" class="btn btn-primary" @onclick="DownloadFile">Export to Text Document</button>
+        <br />
+        <br />
+
+        @if (errorStudentNumber)
+        {
+            <label class="alert-danger">No Student Number Entered</label>
+        }
+
     </form>
 </body>
 
@@ -726,7 +734,7 @@
     Feedback inputFeedback = new Feedback();
 
     // The variables that check for errors
-    bool errorModule, errorAcw, errorSections, errorCriteria = false;
+    bool errorModule, errorAcw, errorSections, errorCriteria, errorStudentNumber = false;
 
     // Is run when the page loads and populates the lists with all data from the database that is appropiate for the user logged in
     protected override async Task OnInitializedAsync()
@@ -1171,37 +1179,48 @@
 
     async Task DownloadFile()
     {
-        var buffer = new MemoryStream();
-        var writer = new BinaryWriter(buffer);
-
-        writer.Write("Student Number: " + studentNumber + "\r\n");
-        writer.Write("Module: " + selectedModule + "\r\n");
-        writer.Write("ACW: " + selectedACW + "\r\n");
-        writer.Write("\r\n");
-
-
-        writer.Write("Section 1" + "\r\n");
-        writer.Write("Section: " + selectedSection1 + "\r\n");
-        writer.Write("Criteria: " + selectedCriteria1 + "\r\n");
-        writer.Write("Feedback: " + selectedFeedback1 + "\r\n");
-        writer.Write("\r\n");
-
-        if (showNewSection)
+        if (studentNumber == null || studentNumber == "")
         {
-            writer.Write("Section 2" + "\r\n");
-            writer.Write("Section: " + selectedSection2 + "\r\n");
-            writer.Write("Criteria: " + selectedCriteria2 + "\r\n");
-            writer.Write("Feedback: " + selectedFeedback2 + "\r\n");
+            errorStudentNumber = true;
+        }
+        else
+        {
+            errorStudentNumber = false;
+            var buffer = new MemoryStream();
+            var writer = new BinaryWriter(buffer);
+
+            writer.Write("Student Number: " + studentNumber + "\r\n");
+            writer.Write("Module: " + selectedModule + "\r\n");
+            writer.Write("ACW: " + selectedACW + "\r\n");
             writer.Write("\r\n");
-            writer.Write("Section 3" + "\r\n");
-            writer.Write("Section: " + selectedSection3 + "\r\n");
-            writer.Write("Criteria: " + selectedCriteria3 + "\r\n");
-            writer.Write("Feedback: " + selectedFeedback3 + "\r\n");
+
+
+            writer.Write("Section 1" + "\r\n");
+            writer.Write("Section: " + selectedSection1 + "\r\n");
+            writer.Write("Criteria: " + selectedCriteria1 + "\r\n");
+            writer.Write("Feedback: " + selectedFeedback1 + "\r\n");
+            writer.Write("\r\n");
+
+            if (showNewSection)
+            {
+                writer.Write("Section 2" + "\r\n");
+                writer.Write("Section: " + selectedSection2 + "\r\n");
+                writer.Write("Criteria: " + selectedCriteria2 + "\r\n");
+                writer.Write("Feedback: " + selectedFeedback2 + "\r\n");
+                writer.Write("\r\n");
+                writer.Write("Section 3" + "\r\n");
+                writer.Write("Section: " + selectedSection3 + "\r\n");
+                writer.Write("Criteria: " + selectedCriteria3 + "\r\n");
+                writer.Write("Feedback: " + selectedFeedback3 + "\r\n");
+            }
+
+            writer.Close();
+            byte[] bytes = buffer.ToArray();
+            var task = await BlazorDownloadFileService.DownloadFile(studentNumber, bytes, "text/plain");
         }
 
-        writer.Close();
-        byte[] bytes = buffer.ToArray();
-        var task = await BlazorDownloadFileService.DownloadFile(studentNumber, bytes, "text/plain");
+
+
     }
 
 }
