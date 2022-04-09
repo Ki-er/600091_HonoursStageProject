@@ -95,7 +95,7 @@
             }
             else
             {
-                <option value="" selected hidden>Select your Sections</option>
+                <option value="" selected hidden>Select your Section</option>
                 @foreach (var sectionrecord in sections)
                 {
                     @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
@@ -184,7 +184,7 @@
             <h8>Section 2 </h8>
             <br />
             <select @bind="@selectedSection2">
-                <option value="" selected hidden>Select your Sections</option>
+                <option value="" selected hidden>Select your Section</option>
 
                 @if (selectedSection2 == null)
                 {
@@ -279,7 +279,7 @@
             <h8>Section @sectionCounter </h8>
             <br />
             <select id="section1" name="section1" @bind="@selectedSection3">
-                <option value="" selected hidden>Select your Sections</option>
+                <option value="" selected hidden>Select your Section</option>
                 @if (selectedSection3 == null)
                 {
                     selectedSection3 = "No Section Chosen";
