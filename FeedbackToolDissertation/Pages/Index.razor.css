@@ -1,0 +1,22 @@
+body {
+    zoom: 0.95;
+    -moz-transform: scale(1.2);
+    -moz-transform-origin: left top;
+}
+
+input[type=text], select, textarea {
+    width: 30%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}
+
+#pdfviewer {
+    margin-right: 50%;
+}
