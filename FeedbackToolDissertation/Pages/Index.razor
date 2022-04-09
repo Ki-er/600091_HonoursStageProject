@@ -1,41 +1,76 @@
 ﻿@page "/"
 
 <AuthorizeView>
-<Authorized>
-   <h2> Hello @context.User.Identity.Name! </h2>
+    <Authorized>
+        <h2> Hello @context.User.Identity.Name! </h2>
+        <br />
 
-   <h3>You can begin grading by pressing the "Grading" option on the sidebar!</h3>
-</Authorized>
-<!-- Show this section if the user is not logged in -->
-<NotAuthorized>
-<h1>Welcome to FeeDBack!</h1>
 
-<p> This is a grading tool where academics can store feedback to a database and reuse it when grading.</p>
-<br />
-<p> To get started, click the register button either on the side bar or at the top!</p>
-<p>Alternatively, you can <a href='/Identity/Account/Register'>Click here! </a></p>
-<br />
-<br />
-<p>If you already have an account, you can use the "Login" options or <a href='/Identity/Account/Login'>Click here! </a></p>
-</NotAuthorized>
+        <h3>Getting Started</h3>
+        <h5>The grading page is broken into 2 distinct parts. At the top you will see the details section where you will enter the student number, module and acw that you would like to grade.</h5>
+        <h5>Below the details part is the feedback section where you will add feedback and break the acw down into sections, criteria and feedback.</h5>
+        <br />
+        <h5>The application utilises selection boxes similarly to the one below allowing you to choose what section, criteria or feedback youd like to utilise. </h5>
+        <br />
+        <select autocomplete="off">
+            <option value="" selected="selected" hidden>Select your Module</option>
+            <option value="" selected="selected" hidden>Example Module 1</option>
+            <option value="" selected="selected" hidden>Example Module 2</option>
+        </select>
+        <br />
+        <h5>Pressing the '<button type="button" class="btn btn-primary">+</button>' will allow you to add data to the database. Each selection box will have a button next to them and allow you to add data for that respective selection box.</h5>
+        <h5>Pressing the '<button type="button" class="btn btn-danger">-</button>' will allow you to delete data from the database. Each selection box will have a button next to them and allow you to delete data for that respective selection box.</h5>
+        <br />
+        <h5>The '<button type="button" class="btn btn-primary">Show New Section</button>' button will display two extra sections allowing for more feedback</h5>
+        <br />
+        <h5>Finally, pressing the '<button type="button" class="btn btn-primary">Export To Text Document</button>' button will export any data within the form to a text document and will be named the student number entered at the top of the form. If you do not enter a student number, you will not be able to export. </h5>
+
+        <h3>Mock Example of the form</h3>
+
+
+
+
+
+        <h4>You can begin grading by pressing the "Grading" option on the sidebar! or press <a href="/Grading">Click Here</a></h4>
+
+
+
+
+
+
+    </Authorized>
+    <!-- Show this section if the user is not logged in -->
+    <NotAuthorized>
+        <h1>Welcome to FeeDBack!</h1>
+
+        <p> This is a grading tool where academics can store feedback to a database and reuse it when grading.</p>
+        <br />
+        <p> To get started, click the register button either on the side bar or at the top!</p>
+        <p>Alternatively, you can <a href='/Identity/Account/Register'>Click here! </a></p>
+        <br />
+        <br />
+        <p>If you already have an account, you can use the "Login" options or <a href='/Identity/Account/Login'>Click here! </a></p>
+    </NotAuthorized>
 </AuthorizeView>
 
 
 @code {
 
-  // AuthenticationState is available as a CascadingParameter
-  [CascadingParameter]
+    // AuthenticationState is available as a CascadingParameter
+    [CascadingParameter]
 
-   Task < AuthenticationState > authenticationStateTask {get; set; }
+    Task<AuthenticationState> authenticationStateTask { get; set; }
 
 
-  protected
-  override
-  async Task OnInitializedAsync()
-  {
+    protected
+    override
+    async Task OnInitializedAsync()
+    {
+        // Get the current user
+        var user = (await authenticationStateTask).User;
 
-    // Get the current user
-    var user = (await authenticationStateTask).User;
-  }
+
+
+    }
 
 }
