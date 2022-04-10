@@ -1207,18 +1207,20 @@
             writer.Write("Feedback: " + selectedFeedback1 + "\r\n");
             writer.Write("\r\n");
 
-            if (showNewSection)
+            if (sectionCounter <= 2)
             {
                 writer.Write("Section 2" + "\r\n");
                 writer.Write("Section: " + selectedSection2 + "\r\n");
                 writer.Write("Criteria: " + selectedCriteria2 + "\r\n");
                 writer.Write("Feedback: " + selectedFeedback2 + "\r\n");
                 writer.Write("\r\n");
-                writer.Write("Section 3" + "\r\n");
-                writer.Write("Section: " + selectedSection3 + "\r\n");
-                writer.Write("Criteria: " + selectedCriteria3 + "\r\n");
-                writer.Write("Feedback: " + selectedFeedback3 + "\r\n");
             }
+            if (sectionCounter <= 3)
+                writer.Write("Section 3" + "\r\n");
+            writer.Write("Section: " + selectedSection3 + "\r\n");
+            writer.Write("Criteria: " + selectedCriteria3 + "\r\n");
+            writer.Write("Feedback: " + selectedFeedback3 + "\r\n");
+
 
             writer.Close();
             byte[] bytes = buffer.ToArray();
