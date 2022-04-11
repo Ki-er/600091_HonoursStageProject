@@ -15,8 +15,17 @@ input[type=text], select, textarea {
 label {
     padding: 12px 12px 12px 0;
     display: inline-block;
+    color: white;
 }
 
 #pdfviewer {
     margin-right: 50%;
+}
+
+h1, h2, h3, h4, h5, h6, h8, .close {
+    color: white;
+}
+
+.modal-dialog, .modal-content, .modal-header, .modal-body {
+    background-color: #373737;
 }

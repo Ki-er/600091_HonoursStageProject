@@ -8,12 +8,14 @@
     flex: 1;
 }
 
+/*Side bar without feedback logo*/
 .sidebar {
-    background-color: #1e1e1e;
+    background-color: #202020;
 }
 
+/*Top Row Without Feedback Logo*/
 .top-row {
-    background-color: #f7f7f7;
+    background-color: #202020;
     border-bottom: 1px solid #d6d5d5;
     justify-content: flex-end;
     height: 3.5rem;
