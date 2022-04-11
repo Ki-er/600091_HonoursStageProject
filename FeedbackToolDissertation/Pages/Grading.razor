@@ -746,7 +746,7 @@
     Feedback inputFeedback = new Feedback();
 
     // The variables that check for errors
-    bool errorModule, errorAcw, errorSections, errorCriteria, errorStudentNumber = false;
+    bool errorModule, errorAcw, errorSections, errorCriteria, errorFeedback, errorStudentNumber = false;
 
     // Is run when the page loads and populates the lists with all data from the database that is appropiate for the user logged in
     protected override async Task OnInitializedAsync()
@@ -795,12 +795,12 @@
         ShowPopUpCriteria = false;
         confirmationPopup = false;
 
-
-        // Resets error messagesS
+        // Resets error messages
         errorModule = false;
         errorAcw = false;
         errorSections = false;
         errorCriteria = false;
+        errorFeedback = false;
 
         selectedModulebool = false;
         selectedACWbool = false;
@@ -1153,7 +1153,7 @@
         }
         if ((selectedFeedback1bool && selectedFeedback1 == null) || (selectedFeedback1bool && selectedFeedback1 == "No Feedback Chosen") || (selectedFeedback2bool && selectedFeedback2 == null) || (selectedFeedback2bool && selectedFeedback2 == "No Feedback Chosen") || (selectedFeedback3bool && selectedFeedback3 == null) || (selectedFeedback3bool && selectedFeedback3 == "No Feedback Chosen"))
         {
-
+            errorFeedback = true;
         }
 
 
