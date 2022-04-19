@@ -543,6 +543,31 @@
                             <button type="button" class="btn btn-success" @onclick="SaveCriteria"> Save </button>
                             <br />
                             <br />
+                            @*If there is something wrong with the form, error module will be true and the following code will run*@
+                            @if (errorCriteria == true)
+                            {
+                                if (selectedACW == "No ACW Chosen")
+                                {
+                                    <label class="alert-danger">No ACW Chosen</label>
+                                }
+
+                                if (selectedSection1 == "No Section Chosen" || selectedSection2 == "No Section Chosen" || selectedSection3 == "No Section Chosen")
+                                {
+                                    <label class="alert-danger">No Section Chosen</label>
+                                }
+                                <br />
+                                <br />
+                                @*If the user has not entered anything within the input box, then they will be reminded to enter something*@
+                                if (inputCriteria.Criteria1 == null || inputCriteria.Criteria1 == "")
+                                {
+                                    <label class="alert-danger">No Criteria Entered</label>
+                                }
+                                @*If the user has not entered anything within the input box that already exsists, then they will be reminded to enter something else *@
+                                else if (criteria.Any(o => o.Criteria1.Contains(inputCriteria.Criteria1)) && (criteria.Any(o => o.ModuleName.Contains(selectedModule))))
+                                {
+                                    <label class="alert-danger">Criteria is already within Database</label>
+                                }
+                            }
                         </div>
                     </div>
                 </div>
