@@ -1081,6 +1081,16 @@
             errorCriteria = true;
         }
 
+        if (selectedACW == "No ACW Chosen")
+        {
+            errorCriteria = true;
+        }
+
+        if (selectedSection1 == "No Section Chosen" || selectedSection2 == "No Section Chosen" || selectedSection3 == "No Section Chosen")
+        {
+           errorCriteria = true;
+        }
+
         if (errorCriteria == false)
         {
             // Close the Popup
