@@ -18,12 +18,6 @@
 @page "/Grading"
 
 <h3>Grading</h3>
-
-<div class="fileinsert"
-<InputFile OnChange="@LoadFiles" />
-</div>
-<br />
-
 <body>
     <form>
         <label> Student </label>
@@ -801,10 +795,6 @@
 
     string trustedFileNameForFileStorage = "";
 
-    private async Task LoadFiles(InputFileChangeEventArgs e)
-    {
-        trustedFileNameForFileStorage = Path.GetRandomFileName();
-    }
 
     void ShowNewSection()
     {
