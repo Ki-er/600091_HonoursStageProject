@@ -14,7 +14,6 @@
 @inject SectionService SectionService
 @inject FeedbackService FeedbackService
 
-
 @page "/Grading"
 
 <h3>Grading</h3>
@@ -31,6 +30,7 @@
             {
                 <p><em>Loading....</em></p>
                 selectedModule = "No Module Chosen";
+                <option value="" selected hidden>Select your Module</option>
             }
             else
             {
@@ -53,6 +53,7 @@
             {
                 <p><em>Loading....</em></p>
                 selectedACW = "No ACW Chosen";
+                <option value="" selected="selected" hidden>Select your ACW</option>
             }
             else
             {
@@ -76,7 +77,6 @@
         <button type="button" class="btn btn-danger" @onclick="@(() => { SetACWBoolTrue(); DeletePopUp(); })">-</button>
         <br />
 
-
         <h8> Feedback </h8>
         <br />
         Section 1
@@ -86,6 +86,7 @@
             {
                 <p><em>Loading....</em></p>
                 selectedSection1 = "No Section Chosen";
+                <option value="" selected hidden>Select your Section</option>
             }
             else
             {
@@ -117,10 +118,11 @@
             {
                 <p><em>Loading....</em></p>
                 selectedCriteria1 = "No Criteria Chosen";
+                <option value="" selected hidden>Select your Criteria</option>
             }
             else
             {
-                <option value="" selected hidden>Select your Criteria</option>
+
                 @foreach (var criteriarecord in criteria)
                 {
                     @if (criteriarecord.SectionName.Contains(selectedSection1) && (criteriarecord.ModuleName.Contains(selectedModule)))
@@ -148,6 +150,8 @@
             {
                 <p><em>Loading....</em></p>
                 selectedFeedback1 = "No Feedback Chosen";
+                <option value="" selected hidden>Select your Feedback</option>
+
             }
             else
             {
@@ -178,14 +182,15 @@
             <h8>Section 2 </h8>
             <br />
             <select @bind="@selectedSection2">
-                <option value="" selected hidden>Select your Section</option>
-
                 @if (selectedSection2 == null)
                 {
                     selectedSection2 = "No Section Chosen";
                 }
-                else
+                <option value="" selected hidden>Select your Section</option>
+                @if (selectedSection2 != null)
                 {
+                    <option value="" selected hidden>Select your Section</option>
+
                     @foreach (var sectionrecord in sections)
                     {
                         @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
@@ -720,6 +725,8 @@
         {
             <label class="alert-danger">No Student Number Entered</label>
         }
+
+
 
     </form>
 </body>
@@ -1286,13 +1293,13 @@
             }
             if (sectionCounter == 3)
             {
-            writer.Write("Section 3" + "\r\n");
-            writer.Write("Section: " + selectedSection3 + "\r\n");
-            writer.Write("Criteria: " + selectedCriteria3 + "\r\n");
-            writer.Write("Feedback: " + selectedFeedback3 + "\r\n");
+                writer.Write("Section 3" + "\r\n");
+                writer.Write("Section: " + selectedSection3 + "\r\n");
+                writer.Write("Criteria: " + selectedCriteria3 + "\r\n");
+                writer.Write("Feedback: " + selectedFeedback3 + "\r\n");
 
             }
-  
+
 
             writer.Close();
             byte[] bytes = buffer.ToArray();
