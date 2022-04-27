@@ -1345,6 +1345,7 @@
                 writer.Write("Section: " + selectedSection3 + "\r\n");
                 writer.Write("Criteria: " + selectedCriteria3 + "\r\n");
                 writer.Write("Feedback: " + selectedFeedback3.Trim() + " - " + selectedFeedback3grade + "\r\n");
+                writer.Write("\r\n");
             }
             int grade = selectedFeedback1grade + selectedFeedback2grade + selectedFeedback3grade;
             writer.Write("Overall Grade is: " + grade);
