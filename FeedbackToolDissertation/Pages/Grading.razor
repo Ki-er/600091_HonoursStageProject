@@ -147,7 +147,7 @@
 
 
         @*Feedback Dropdown Box*@
-        <select id="feedback" name="feedback" @bind="@selectedFeedback1">
+        <select id="feedback" name="feedback" @onchange="Feedback1">
             @if (feedback == null)
             {
                 <p><em>Loading....</em></p>
@@ -242,7 +242,7 @@
             <br />
 
 
-            <select id="feedback" name="feedback" @bind="@selectedFeedback2">
+            <select id="feedback" name="feedback" @onchange="Feedback2">
                 <option value="" selected hidden>Select your Feedback</option>
                 @if (selectedFeedback2 == null)
                 {
@@ -338,7 +338,7 @@
             <br />
 
 
-            <select id="feedback" name="feedback" @bind="@selectedFeedback3">
+            <select id="feedback" name="feedback" @onchange="Feedback3">
                 @if (selectedFeedback3 == null)
                 {
                     selectedFeedback3 = "No Feedback Chosen";
@@ -733,14 +733,6 @@
         {
             <label class="alert-danger">No Student Number Entered</label>
         }
-
-        @if (@resetNumber < 1000)
-        {
-            LoadValues();
-        }
-
-
-
     </form>
 </body>
 
@@ -775,6 +767,7 @@
 
     string selectedFeedback1, selectedFeedback2, selectedFeedback3;
     bool selectedFeedback1bool, selectedFeedback2bool, selectedFeedback3bool = false;
+    int selectedFeedback1grade, selectedFeedback2grade, selectedFeedback3grade;
 
     // The variables that prevent overwriting of the selected variables
     bool presentModule, presentACW, presentSection, presentCriteria, presentFeedback;
@@ -958,6 +951,44 @@
     {
         confirmationPopup = true;
     }
+
+    private void Feedback1(ChangeEventArgs e)
+    {
+        foreach (var feedbackRecord in feedback)
+        {
+            if (feedbackRecord.Feedback1.Contains(e.Value.ToString()) && feedbackRecord.ModuleName.Contains(selectedModule))
+            {
+                selectedFeedback1 = feedbackRecord.Feedback1;
+                selectedFeedback1grade = feedbackRecord.Grade;
+            }
+        }
+    }
+
+    private void Feedback2(ChangeEventArgs e)
+    {
+        foreach (var feedbackRecord in feedback)
+        {
+            if (feedbackRecord.Feedback1.Contains(e.Value.ToString()) && feedbackRecord.ModuleName.Contains(selectedModule))
+            {
+                selectedFeedback2 = feedbackRecord.Feedback1;
+                selectedFeedback2grade = feedbackRecord.Grade;
+            }
+        }
+    }
+
+
+    private void Feedback3(ChangeEventArgs e)
+    {
+        foreach (var feedbackRecord in feedback)
+        {
+            if (feedbackRecord.Feedback1.Contains(e.Value.ToString()) && feedbackRecord.ModuleName.Contains(selectedModule))
+            {
+                selectedFeedback3 = feedbackRecord.Feedback1;
+                selectedFeedback3grade = feedbackRecord.Grade;
+            }
+        }
+    }
+
 
 
     // When the user presses save in the module modal, the following code will run
@@ -1283,6 +1314,8 @@
         else
         {
             errorStudentNumber = false;
+
+
             var buffer = new MemoryStream();
             var writer = new BinaryWriter(buffer);
 
@@ -1295,15 +1328,15 @@
             writer.Write("Section 1" + "\r\n");
             writer.Write("Section: " + selectedSection1 + "\r\n");
             writer.Write("Criteria: " + selectedCriteria1 + "\r\n");
-            writer.Write("Feedback: " + selectedFeedback1 + "\r\n");
+            writer.Write("Feedback: " + selectedFeedback1.Trim() + " - " + selectedFeedback1grade + "\r\n");
             writer.Write("\r\n");
 
-            if (sectionCounter == 2)
+            if (sectionCounter >= 2)
             {
                 writer.Write("Section 2" + "\r\n");
                 writer.Write("Section: " + selectedSection2 + "\r\n");
                 writer.Write("Criteria: " + selectedCriteria2 + "\r\n");
-                writer.Write("Feedback: " + selectedFeedback2 + "\r\n");
+                writer.Write("Feedback: " + selectedFeedback2.Trim() + " - " + selectedFeedback2grade + "\r\n");
                 writer.Write("\r\n");
             }
             if (sectionCounter == 3)
@@ -1311,9 +1344,11 @@
                 writer.Write("Section 3" + "\r\n");
                 writer.Write("Section: " + selectedSection3 + "\r\n");
                 writer.Write("Criteria: " + selectedCriteria3 + "\r\n");
-                writer.Write("Feedback: " + selectedFeedback3 + "\r\n");
-
+                writer.Write("Feedback: " + selectedFeedback3.Trim() + " - " + selectedFeedback3grade + "\r\n");
             }
+            int grade = selectedFeedback1grade + selectedFeedback2grade + selectedFeedback3grade;
+            writer.Write("Overall Grade is: " + grade);
+
             writer.Close();
             byte[] bytes = buffer.ToArray();
             var task = await BlazorDownloadFileService.DownloadFile(studentNumber, bytes, "text/plain");
