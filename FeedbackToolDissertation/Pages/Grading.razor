@@ -1,5 +1,6 @@
 ﻿@using System
 @using System.IO
+@using System.Timers;
 @using FeedbackToolDissertation.Data
 @using FeedbackToolDissertation.Data.FeedbackToolDissertation
 @using Microsoft.AspNetCore.Hosting
@@ -18,6 +19,12 @@
 
 <h3>Grading</h3>
 <body>
+    <h8>No Data Displaying? Click Here:</h8>
+    <button type="button" class="btn btn-primary" @onclick="LoadValues">Load Values</button>
+    <br />
+    <h8>Be sure to check that you have added data to the database!</h8>
+    <br />
+    <br />
     <form>
         <label> Student </label>
         <input type="text" id="snumber" placeholder="Student Number" name="snumber" @bind=@studentNumber>
@@ -176,9 +183,9 @@
         <br />
         <br />
 
-
         @if (showNewSection)
         {
+
             <h8>Section 2 </h8>
             <br />
             <select @bind="@selectedSection2">
@@ -187,7 +194,7 @@
                     selectedSection2 = "No Section Chosen";
                     <option value="" selected hidden>Select your Section</option>
                 }
-                else if (selectedSection2 != null)
+                else
                 {
                     <option value="" selected hidden>Select your Section</option>
                     @foreach (var sectionrecord in sections)
@@ -213,13 +220,13 @@
 
             <select id="criteria" name="criteria" @bind="@selectedCriteria2">
                 <option value="" selected hidden>Select your Criteria</option>
-
                 @if (selectedCriteria2 == null)
                 {
                     selectedCriteria2 = "No Criteria Chosen";
                 }
                 else
                 {
+                    <option value="" selected hidden>Select your Criteria</option>
                     @foreach (var criteriarecord in criteria)
                     {
                         @if (criteriarecord.SectionName.Contains(selectedSection2) && (criteriarecord.ModuleName.Contains(selectedModule)))
@@ -242,9 +249,6 @@
             <br />
 
 
-
-
-
             <select id="feedback" name="feedback" @bind="@selectedFeedback2">
                 <option value="" selected hidden>Select your Feedback</option>
                 @if (selectedFeedback2 == null)
@@ -253,6 +257,7 @@
                 }
                 else
                 {
+                    <option value="" selected hidden>Select your Feedback</option>
                     @foreach (var feedbackrecord in feedback)
                     {
                         @if (feedbackrecord.Criteria.Contains(selectedCriteria2) && (feedbackrecord.ModuleName.Contains(selectedModule)))
@@ -317,6 +322,7 @@
                 }
                 else
                 {
+                    <option value="" selected hidden>Select your Criteria</option>
                     @foreach (var criteriarecord in criteria)
                     {
                         @if (criteriarecord.SectionName.Contains(selectedSection3) && (criteriarecord.ModuleName.Contains(selectedModule)))
@@ -346,6 +352,8 @@
                 }
                 else
                 {
+                    <option value="" selected hidden>Select your Feedback</option>
+
                     @foreach (var feedbackrecord in feedback)
                     {
                         @if (feedbackrecord.Criteria.Contains(selectedCriteria3) && (feedbackrecord.ModuleName.Contains(selectedModule)))
@@ -720,13 +728,21 @@
                 </div>
             </div>
         }
+
         <button type="button" class="btn btn-primary" @onclick="DownloadFile">Export to Text Document</button>
         <br />
         <br />
 
+
+
         @if (errorStudentNumber)
         {
             <label class="alert-danger">No Student Number Entered</label>
+        }
+
+        @if (@resetNumber < 1000)
+        {
+            LoadValues();
         }
 
 
@@ -785,6 +801,8 @@
 
     // The variables that check for errors
     bool errorModule, errorAcw, errorSections, errorCriteria, errorFeedback, errorStudentNumber = false;
+
+    int resetNumber = 0;
 
     // Is run when the page loads and populates the lists with all data from the database that is appropiate for the user logged in
     protected override async Task OnInitializedAsync()
@@ -1083,9 +1101,7 @@
             errorCriteria = true;
         }
 
-
         if ((selectedSection1 == "No Section Chosen" && selectedSection1Bool) || (selectedSection2 == "No Section Chosen" && selectedSection2Bool) || (selectedSection3 == "No Section Chosen" && selectedSection3Bool))
-
         {
             errorCriteria = true;
         }
@@ -1304,15 +1320,15 @@
                 writer.Write("Feedback: " + selectedFeedback3 + "\r\n");
 
             }
-
-
             writer.Close();
             byte[] bytes = buffer.ToArray();
             var task = await BlazorDownloadFileService.DownloadFile(studentNumber, bytes, "text/plain");
         }
+    }
 
-
-
+    void LoadValues()
+    {
+        resetNumber++;
     }
 
 }
