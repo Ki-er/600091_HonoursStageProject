@@ -114,6 +114,8 @@
 
 
         <select id="criteria" name="criteria" @bind="@selectedCriteria1">
+            <option value="" selected hidden>Select your Criteria</option>
+
             @if (criteria == null)
             {
                 <p><em>Loading....</em></p>
@@ -122,7 +124,6 @@
             }
             else
             {
-
                 @foreach (var criteriarecord in criteria)
                 {
                     @if (criteriarecord.SectionName.Contains(selectedSection1) && (criteriarecord.ModuleName.Contains(selectedModule)))
@@ -151,7 +152,6 @@
                 <p><em>Loading....</em></p>
                 selectedFeedback1 = "No Feedback Chosen";
                 <option value="" selected hidden>Select your Feedback</option>
-
             }
             else
             {
@@ -185,12 +185,11 @@
                 @if (selectedSection2 == null)
                 {
                     selectedSection2 = "No Section Chosen";
+                    <option value="" selected hidden>Select your Section</option>
                 }
-                <option value="" selected hidden>Select your Section</option>
-                @if (selectedSection2 != null)
+                else if (selectedSection2 != null)
                 {
                     <option value="" selected hidden>Select your Section</option>
-
                     @foreach (var sectionrecord in sections)
                     {
                         @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
@@ -243,6 +242,9 @@
             <br />
 
 
+
+
+
             <select id="feedback" name="feedback" @bind="@selectedFeedback2">
                 <option value="" selected hidden>Select your Feedback</option>
                 @if (selectedFeedback2 == null)
@@ -282,6 +284,7 @@
                 @if (selectedSection3 == null)
                 {
                     selectedSection3 = "No Section Chosen";
+                    <option value="" selected hidden>Select your Section</option>
                 }
                 else
                 {
@@ -1080,7 +1083,9 @@
             errorCriteria = true;
         }
 
-        if (selectedSection1 == "No Section Chosen" || selectedSection2 == "No Section Chosen" || selectedSection3 == "No Section Chosen")
+
+        if ((selectedSection1 == "No Section Chosen" && selectedSection1Bool) || (selectedSection2 == "No Section Chosen" && selectedSection2Bool) || (selectedSection3 == "No Section Chosen" && selectedSection3Bool))
+
         {
             errorCriteria = true;
         }
