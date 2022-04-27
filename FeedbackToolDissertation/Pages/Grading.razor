@@ -37,7 +37,6 @@
             {
                 <p><em>Loading....</em></p>
                 selectedModule = "No Module Chosen";
-                <option value="" selected hidden>Select your Module</option>
             }
             else
             {
@@ -60,7 +59,6 @@
             {
                 <p><em>Loading....</em></p>
                 selectedACW = "No ACW Chosen";
-                <option value="" selected="selected" hidden>Select your ACW</option>
             }
             else
             {
@@ -93,7 +91,6 @@
             {
                 <p><em>Loading....</em></p>
                 selectedSection1 = "No Section Chosen";
-                <option value="" selected hidden>Select your Section</option>
             }
             else
             {
@@ -121,16 +118,14 @@
 
 
         <select id="criteria" name="criteria" @bind="@selectedCriteria1">
-            <option value="" selected hidden>Select your Criteria</option>
-
             @if (criteria == null)
             {
                 <p><em>Loading....</em></p>
                 selectedCriteria1 = "No Criteria Chosen";
-                <option value="" selected hidden>Select your Criteria</option>
             }
             else
             {
+                <option value="" selected hidden>Select your Criteria</option>
                 @foreach (var criteriarecord in criteria)
                 {
                     @if (criteriarecord.SectionName.Contains(selectedSection1) && (criteriarecord.ModuleName.Contains(selectedModule)))
@@ -140,7 +135,6 @@
                     }
                     else if (presentCriteria == false)
                     {
-                        <option value="" selected hidden>Select your Criteria</option>
                         selectedCriteria1 = "No Criteria Chosen";
                     }
                 }
@@ -158,7 +152,6 @@
             {
                 <p><em>Loading....</em></p>
                 selectedFeedback1 = "No Feedback Chosen";
-                <option value="" selected hidden>Select your Feedback</option>
             }
             else
             {
@@ -172,7 +165,6 @@
                     }
                     else if (presentFeedback == false)
                     {
-                        <option value="" selected hidden>Select your Feedback</option>
                         selectedFeedback1 = "No Feedback Chosen";
                     }
                 }
@@ -189,14 +181,13 @@
             <h8>Section 2 </h8>
             <br />
             <select @bind="@selectedSection2">
+                <option value="" selected hidden>Select your Section</option>
                 @if (selectedSection2 == null)
                 {
                     selectedSection2 = "No Section Chosen";
-                    <option value="" selected hidden>Select your Section</option>
                 }
                 else
                 {
-                    <option value="" selected hidden>Select your Section</option>
                     @foreach (var sectionrecord in sections)
                     {
                         @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
@@ -220,15 +211,17 @@
 
             <select id="criteria" name="criteria" @bind="@selectedCriteria2">
                 <option value="" selected hidden>Select your Criteria</option>
+
                 @if (selectedCriteria2 == null)
                 {
                     selectedCriteria2 = "No Criteria Chosen";
                 }
                 else
                 {
-                    <option value="" selected hidden>Select your Criteria</option>
                     @foreach (var criteriarecord in criteria)
                     {
+                        <option value="" selected hidden>Select your Criteria</option>
+
                         @if (criteriarecord.SectionName.Contains(selectedSection2) && (criteriarecord.ModuleName.Contains(selectedModule)))
                         {
                             <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
@@ -257,9 +250,10 @@
                 }
                 else
                 {
-                    <option value="" selected hidden>Select your Feedback</option>
                     @foreach (var feedbackrecord in feedback)
                     {
+                        <option value="" selected hidden>Select your Criteria</option>
+
                         @if (feedbackrecord.Criteria.Contains(selectedCriteria2) && (feedbackrecord.ModuleName.Contains(selectedModule)))
                         {
                             <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
@@ -289,7 +283,6 @@
                 @if (selectedSection3 == null)
                 {
                     selectedSection3 = "No Section Chosen";
-                    <option value="" selected hidden>Select your Section</option>
                 }
                 else
                 {
@@ -315,16 +308,17 @@
 
 
             <select id="criteria" name="criteria" @bind="@selectedCriteria3">
-                <option value="" selected hidden>Select your Criteria</option>
                 @if (selectedCriteria3 == null)
                 {
                     selectedCriteria3 = "No Criteria Chosen";
+                    <option value="" selected hidden>Select your Criteria</option>
+
                 }
                 else
                 {
-                    <option value="" selected hidden>Select your Criteria</option>
                     @foreach (var criteriarecord in criteria)
                     {
+                        <option value="" selected hidden>Select your Criteria</option>
                         @if (criteriarecord.SectionName.Contains(selectedSection3) && (criteriarecord.ModuleName.Contains(selectedModule)))
                         {
                             <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
@@ -345,17 +339,17 @@
 
 
             <select id="feedback" name="feedback" @bind="@selectedFeedback3">
-                <option value="" selected hidden>Select your Feedback</option>
                 @if (selectedFeedback3 == null)
                 {
                     selectedFeedback3 = "No Feedback Chosen";
+                    <option value="" selected hidden>Select your Feedback</option>
                 }
                 else
                 {
-                    <option value="" selected hidden>Select your Feedback</option>
-
                     @foreach (var feedbackrecord in feedback)
                     {
+                        <option value="" selected hidden>Select your Feedback</option>
+
                         @if (feedbackrecord.Criteria.Contains(selectedCriteria3) && (feedbackrecord.ModuleName.Contains(selectedModule)))
                         {
                             <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
