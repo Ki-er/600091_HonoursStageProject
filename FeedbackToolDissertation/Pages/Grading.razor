@@ -1314,8 +1314,6 @@
         else
         {
             errorStudentNumber = false;
-
-
             var buffer = new MemoryStream();
             var writer = new BinaryWriter(buffer);
 
@@ -1352,7 +1350,8 @@
 
             writer.Close();
             byte[] bytes = buffer.ToArray();
-            var task = await BlazorDownloadFileService.DownloadFile(studentNumber, bytes, "text/plain");
+            var task = await BlazorDownloadFileService.DownloadFile($"{studentNumber}.txt", bytes, "plain/text");
+
         }
     }
 
