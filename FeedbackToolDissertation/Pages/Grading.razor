@@ -30,10 +30,9 @@
             <label> Student </label>
             <input type="text" id="snumber" placeholder="Student Number" name="snumber" @bind=@studentNumber>
             <br />
-
             @*Module Dropdown Box*@
             <label> Module </label>
-            <select @bind="@selectedModule">
+            <select @bind="@selectedModule" id="moduleSelect">
                 @if (moduleList == null)
                 {
                     <p><em>Loading....</em></p>

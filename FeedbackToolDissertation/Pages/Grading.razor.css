@@ -18,7 +18,12 @@ input[type=text], input[type=number], select, textarea {
     color: white;
 }
 
-#snumber
+#snumber {
+    width: 76%;
+}
+
+#moduleselection {
+}
 
 #ACWSelection {
     width: 77%;
