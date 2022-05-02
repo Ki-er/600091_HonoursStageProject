@@ -26,61 +26,64 @@
     <br />
     <br />
     <form>
-        <label> Student </label>
-        <input type="text" id="snumber" placeholder="Student Number" name="snumber" @bind=@studentNumber>
-        <br />
+        <div class="Details">
+            <label> Student </label>
+            <input type="text" id="snumber" placeholder="Student Number" name="snumber" @bind=@studentNumber>
+            <br />
 
-        @*Module Dropdown Box*@
-        <label> Module </label>
-        <select @bind="@selectedModule">
-            @if (moduleList == null)
-            {
-                <p><em>Loading....</em></p>
-                selectedModule = "No Module Chosen";
-            }
-            else
-            {
-                <option value="" selected hidden>Select your Module</option>
-                @foreach (var module in moduleList)
+            @*Module Dropdown Box*@
+            <label> Module </label>
+            <select @bind="@selectedModule">
+                @if (moduleList == null)
                 {
-                    <option value="@module.ModuleName">@module.ModuleName</option>
+                    <p><em>Loading....</em></p>
+                    selectedModule = "No Module Chosen";
                 }
-            }
-        </select>
-        <button type="button" class="btn btn-primary" @onclick="AddNewModule">+</button>
-        <button type="button" class="btn btn-danger" @onclick="@(() => { SetModuleBoolTrue(); DeletePopUp(); })">-</button>
-        <br />
-
-
-        @*ACW Dropdown Box*@
-        <label> ACW </label>
-        <select @bind="@selectedACW" autocomplete="off">
-            @if (acw == null)
-            {
-                <p><em>Loading....</em></p>
-                selectedACW = "No ACW Chosen";
-            }
-            else
-            {
-                <option value="" selected="selected" hidden>Select your ACW</option>
-                @foreach (var acwrecord in acw)
+                else
                 {
-                    @if (acwrecord.ModuleName.Contains(selectedModule))
+                    <option value="" selected hidden>Select your Module</option>
+                    @foreach (var module in moduleList)
                     {
-                        <option value="@acwrecord.AcwName">@acwrecord.AcwName</option>
-                        presentACW = true;
-                    }
-                    else if (presentACW == false)
-                    {
-                        <option value="" selected hidden>Select your ACW</option>
-                        selectedACW = "No ACW Chosen";
+                        <option value="@module.ModuleName">@module.ModuleName</option>
                     }
                 }
-            }
-        </select>
-        <button type="button" class="btn btn-primary" @onclick="AddNewACW">+</button>
-        <button type="button" class="btn btn-danger" @onclick="@(() => { SetACWBoolTrue(); DeletePopUp(); })">-</button>
-        <br />
+            </select>
+            <button type="button" class="btn btn-primary" @onclick="AddNewModule">+</button>
+            <button type="button" class="btn btn-danger" @onclick="@(() => { SetModuleBoolTrue(); DeletePopUp(); })">-</button>
+            <br />
+
+
+            @*ACW Dropdown Box*@
+            <label> ACW </label>
+            <select @bind="@selectedACW" autocomplete="off" id="ACWSelection">
+                @if (acw == null)
+                {
+                    <p><em>Loading....</em></p>
+                    selectedACW = "No ACW Chosen";
+                }
+                else
+                {
+                    <option value="" selected="selected" hidden>Select your ACW</option>
+                    @foreach (var acwrecord in acw)
+                    {
+                        @if (acwrecord.ModuleName.Contains(selectedModule))
+                        {
+                            <option value="@acwrecord.AcwName">@acwrecord.AcwName</option>
+                            presentACW = true;
+                        }
+                        else if (presentACW == false)
+                        {
+                            <option value="" selected hidden>Select your ACW</option>
+                            selectedACW = "No ACW Chosen";
+                        }
+                    }
+                }
+            </select>
+            <button type="button" class="btn btn-primary" @onclick="AddNewACW">+</button>
+            <button type="button" class="btn btn-danger" @onclick="@(() => { SetACWBoolTrue(); DeletePopUp(); })">-</button>
+            <br />
+        </div>
+
 
         <h8> Feedback </h8>
         <br />

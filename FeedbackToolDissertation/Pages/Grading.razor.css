@@ -4,23 +4,32 @@ body {
     -moz-transform-origin: left top;
 }
 
-input[type=text], select, textarea {
-    width: 30%;
+input[type=text], input[type=number], select, textarea {
+    width: 80%;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
     resize: vertical;
 }
 
-label {
-    padding: 12px 12px 12px 0;
+.Details label {
+    padding: 12px 12px 12px 0px;
     display: inline-block;
     color: white;
 }
 
-#pdfviewer {
-    margin-right: 50%;
+#snumber
+
+#ACWSelection {
+    width: 77%;
 }
+
+label {
+    padding: 12px 12px 12px 0px;
+    display: inline-block;
+    color: white;
+}
+
 
 h1, h2, h3, h4, h5, h6, h8, .close {
     color: white;
