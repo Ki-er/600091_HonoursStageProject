@@ -15,7 +15,7 @@ namespace FeedbackToolDissertation.Areas.Identity
             {
                 services.AddDbContext<FeedbackToolDissertationContext>(options =>
                     options.UseSqlServer(
-                        context.Configuration.GetConnectionString("FeedbackToolDissertationContextConnection")));
+                        context.Configuration.GetConnectionString("ApplicationDbContext")));
             });
         }
     }

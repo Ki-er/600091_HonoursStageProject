@@ -158,7 +158,7 @@
                 <option value="" selected hidden>Select your Feedback</option>
                 @foreach (var feedbackrecord in feedback)
                 {
-                    @if (feedbackrecord.Criteria.Contains(selectedCriteria1) && (feedbackrecord.ModuleName.Contains(selectedModule)))
+                    @if (feedbackrecord.Criteria.Contains(selectedCriteria1) && (feedbackrecord.ModuleName.Contains(selectedModule) && (feedbackrecord.SectionName.Contains(selectedSection1))))
                     {
                         <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
                         presentFeedback = true;
@@ -188,8 +188,10 @@
                 }
                 else
                 {
+                    <option value="" selected hidden>Select your Section</option>
                     @foreach (var sectionrecord in sections)
                     {
+
                         @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
                         {
                             <option value="@sectionrecord.SectionName">@sectionrecord.SectionName</option>
@@ -218,10 +220,10 @@
                 }
                 else
                 {
+                    <option value="" selected hidden>Select your Criteria</option>
+
                     @foreach (var criteriarecord in criteria)
                     {
-                        <option value="" selected hidden>Select your Criteria</option>
-
                         @if (criteriarecord.SectionName.Contains(selectedSection2) && (criteriarecord.ModuleName.Contains(selectedModule)))
                         {
                             <option value="@criteriarecord.Criteria1">@criteriarecord.Criteria1</option>
@@ -252,9 +254,9 @@
                 {
                     @foreach (var feedbackrecord in feedback)
                     {
-                        <option value="" selected hidden>Select your Criteria</option>
+                        <option value="" selected hidden>Select your Feedback</option>
 
-                        @if (feedbackrecord.Criteria.Contains(selectedCriteria2) && (feedbackrecord.ModuleName.Contains(selectedModule)))
+                        @if (feedbackrecord.Criteria.Contains(selectedCriteria2) && (feedbackrecord.ModuleName.Contains(selectedModule) && (feedbackrecord.SectionName.Contains(selectedSection2))))
                         {
                             <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
                             presentFeedback = true;
@@ -286,6 +288,8 @@
                 }
                 else
                 {
+                    <option value="" selected hidden>Select your Section</option>
+
                     @foreach (var sectionrecord in sections)
                     {
                         @if (sectionrecord.Acwname.Contains(selectedACW) && (sectionrecord.ModuleName.Contains(selectedModule)))
@@ -350,7 +354,7 @@
                     {
                         <option value="" selected hidden>Select your Feedback</option>
 
-                        @if (feedbackrecord.Criteria.Contains(selectedCriteria3) && (feedbackrecord.ModuleName.Contains(selectedModule)))
+                        @if (feedbackrecord.Criteria.Contains(selectedCriteria3) && (feedbackrecord.ModuleName.Contains(selectedModule) && (feedbackrecord.SectionName.Contains(selectedSection3))))
                         {
                             <option value="@feedbackrecord.Feedback1">@feedbackrecord.Feedback1 - @feedbackrecord.Grade</option>
                             presentFeedback = true;
@@ -446,6 +450,12 @@
                                 if (selectedModule == "No Module Chosen")
                                 {
                                     <label class="alert-danger">No Module Chosen</label>
+                                }
+                                <br />
+                                <br />
+                                if (inputACW.AcwName == null || inputACW.AcwName == "")
+                                {
+                                    <label class="alert-danger">No ACW Entered</label>
                                 }
 
                                 @*If the user has not entered anything within the input box that already exsists, then they will be reminded to enter something else *@
@@ -1004,6 +1014,10 @@
         {
             errorModule = true;
         }
+        else
+        {
+            errorModule = false;
+        }
 
         // if there are no errors, the following code will run
         if (errorModule == false)
@@ -1037,16 +1051,20 @@
     async Task SaveACW()
     {
         // if the user has not selected a module and presses save, the error will display
-        @if (selectedModule == "No Module Chosen")
-        {
-            errorModule = true;
-        }
-
-        // if the user has not entered anything and presses save, the error will display
-        if (inputACW.AcwName == null || inputACW.AcwName == "")
+        if (selectedModule == "No Module Chosen")
         {
             errorAcw = true;
         }
+        // if the user has not entered anything and presses save, the error will display
+        else if (inputACW.AcwName == null || inputACW.AcwName == "")
+        {
+            errorAcw = true;
+        }
+        else
+        {
+            errorAcw = false;
+        }
+
 
         foreach (var acwrecord in acw)
         {
@@ -1057,9 +1075,8 @@
         }
 
         // if there are no errors, the following code will run
-        if (errorAcw == false && errorModule == false && errorSections == false && errorCriteria == false)
+        if (errorAcw == false)
         {
-
             // Close the Popup
             ShowPopUpACW = false;
             // Creates the new acw
@@ -1358,6 +1375,7 @@
     void LoadValues()
     {
         resetNumber++;
+
     }
 
 }
