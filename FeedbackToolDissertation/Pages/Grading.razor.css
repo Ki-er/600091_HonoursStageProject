@@ -22,11 +22,13 @@ input[type=text], input[type=number], select, textarea {
     width: 76%;
 }
 
-#moduleselection {
+#moduleSelect {
+    width: 76%;
 }
 
 #ACWSelection {
-    width: 77%;
+    width: 76%;
+    margin-left: 0.75%;
 }
 
 label {
